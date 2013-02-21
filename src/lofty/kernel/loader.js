@@ -115,7 +115,7 @@
             }
         };
         
-        //onLoadError( node, callback );
+        onLoadError( node, callback );
         
     },
     
