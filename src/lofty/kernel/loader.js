@@ -42,19 +42,19 @@
         //todo, testing in ie6 when lofty put before base element
     
     
-    var loadAsset = function( url, callback, errorback ){
+    var loadAsset = function( url, callback ){
         
         var node;
         
         if ( rStyle.test( url ) ){
             node = doc.createElement('link');
-            onLoadStyle( node, url, callback, errorback );
+            onLoadStyle( node, url, callback );
             
             node.rel = 'stylesheet';
             node.href = url;
         } else {
             node = doc.createElement('script');
-            onLoadScript( node, callback, errorback );
+            onLoadScript( node, callback );
             
             node.async = true;
             node.src = url;
@@ -70,7 +70,7 @@
         
     },
     
-    onLoadStyle = function( node, url, callback, errorback ){
+    onLoadStyle = function( node, url, callback ){
         
         if ( isOldWebKit || !( 'onload' in node ) ){
             var img = doc.createElement('img');
@@ -91,15 +91,19 @@
                 }
             };
             
-            onLoadError( node, errorback );
+            onLoadError( node, callback );
         }
         
     },
     
-    onLoadScript = function( node, callback, errorback ){
+    onLoadScript = function( node, callback ){
         
-        node.onload = node.onreadystatechange = function( ev ){
-            if ( ev.type === 'load' || rReadyStates.test( node.readyState) ){
+        node.onload = node.onreadystatechange = function( event ){
+            
+            event = event || global.event;
+            
+            if ( event.type === 'load' || rReadyStates.test( node.readyState ) ){
+                
                 node.onload = node.onreadystatechange = node.onerror = null;
                 
                 if ( !configCache.debug ){
@@ -111,16 +115,16 @@
             }
         };
         
-        onLoadError( node, errorback );
+        //onLoadError( node, callback );
         
     },
     
-    onLoadError = function( node, errorback ){
+    onLoadError = function( node, callback ){
         
         node.onerror = function(){
             node.onload = node.onreadystatechange = node.onerror = null;
             node = undefined;
-            errorback && errorback();
+            callback && callback();
         };
         
     };

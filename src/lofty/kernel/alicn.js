@@ -30,7 +30,7 @@
         var rUrl = /([\w]+)[\:\/\/]+([\w|\.]+)\//i,
             scripts = doc.getElementsByTagName('script'),
             selfScript = scripts[scripts.length-1],
-            selfUrl = selfScript.src.match( rUrl );
+            selfUrl = ( selfScript.hasAttribute ? selfScript.src : selfScript.getAttribute( 'src', 4 ) ).match( rUrl );
         
         return selfUrl[2];
     })();

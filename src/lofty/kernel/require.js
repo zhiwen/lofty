@@ -114,7 +114,7 @@
     
     var assetsCache = {},
         STATUS = {
-            'ERROR': -1,
+            'TIMEOUT': -1,
             'LOADING': 1,
             'LOADED': 2
         },
@@ -205,7 +205,7 @@
             asset.status = STATUS.LOADED;
             queue = asset.callbackQueue;
         } else {
-            asset.status = STATUS.ERROR;
+            asset.status = STATUS.TIMEOUT;
             queue = asset.errorbackQueue;
         }
         
@@ -237,14 +237,12 @@
         
         asset.timeoutTimer = setTimeout( function(){
             asset.timeout = true;
-            errorback && errorback();
+            completeLoad( asset, 'errorback' );
+            fm.emit( 'requestTimeout', asset );
         }, configCache.loadTimeout );
 
         util.load( asset.url, function(){
             completeLoad( asset, 'callback' );
-        }, function(){
-            completeLoad( asset, 'errorback' );
-            fn.emit( 'requestFail', asset );
         } );
         
     };
