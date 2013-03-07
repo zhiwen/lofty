@@ -19,23 +19,14 @@
      * HexJS, https://github.com/edgarhoo/hexjs/blob/master/src/hex.js
      * */
     
-    var lofty = {},
-        fn = {},
-        modulesCache = {},
-        configCache = {},
-        eventsCache = {};
-    
-    var EMPTY_ID = '',
-        EMPTY_DEPS = [],
-        UNDER,
-        EMPTY_OBJ = {},
+    /**
+     * util
+     * */
+    var EMPTY_OBJ = {},
         HAS_OWN = EMPTY_OBJ.hasOwnProperty,
-        ANONYMOUS_PREFIX = '__!_lofty_anonymous_';
-    
-    var anonymousIndex = 0;
+        toString = EMPTY_OBJ.toString;
     
     var util = {
-        toString: EMPTY_OBJ.toString,
         slice: [].slice,
         hasOwn: function( obj, prop ){
             return HAS_OWN.call( obj, prop );
@@ -59,54 +50,139 @@
                 }
             }
     };
-    
-    
+
+
+
     /**
      * simple observer
      * */
-    fn.on = function( name, callback ){
-        
-        var list = eventsCache[name] || ( eventsCache[name] = [] );
-        list.push( callback );
-        
+    var eventsCache = {};
+    
+    var event = {
+        on: function( name, callback ){
+            var list = eventsCache[name] || ( eventsCache[name] = [] );
+            list.push( callback );
+        },
+        emit: function( name ){
+            var args = util.slice.call( arguments, 1 ),
+                list = eventsCache[name];
+            
+            if ( list ){
+                util.forEach( list, function( item ){
+                    item.apply( null, args );
+                } );
+            }
+        }
     };
     
-    fn.emit = function( name ){
+    
+    
+    /**
+     * config
+     * */
+    var configCache = {};
+    
+    var config = function( options ){
         
-        var args = util.slice.call( arguments, 1 ),
-            list = eventsCache[name];
-        
-        if ( list ){
-            util.forEach( list, function( item ){
-                item.apply( null, args );
-            } );
+        for ( var key in options ){
+            if ( util.hasOwn( options, key ) ){
+                var cache = configCache[key],
+                    opts = options[key];
+                    
+                if ( cache && ( key === 'alias' || key === 'stamp' ) ){
+                    for ( var i in opts ){
+                        if ( util.hasOwn( opts, i ) ){
+                            cache[i] = opts[i];
+                        }
+                    }
+                } else if ( key === 'resolve' ){
+                    cache ? cache.push( opts ) : ( configCache[key] = [opts] );
+                } else {
+                    configCache[key] = opts;
+                }
+            }
         }
-        
     };
     
     
-    fn.parseAlias = function( id ){
-        
-        var alias;
-        
-        if ( configCache.alias && ( alias = configCache.alias[id] ) ){
-            id = alias;
+    
+    /**
+     * modules cache
+     * */
+    var modulesCache = {};
+    
+    var modules = {
+        //parts: {},
+        get: function( id ){
+            return ( this ? this.parts : modulesCache )[id];
+        },
+        save: function( id, module ){
+            ( this ? this.parts : modulesCache )[id] = module;
         }
-        
-        return id;
-        
     };
     
-    fn.isExisting = function( id ){
-        
-        id = fn.parseAlias( id );
-        
-        if ( modulesCache[id] || keyModuleHooks[id] ){
-            return true;
+    
+    
+    /**
+     * path
+     * */
+    var path = {
+        parseAlias: function( id ){
+            
+            var alias;
+            
+            if ( configCache.alias && ( alias = configCache.alias[id] ) ){
+                id = alias;
+            }
+            
+            return id;
         }
-        
-        return false;
-        
+    };
+    
+    
+    
+    var EMPTY_ID = '',
+        EMPTY_DEPS = [],
+        ANONYMOUS_PREFIX = '__!_lofty_anonymous_',
+        anonymousIndex = 0;
+    
+    
+    /**
+     * fn, module core opation
+     * */
+    var fn = {
+        get: function( id ){
+            return modules.get.call( this ? this : null, id );
+        },
+        has: function( id ){
+            id = path.parseAlias( id );
+            
+            if ( modules.get.call( null, id ) || keyModulesCache[id] ){
+                return true;
+            }
+            
+            return false;
+        },
+        isAnon: function( module ){
+            return module.id === EMPTY_ID;
+        },
+        save: function( module ){
+            var id = module._id || module.id;
+            
+            modules.save.call( this, id, module );
+        },
+        autocompile: function( module ){
+            fn.isAnon( module ) && fn.compile.call( this, module );
+        },
+        compile: function( module ){
+            compile.call( this, module );
+        },
+        require: function( id, module ){
+            return require.call( this, id, module );
+        },
+        config: function( options ){
+            config( options );
+        }
     };
     
     
@@ -126,6 +202,7 @@
         this.status = null;
         this.visits = 0;
         
+        event.emit( 'initialized', this );
     };
     
     
@@ -153,63 +230,21 @@
             }
         }
         
-        if ( modulesCache[id] ){
-            fn.emit( 'existing', id );
+        if ( modules.get.call( this, id ) ){
+            event.emit( 'existing', id );
             return null;
         }
         
         module = new Module( id, deps, factory );
         
-        if ( id !== EMPTY_ID ){
-            modulesCache[id] = module;
-        } else {
+        if ( id === EMPTY_ID ){
             id = ANONYMOUS_PREFIX + anonymousIndex;
             anonymousIndex++;
             module._id = id;
-            modulesCache[id] = module;
-            
-            fn.autocompile( module );
         }
         
-    };
-    
-    
-    /**
-     * auto compile an anonymous module
-     * @param {object} module entity
-     * */
-    fn.autocompile = function( module ){
-        
-        fn.compile.call( null, module );
-        
-    };
-    
-    
-    /**
-     * require a module
-     * @param {string} module's id
-     * */
-    fn.require = function( id ){
-        
-        id = fn.parseAlias(id);
-        
-        var module = modulesCache[id];
-        
-        if ( !module ){
-            fn.emit( 'requireFail', id );
-            return null;
-        }
-        
-        if ( !module.status ){
-            module.status = true;
-            fn.compile.call( null, module );
-        }
-        
-        module.visits++;
-        fn.emit( 'required', module );
-        
-        return module.exports;
-        
+        fn.save.call( this, module );
+        fn.autocompile.call( this, module );
     };
     
     
@@ -217,11 +252,12 @@
      * compile a module
      * @param {object} module entity
      * */
-    fn.compile = function( module ){
+    var compile = function( module ){
         
         try {
             if ( util.isFunction( module.factory ) ){
-                var deps = getDeps( module ),
+                
+                var deps = getDeps.call( this, module ),
                     exports = module.factory.apply( null, deps );
                     
                 if ( exports !== undefined ){
@@ -229,74 +265,75 @@
                 } else {
                     module.entity && ( module.exports = module.entity.exports );
                 }
+                
+                module.entity && ( delete module.entity );
+                
             } else if ( module.factory !== undefined ) {
                 module.exports = module.factory;
             }
             
-            fn.emit( 'compiled', module );
+            event.emit( 'compiled', module );
         } catch ( ex ){
-            fn.emit( 'compileFail', module, ex );
+            event.emit( 'compileFail', module, ex );
         }
-        
     };
     
     
     /**
-     * config
+     * require a module
+     * @param {string} module's id
      * */
-    fn.config = function( options ){
+    var require = function( id, host ){
         
-        for ( var key in options ){
-            if ( util.hasOwn( options, key ) ){
-                var cache = configCache[key],
-                    opts = options[key];
-                    
-                if ( cache && ( key === 'alias' || key === 'stamp' ) ){
-                    for ( var i in opts ){
-                        if ( util.hasOwn( opts, i ) ){
-                            cache[i] = opts[i];
-                        }
-                    }
-                } else if ( key === 'resolve' ){
-                    cache ? cache.push( opts ) : ( configCache[key] = [opts] );
-                } else {
-                    configCache[key] = opts;
-                }
-            }
+        id = path.parseAlias( id );
+        
+        var module = fn.get.call( this, id, host );
+        
+        if ( !module ){
+            event.emit( 'requireFail', id );
+            return null;
         }
         
+        if ( !module.status ){
+            module.status = true;
+            fn.compile.call( this, module );
+        }
+        
+        module.visits++;
+        event.emit( 'required', module );
+        
+        return module.exports;
     };
     
     
+    
     /**
-     * key-module hooks
+     * key-modules
      * */
-    var keyModuleHooks = {
-        'require': function(){
+    var keyModulesCache = {
+        'require': function( module ){
+            var _this = this;
+            
             function require(id){
-                return fn.require.call( null, id );
+                return fn.require.call( _this, id, module );
             }
             
-            fn.emit( 'makeRequire', require );
+            event.emit( 'makeRequire', module, this, require );
             
             return require;
         },
-        'exports': function(module){
+        'exports': function( module ){
             return module.exports;
         },
-        'module': function(module){
-            var entity;
+        'module': function( module ){
+            module.entity = {
+                id: module.id,
+                exports: module.exports
+            };
             
-            if ( !(entity = module.entity) ){
-                entity = module.entity = {
-                    id: module.id,
-                    exports: module.exports
-                };
-            }
-            
-            return entity;
+            return module.entity;
         },
-        'config': function(){
+        'config': function( module ){
             return fn.config;
         }
     };
@@ -309,20 +346,36 @@
     var getDeps = function( module ){
         
         var list = [],
-            deps = module.deps;
+            deps = module.deps,
+            _this = this;
         
         if ( util.isArray( deps ) ){
             util.forEach( deps, function( id ){
                 var mid, hook;
-                mid = ( hook = keyModuleHooks[id] ) ? hook(module) : fn.require.call( null, id );
+                mid = ( hook = keyModulesCache[id] ) ? hook.call( _this, module) : fn.require.call( _this, id, module );
                 
                 list.push( mid );
             } );
         }
         
         return list;
-        
     };
+    
+    
+    
+    /**
+     * Lofty, another front-end framework
+     * */
+    var loftyKernel = {
+        parts: {}
+    };
+    
+    var lofty = function(){
+        var args = util.slice.call( arguments, 0 );
+        
+        define.apply( loftyKernel, args );
+    };
+    
     
     
     configCache.debug = function(){
@@ -335,8 +388,8 @@
         }
         
         return isDebug;
-        
     }();
+    
     
     
     var originalDefine = global.define;
@@ -353,15 +406,23 @@
     lofty.define = define;
     lofty.version = '0.1';
     
-    lofty.sdk = {
-        cache: {
-            modules: modulesCache,
-            config: configCache,
-            events: eventsCache
-        },
-        util: util,
-        fn: fn
+    lofty.cache = {
+        modules: modulesCache,
+        config: configCache,
+        events: eventsCache,
+        kernel: loftyKernel
     };
+    
+    
+    
+    lofty( 'util', util );
+    lofty( 'modules', modules );
+    lofty( 'event', event );
+    lofty( 'path', path );
+    lofty( 'fn', fn );
+    lofty( 'global', global );
+    lofty( 'cache', lofty.cache );
+    //lofty( 'lofty', lofty );
     
     
     /**

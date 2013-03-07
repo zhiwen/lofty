@@ -6,13 +6,8 @@
  * */
 
 
-(function( sdk ){
+lofty( ['util','fn','event','path','cache','loader'], function( util, fn, event, path, cache, loader ){
     'use strict';
-    
-    if ( sdk.cache.assets ){
-        return;
-    }
-    
     
     /**
      * Thanks to:
@@ -20,11 +15,7 @@
      * jQuery, https://github.com/jquery/jquery/blob/1.7.2/src/deferred.js
      * */
     
-    var cache = sdk.cache,
-        //modulesCache = cache.modules,
-        configCache = cache.config,
-        fn = sdk.fn,
-        util = sdk.util;
+    var configCache = cache.config;
     
     
     util.now = Date.now || function(){
@@ -168,11 +159,11 @@
         
         var url = '';
         
-        id = fn.parseAlias( id );
+        id = path.parseAlias( id );
         url = parseResolve( id );
         url = addFileExten( url );
         url = addStamp( url );
-        //console.info(url);
+        
         return url;
         
     },
@@ -216,7 +207,6 @@
     },
     
     request = function( id, callback, errorback ){
-        
         var asset = assetsCache[id] || createAsset( id ),
             fallback;
         
@@ -238,10 +228,10 @@
         asset.timeoutTimer = setTimeout( function(){
             asset.timeout = true;
             completeLoad( asset, 'errorback' );
-            fm.emit( 'requestTimeout', asset );
+            event.emit( 'requestTimeout', asset );
         }, configCache.loadTimeout );
 
-        util.load( asset.url, function(){
+        loader( asset.url, function(){
             completeLoad( asset, 'callback' );
         } );
         
@@ -249,10 +239,10 @@
     
     
     fn.fetch = function( ids, callback, errorback ){
-        
         util.when.apply( null, util.map( ids, function( id ){
             return function( promise ) {
-                if ( fn.isExisting( id ) ){
+                
+                if ( fn.has( id ) ){
                     promise.resolve();
                 } else {
                     request( id, function(){
@@ -269,14 +259,14 @@
     
     fn.asyncRequireLoader = fn.fetch;
     
-    var asyncRequire = function( ids, callback, errorback ){
+    var asyncRequire = function( ids, callback, errorback, module, context ){
         if ( !util.isArray(ids) ){
             ids = [ids];
         }
         
         fn.asyncRequireLoader( ids, function(){
             var args = util.map( ids, function( id ){
-                return fn.require( id );
+                return fn.require.call( context, id );
             } );
             
             callback && callback.apply( null, args );
@@ -284,13 +274,15 @@
         
     };
     
-    fn.on( 'makeRequire', function( require ){
+    event.on( 'makeRequire', function( module, context, require ){
         
-        require.async = asyncRequire;
+        require.async = function( ids, callback, errorback ){
+            asyncRequire( ids, callback, errorback, module, context );
+        };
         
     } );
     
     
     cache.assets = assetsCache;
     
-})( lofty.sdk );
+} );

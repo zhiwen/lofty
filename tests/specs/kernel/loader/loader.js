@@ -26,9 +26,11 @@ describe( 'lofty/kernel/loader', function(){
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/a.js', function(){
-                        a = require('specs/kernel/loader/a');
-                    } );
+                    lofty(['loader'],function(loader){
+                        loader( '/tests/specs/kernel/loader/a.js', function(){
+                            a = require('specs/kernel/loader/a');
+                        } );
+                    });
                } );
             });
             
@@ -38,28 +40,6 @@ describe( 'lofty/kernel/loader', function(){
             
             runs(function(){
                 expect(a).toEqual('specs-kernel-loader-a');
-            });
-        } );
-        
-        xit( 'util.loadº”‘ÿjs error', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/404.js', function(){
-                        a = require('specs/kernel/loader/b');
-                    }, function(){
-                        a = 'specs-kernel-loader-404';
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('specs-kernel-loader-404');
             });
         } );
         
@@ -76,9 +56,11 @@ describe( 'lofty/kernel/loader', function(){
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/a.css?130220', function(){
-                        a = getStyle( el, 'width');
-                    } );
+                    lofty(['loader'],function(loader){
+                        loader( '/tests/specs/kernel/loader/a.css?130220', function(){
+                            a = getStyle( el, 'width');
+                        } );
+                    });
                } );
             });
             
@@ -94,29 +76,6 @@ describe( 'lofty/kernel/loader', function(){
         afterEach(function(){
             document.body.removeChild( el );
         });
-        
-        xit( 'util.loadº”‘ÿcss error', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/404.css', function(){
-                        a = '100px';
-                    }, function(){
-                        a = '404';
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('404');
-            });
-        } );
-        
     } );
     
 } );

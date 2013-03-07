@@ -6,14 +6,14 @@
 
 describe( 'lofty/kernel/define', function(){
     
-    describe( 'lofty关键字', function(){
+    xdescribe( 'lofty关键字', function(){
         it( '存在关键字lofty', function(){
             expect(lofty).toBeTruthy();
         } );
     } );
     
     
-    describe( 'define关键字', function(){
+    xdescribe( 'define关键字', function(){
         it( '存在关键字define', function(){
             expect(define).toBeTruthy();
         } );

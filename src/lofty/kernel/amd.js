@@ -6,31 +6,24 @@
  * */
 
 
-(function( sdk ){
+lofty( ['util','fn','path','cache'], function( util, fn, path, cache ){
     'use strict';
-    
-    if ( sdk.fn.amd ){
-        return;
-    }
-    
-    
-    var fn = sdk.fn,
-        util = sdk.util,
-        cache = sdk.cache,
-        modulesCache = cache.modules,
-        configCache = cache.config;
+
+    var configCache = cache.config;
     
     
     fn.autocompile = function( module ){
         
-        if ( configCache.amd ){
-            amd( module.deps, function(){
-                fn.compile.call( null, module );
-            } );
-        } else {
-            fn.compile.call( null, module );
+        var _this = this;
+        if ( fn.isAnon( module ) ){
+            if ( configCache.amd ){
+                amd( module.deps, function(){
+                    fn.compile.call( _this, module );
+                } );
+            } else {
+                fn.compile.call( this, module );
+            }
         }
-        
     };
     
     
@@ -51,7 +44,7 @@
         var idsFetch = [];
         
         util.forEach( ids, function( id, idx ){
-            if ( !fn.isExisting( id ) ){
+            if ( !fn.has( id ) ){
                 idsFetch.push( id );
             }
         } );
@@ -65,7 +58,7 @@
         fn.fetch( idsFetch, function(){
             util.when.apply( null, util.map( idsFetch, function( id ){
                 return function( promise ){
-                    var module = modulesCache[fn.parseAlias( id )];
+                    var module = fn.get.call( null, path.parseAlias( id ) );
                     
                     amd( module.deps, function(){
                         promise.resolve();
@@ -83,4 +76,4 @@
     fn.amd = true;
     configCache.amd = true;
     
-})( lofty.sdk );
+} );
