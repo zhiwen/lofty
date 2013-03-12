@@ -1,1 +1,3 @@
-define( 'specs/kernel/amd/l', ['specs/kernel/amd/k'], function( K ){ return K+'l'; } );
+specsKernelAmdB++;
+
+define( 'specs/kernel/amd/l', function(){ return specsKernelAmdB; } );

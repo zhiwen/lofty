@@ -5,19 +5,10 @@
  * @date 130216
  * */
 
-
-(function( sdk, global ){
+lofty( 'alicn', ['cache','global'], function( cache, global ){
     'use strict';
     
-    if ( sdk.fn.alicn ){
-        return;
-    }
-    
-    
-    var fn = sdk.fn,
-        configCache = sdk.cache.config,
-        doc = global.document;
-    
+    var configCache = cache.config;
     
     var substitute = function( str, data ){
         return str.replace(/\{(\w+)\}/g, function( r, m ){
@@ -25,24 +16,12 @@
         });
     };
     
-    
-    var domain = (function(){
-        var rUrl = /([\w]+)[\:\/\/]+([\w|\.]+)\//i,
-            scripts = doc.getElementsByTagName('script'),
-            selfScript = scripts[scripts.length-1],
-            selfUrl = ( selfScript.hasAttribute ? selfScript.src : selfScript.getAttribute( 'src', 4 ) ).match( rUrl );
-        
-        return selfUrl[2];
-    })();
-    
-    
     var rStyle = /\.css(?:\?|$)/,
         urlFormat = {
             'lofty': '/fdevlib/{type}/lofty/{id}',
             'makeup': '/fdevlib/{type}/makeup/{id}',
             'sys': '/sys/{type}{id}'
         };
-    
     
     var resolve = function( id ){
         
@@ -60,16 +39,8 @@
     };
     
     
-    fn.config({
-        loadTimeout: 10000,
-        hasStamp: true,
-        protocol: 'http',
-        domain: domain,
-        resolve: resolve
-    });
+    configCache.hasStamp = true;
+    configCache.resolve = [resolve];
+    configCache.rAppframeExcept = [/^(lofty|makeup|sys)\//];
     
-    
-    fn.alicn = true;
-    
-    
-})( lofty.sdk, this );
+} );

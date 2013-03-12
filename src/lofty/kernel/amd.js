@@ -6,74 +6,75 @@
  * */
 
 
-lofty( ['util','fn','path','cache'], function( util, fn, path, cache ){
+lofty( 'amd', ['cache','module','lang','deferred','asyncrequire'],
+    function( cache, module, lang, deferred, asyncrequire ){
     'use strict';
 
     var configCache = cache.config;
     
+    configCache.amd = true;
     
-    fn.autocompile = function( module ){
+    
+    var amd = {
+        loader: function( ids, callback ){
         
-        var _this = this;
-        if ( fn.isAnon( module ) ){
+            var scope = this,
+                idsFetch = amd.getIdsFetch( ids, scope );
+            
+            if ( idsFetch.length ){
+                amd.fetch.call( scope, idsFetch, callback );
+            } else {
+                callback();
+            }
+        },
+        
+        getIdsFetch: function( ids, scope ){
+        
+            var idsFetch = [];
+            
+            lang.forEach( ids, function( id ){
+                if ( !module.has( id, scope ) ){
+                    idsFetch.push( id );
+                }
+            } );
+            
+            return idsFetch;
+        },
+        
+        fetch: function( idsFetch, callback ){
+            var scope = this;
+            
+            asyncrequire.fetch.call( scope, idsFetch, function(){
+                deferred.apply( null, lang.map( idsFetch, function( id ){
+                    return function( promise ){
+                        var mod = module.get( id, scope );
+                        
+                        amd.loader.call( mod, mod.deps, function(){
+                            promise.resolve();
+                        } );
+                    }
+                } ) ).then( callback );
+            } );
+        }
+    };
+    
+    
+    module.autocompile = function( mod ){
+        
+        if ( module.isAnon( mod ) ){
             if ( configCache.amd ){
-                amd( module.deps, function(){
-                    fn.compile.call( _this, module );
+                amd.loader.call( mod, mod.deps, function(){
+                    module.compile( mod );
                 } );
             } else {
-                fn.compile.call( this, module );
+                module.compile( mod );
             }
         }
     };
     
-    
-    var amd = function( ids, callback ){
-        
-        var idsFetch = getIdsFetch( ids );
-        
-        if ( idsFetch.length ){
-            fetch( idsFetch, callback );
-        } else {
-            callback();
-        }
-        
-    };
-    
-    var getIdsFetch = function( ids ){
-        
-        var idsFetch = [];
-        
-        util.forEach( ids, function( id, idx ){
-            if ( !fn.has( id ) ){
-                idsFetch.push( id );
-            }
-        } );
-        
-        return idsFetch;
-        
-    };
-    
-    var fetch = function( idsFetch, callback ){
-        
-        fn.fetch( idsFetch, function(){
-            util.when.apply( null, util.map( idsFetch, function( id ){
-                return function( promise ){
-                    var module = fn.get.call( null, path.parseAlias( id ) );
-                    
-                    amd( module.deps, function(){
-                        promise.resolve();
-                    } );
-                }
-            } ) ).then( callback );
-        } );
-        
-    };
+    asyncrequire.loader = amd.loader;
     
     
-    fn.asyncRequireLoader = amd;
-    
-    
-    fn.amd = true;
-    configCache.amd = true;
+    return amd;
     
 } );

@@ -6,7 +6,7 @@
  * */
 
 
-lofty( 'loader', ['util','cache','global'], function( util, cache, global ){
+lofty( 'loader', ['cache','global'], function( cache, global ){
     'use strict';
     
     /**

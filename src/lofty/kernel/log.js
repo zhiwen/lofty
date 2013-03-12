@@ -6,7 +6,7 @@
  * */
 
 
-lofty( 'logger', ['util','global'], function( util, global ){
+lofty( 'logger', ['lang','global'], function( lang, global ){
     'use strict';
     
     /**
@@ -52,7 +52,7 @@ lofty( 'logger', ['util','global'], function( util, global ){
             messageBox.style.listStyleType = 'decimal';
             box.appendChild( messageBox );
             
-            util.forEach( messageList, function( item ){
+            lang.forEach( messageList, function( item ){
                 createMessage( item );
             } );
         } else {

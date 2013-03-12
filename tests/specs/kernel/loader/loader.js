@@ -20,13 +20,13 @@ define('specs/kernel/loader/b',function(){ return 'specs-kernel-loader-b'; });
 
 describe( 'lofty/kernel/loader', function(){
     
-    describe( 'lofty.sdk.util.load', function(){
-        it( 'util.load加载js', function(){
+    describe( 'loader', function(){
+        it( '加载js', function(){
             var a;
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty(['loader'],function(loader){
+                    lofty( 'specs/kernel/loader/a', ['loader'],function(loader){
                         loader( '/tests/specs/kernel/loader/a.js', function(){
                             a = require('specs/kernel/loader/a');
                         } );
@@ -51,12 +51,12 @@ describe( 'lofty/kernel/loader', function(){
             document.body.appendChild( el );
         });
         
-        it( 'util.load加载css', function(){
+        it( '加载css', function(){
             var a;
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty(['loader'],function(loader){
+                    lofty('specs/kernel/loader/b',['loader'],function(loader){
                         loader( '/tests/specs/kernel/loader/a.css?130220', function(){
                             a = getStyle( el, 'width');
                         } );
