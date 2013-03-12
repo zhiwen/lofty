@@ -21,10 +21,11 @@ lofty( 'deferred', ['lang'], function( lang ){
         
         var _this = this,
             thens = [],
-            len = len || 1,
             resolved = 0,
             rejected = 0;
         
+        len = len || 1;
+
         var probe = function(){
             if ( resolved + rejected === len ){
                 complete();

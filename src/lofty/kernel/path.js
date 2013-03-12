@@ -56,7 +56,7 @@ lofty( 'path', ['global','cache','module','lang','config'], function( global, ca
             return url;
         },
         
-        addStamp: function( url ){
+        addStamp: function( url, id ){
             
             var stamp,
                 t = configCache.hasStamp ? lang.now() : null;
@@ -77,7 +77,7 @@ lofty( 'path', ['global','cache','module','lang','config'], function( global, ca
             id = module.parseAlias( id );
             url = path.parseResolve( id );
             url = path.addFileSuffix( url );
-            url = path.addStamp( url );
+            url = path.addStamp( url, id );
             
             return url;
         }

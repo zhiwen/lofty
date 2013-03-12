@@ -1,1 +1,121 @@
+<project name="lofty-build" default="build" basedir="../">
+    <description>Lofty Build File</description>
 
+    <dirname property="root.dir" file="${ant.file.lofty-build}/../"/>
+    <property name="src.dir" location="${root.dir}/src/"/>
+    <property name="lofty.dir" location="${src.dir}/lofty/"/>
+    <property name="kernel.dir" location="${lofty.dir}/kernel/"/>
+    <property name="dist.dir" location="${lofty.dir}/port/"/>
+    <property name="tmp.dir" location="${lofty.dir}/tmp/"/>
+
+    <property name="module.name" value="lofty"/>
+    <property name="version" value="0.1"/>
+
+    <property name="build.dir" location="${root.dir}/build/"/>
+    <property name="gcc.jar" location="${build.dir}/compiler.jar"/>
+    <property name="charset" value="utf-8"/>
+
+    <property name="classic.file" value="${dist.dir}/classic.js"/>
+    <property name="aio.file" value="${dist.dir}/aio.js"/>
+    <property name="classic.debug.file" value="${dist.dir}/classic-debug.js"/>
+
+
+    <!-- 压缩 -->
+    <target name="compress">
+        <mkdir dir="${tmp.dir}"/>
+        <!-- 用 Google Closure Compiler 压缩 JS -->
+        <apply executable="java" verbose="true" dest="${tmp.dir}" failonerror="true">
+            <fileset dir="${kernel.dir}" includes="*.js"/>
+
+            <arg line="-jar"/>
+            <arg path="${gcc.jar}"/>
+            <arg line="--externs ${build.dir}/extern.js"/>
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS"/>
+
+            <!-- http://code.google.com/p/closure-compiler/wiki/Warnings -->
+            <arg line="--warning_level VERBOSE"/>
+            <arg line="--jscomp_off=checkTypes"/>
+            <arg line="--jscomp_error=checkDebuggerStatement"/>
+
+            <arg line="--js"/>
+            <srcfile/>
+            <arg value="--js_output_file"/>
+            <targetfile/>
+            <mapper type="regexp" from="^(.*)\.js$" to="\1.js"/>
+        </apply>
+
+    </target>
+    
+    <target name="version" depends="compress">
+        <replaceregexp file="${tmp.dir}/boot.js"
+                       match="%VERSION%"
+                       replace="${version}"
+                       flags="g"
+                       encoding="${charset}"/>
+    </target>
+
+    <!-- 合并 -->
+    <target name="concat_classic" depends="version">
+
+        <!-- 目录准备 -->
+        <mkdir dir="${dist.dir}"/>
+
+        <!-- 合并 package 文件 -->
+        <concat destfile="${classic.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${tmp.dir}/boot.js"/>
+        <path path="${tmp.dir}/lang.js"/>
+        <path path="${tmp.dir}/event.js"/>
+        <path path="${tmp.dir}/config.js"/>
+        <path path="${tmp.dir}/module.js"/>
+        <path path="${tmp.dir}/loader.js"/>
+        <path path="${tmp.dir}/path.js"/>
+        <path path="${tmp.dir}/request.js"/>
+        <path path="${tmp.dir}/deferred.js"/>
+        <path path="${tmp.dir}/asyncrequire.js"/>
+        <path path="${tmp.dir}/appframe.js"/>
+        <path path="${tmp.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+    <!-- 合并 -->
+    <target name="concat_aio" depends="version">
+
+        <!-- 目录准备 -->
+        <mkdir dir="${dist.dir}"/>
+
+        <!-- 合并 package 文件 -->
+        <concat destfile="${aio.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${tmp.dir}/boot.js"/>
+        <path path="${tmp.dir}/lang.js"/>
+        <path path="${tmp.dir}/event.js"/>
+        <path path="${tmp.dir}/config.js"/>
+        <path path="${tmp.dir}/module.js"/>
+        <path path="${tmp.dir}/loader.js"/>
+        <path path="${tmp.dir}/path.js"/>
+        <path path="${tmp.dir}/request.js"/>
+        <path path="${tmp.dir}/deferred.js"/>
+        <path path="${tmp.dir}/asyncrequire.js"/>
+        <path path="${tmp.dir}/amd.js"/>
+        <path path="${tmp.dir}/appframe.js"/>
+        <path path="${tmp.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+    
+    <target name="concat" depends="concat_classic,concat_aio"/>
+    
+    <target name="destroy">
+
+        <delete dir="${tmp.dir}"/>
+
+    </target>
+
+
+    <target name="lofty_alicn" depends="compress,version,concat,destroy"/>
+</project>
