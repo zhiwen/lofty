@@ -1,10 +1,10 @@
 /**
- * @fileoverview unit testing for lofty/kernel/require
+ * @fileoverview unit testing for lofty/kernel/asyncrequire
  * @author Edgar
  * @build 130129
  * */
 
-describe( 'lofty/kernel/require', function(){
+describe( 'lofty/kernel/asyncrequire', function(){
     
     describe( 'require.async', function(){
         it( '异步引用模块', function(){
@@ -12,7 +12,7 @@ describe( 'lofty/kernel/require', function(){
             
             runs(function(){
                 define(['require'],function(require){
-                    require.async( 'specs/kernel/require/a', function(A){
+                    require.async( 'specs/kernel/asyncrequire/a', function(A){
                         a = A;
                     } );
                } );
@@ -23,21 +23,21 @@ describe( 'lofty/kernel/require', function(){
             });
             
             runs(function(){
-                expect(a).toEqual('specs-kernel-require-a');
+                expect(a).toEqual('specs-kernel-asyncrequire-a');
             });
         } );
         
         it( '重复异步引用模块', function(){
             var a, b, c;
             
-            window.specsKernelRequireB = 0;
+            window.specsKernelAsyncrequireB = 0;
             
             runs(function(){
                 define(['require'],function(require){
-                    require.async( 'specs/kernel/require/b', function(A){
+                    require.async( 'specs/kernel/asyncrequire/b', function(A){
                         a = A;
                     } );
-                    require.async( ['specs/kernel/require/b','specs/kernel/require/c'], function(A,B){
+                    require.async( ['specs/kernel/asyncrequire/b','specs/kernel/asyncrequire/c'], function(A,B){
                         b = A;
                         c = B;
                     } );
@@ -51,7 +51,7 @@ describe( 'lofty/kernel/require', function(){
             runs(function(){
                 expect(a).toEqual(1);
                 expect(b).toEqual(1);
-                expect(c).toEqual('specs-kernel-require-c');
+                expect(c).toEqual('specs-kernel-asyncrequire-c');
             });
         } );
         
@@ -59,12 +59,12 @@ describe( 'lofty/kernel/require', function(){
             var a;
             
             define(['require'], function(require){
-                require.async( 'specs/kernel/define/a', function(A){
+                require.async( 'specs/kernel/module/a', function(A){
                     a = A;
                 } );
             });
             
-            expect(a).toEqual('specs-kernel-define-a');
+            expect(a).toEqual('specs-kernel-module-a');
         } );
         
         it( '不能引用关键模块', function(){
@@ -72,7 +72,7 @@ describe( 'lofty/kernel/require', function(){
             
             runs(function(){
                 define(['require'],function(require){
-                    require.async( ['config','specs/kernel/require/d'], function(A,B){
+                    require.async( ['config','specs/kernel/asyncrequire/d'], function(A,B){
                         a = A === null;
                         b = B;
                     } );
@@ -85,7 +85,7 @@ describe( 'lofty/kernel/require', function(){
             
             runs(function(){
                 expect(a).toBe(true);
-                expect(b).toEqual('specs-kernel-require-d');
+                expect(b).toEqual('specs-kernel-asyncrequire-d');
             });
         } );
         
@@ -95,8 +95,8 @@ describe( 'lofty/kernel/require', function(){
             define(['config'],function(config){
                 config({
                     alias: {
-                        'utrequirealiashas': 'specs/kernel/define/b',
-                        'utrequirealiasnth': 'specs/kernel/require/e'
+                        'utrequirealiashas': 'specs/kernel/module/b',
+                        'utrequirealiasnth': 'specs/kernel/asyncrequire/e'
                     }
                 });
             });
@@ -115,8 +115,8 @@ describe( 'lofty/kernel/require', function(){
             });
             
             runs(function(){
-                expect(a).toEqual('specs-kernel-define-b');
-                expect(b).toEqual('specs-kernel-require-e');
+                expect(a).toEqual('specs-kernel-module-b');
+                expect(b).toEqual('specs-kernel-asyncrequire-e');
             });
         } );
     } );

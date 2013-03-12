@@ -6,56 +6,84 @@
  * */
 
 
+lofty( 'logger', ['lang','global'], function( lang, global ){
+    'use strict';
+    
     /**
      * Thanks to:
      * http://jquery.glyphix.com/jquery.debug/jquery.debug.js
      * */
-    _messageList = [],
     
-    _messageBox = null,
+    var doc = global.document;
     
-    _prepared = false,
+    var messageList = [],
+        messageBox = null,
+        prepared = false;
     
-    _createMessage = function( item ){
+    var createMessage = function( item ){
+        
         var li = doc.createElement('li');
-        'warn' === item.type ? li.style.color = 'red' : li.style.color = '#000';
+        li.style.color = 'warn' === item.type ? 'red' : '#000';
         li.innerHTML = item.message;
-        _messageBox.appendChild( li );
+        messageBox.appendChild( li );
     },
     
-    _messagePrepare = function(){
+    messagePrepare = function(){
         
-        ready(function(){
-            var box = doc.createElement('div');
-            box.id = 'hexjs-debug';
-            box.style.margin = '10px 0';
-            box.style.border = '1px dashed red';
-            box.style.padding = '4px 8px';
-            box.style.fontSize = '14px';
-            box.style.lineHeight = '1.5';
-            box.style.textAlign = 'left';
+        var box = doc.createElement('div');
+        
+        box.id = 'lofty-debug-console';
+        box.style.margin = '10px 0';
+        box.style.border = '1px dashed red';
+        box.style.padding = '4px 8px';
+        box.style.fontSize = '14px';
+        box.style.lineHeight = '1.5';
+        box.style.textAlign = 'left';
+        
+        appendTo( box );
+        prepared = true;
+    },
+    
+    appendTo = function( box ){
+        
+        if ( doc.body ){
             doc.body.appendChild( box );
-            _messageBox = doc.createElement('ol');
-            _messageBox.style.listStyleType = 'decimal';
-            box.appendChild( _messageBox );
-            forEach( _messageList, function( item ){
-                _createMessage( item );
+            messageBox = doc.createElement('ol');
+            messageBox.style.listStyleType = 'decimal';
+            box.appendChild( messageBox );
+            
+            lang.forEach( messageList, function( item ){
+                createMessage( item );
             } );
-        });
-        
-        _prepared = true;
+        } else {
+            global.setTimeout( function(){
+                appendTo( box );
+            }, 200 );
+        }
     },
     
-    _console = function( message, type ){
+    console = function( message, type ){
         
         var item = {
             'message': message,
             'type': type
         };
         
-        !_prepared && _messagePrepare();
-        _messageBox ?
-            _createMessage( item ) :
-            _messageList.push( item );
+        !prepared && messagePrepare();
+        messageBox ?
+            createMessage( item ) :
+            messageList.push( item );
         
     };
+    
+    
+    return {
+        log: function( message ){
+            console( message, 'info' );
+        },
+        error: function( message ){
+            console( message, 'warn' );
+        }
+    };
+    
+} );

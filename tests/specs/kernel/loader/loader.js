@@ -20,15 +20,17 @@ define('specs/kernel/loader/b',function(){ return 'specs-kernel-loader-b'; });
 
 describe( 'lofty/kernel/loader', function(){
     
-    describe( 'lofty.sdk.util.load', function(){
-        it( 'util.load加载js', function(){
+    describe( 'loader', function(){
+        it( '加载js', function(){
             var a;
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/a.js', function(){
-                        a = require('specs/kernel/loader/a');
-                    } );
+                    lofty( 'specs/kernel/loader/a', ['loader'],function(loader){
+                        loader( '/tests/specs/kernel/loader/a.js', function(){
+                            a = require('specs/kernel/loader/a');
+                        } );
+                    });
                } );
             });
             
@@ -41,28 +43,6 @@ describe( 'lofty/kernel/loader', function(){
             });
         } );
         
-        xit( 'util.load加载js error', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/404.js', function(){
-                        a = require('specs/kernel/loader/b');
-                    }, function(){
-                        a = 'specs-kernel-loader-404';
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('specs-kernel-loader-404');
-            });
-        } );
-        
         var el;
             
         beforeEach(function(){
@@ -71,14 +51,16 @@ describe( 'lofty/kernel/loader', function(){
             document.body.appendChild( el );
         });
         
-        it( 'util.load加载css', function(){
+        it( '加载css', function(){
             var a;
             
             runs(function(){
                 define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/a.css?130220', function(){
-                        a = getStyle( el, 'width');
-                    } );
+                    lofty('specs/kernel/loader/b',['loader'],function(loader){
+                        loader( '/tests/specs/kernel/loader/a.css?130220', function(){
+                            a = getStyle( el, 'width');
+                        } );
+                    });
                } );
             });
             
@@ -94,29 +76,6 @@ describe( 'lofty/kernel/loader', function(){
         afterEach(function(){
             document.body.removeChild( el );
         });
-        
-        xit( 'util.load加载css error', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty.sdk.util.load( '/tests/specs/kernel/loader/404.css', function(){
-                        a = '100px';
-                    }, function(){
-                        a = '404';
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('404');
-            });
-        } );
-        
     } );
     
 } );

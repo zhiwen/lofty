@@ -1,16 +1,10 @@
 /**
- * @fileoverview unit testing for lofty/kernel/define
+ * @fileoverview unit testing for lofty/kernel/module
  * @author Edgar
  * @build 130129
  * */
 
-describe( 'lofty/kernel/define', function(){
-    
-    describe( 'lofty关键字', function(){
-        it( '存在关键字lofty', function(){
-            expect(lofty).toBeTruthy();
-        } );
-    } );
+describe( 'lofty/kernel/module', function(){
     
     
     describe( 'define关键字', function(){
@@ -28,62 +22,62 @@ describe( 'lofty/kernel/define', function(){
         it( 'define(id, factory)', function(){
             var a;
             
-            define('specs/kernel/define/a', function(){
-                return 'specs-kernel-define-a';
+            define('specs/kernel/module/a', function(){
+                return 'specs-kernel-module-a';
             });
             
-            define(['specs/kernel/define/a'],function(A){
+            define(['specs/kernel/module/a'],function(A){
                 a = A;
             });
             
-            expect(a).toEqual('specs-kernel-define-a');
+            expect(a).toEqual('specs-kernel-module-a');
         } );
         
         it( 'define(id, deps, factory)', function(){
             var a;
             
-            define('specs/kernel/define/b', ['specs/kernel/define/a'], function(A){
+            define('specs/kernel/module/b', ['specs/kernel/module/a'], function(A){
                 return A.replace(/a/,'b');
             });
             
-            define(['specs/kernel/define/b'], function(A){
+            define(['specs/kernel/module/b'], function(A){
                 a = A;
             });
             
-            expect(a).toEqual('specs-kernel-define-b');
+            expect(a).toEqual('specs-kernel-module-b');
         } );
         
         it( 'define(deps, factory)', function(){
             var a;
             
-            define(['specs/kernel/define/a','specs/kernel/define/b'], function( A, B ){
+            define(['specs/kernel/module/a','specs/kernel/module/b'], function( A, B ){
                 a = A +'&'+ B;
             });
             
-            expect(a).toEqual('specs-kernel-define-a&specs-kernel-define-b');
+            expect(a).toEqual('specs-kernel-module-a&specs-kernel-module-b');
         } );
         
         it( 'define(factory)', function(){
             var a;
             
             define(function(){
-                a = 'specs-kernel-define-d';
+                a = 'specs-kernel-module-d';
             });
             
-            expect(a).toEqual('specs-kernel-define-d');
+            expect(a).toEqual('specs-kernel-module-d');
         } );
         
         it( 'define(id, factory<object>)', function(){
             var a;
             
-            define('specs/kernel/define/e', {
+            define('specs/kernel/module/e', {
                 specs: 'specs',
                 kernel: 'kernel',
-                define: 'define',
+                module: 'module',
                 a: 'e'
             });
             
-            define(['specs/kernel/define/e'], function(A){
+            define(['specs/kernel/module/e'], function(A){
                 var temp = [];
                 for ( var i in A ){
                     temp.push(A[i]);
@@ -91,19 +85,19 @@ describe( 'lofty/kernel/define', function(){
                 a = temp.join('-');
             });
             
-            expect(a).toEqual('specs-kernel-define-e');
+            expect(a).toEqual('specs-kernel-module-e');
         } );
         
         it( 'define(id, factory<array>)', function(){
             var a;
             
-            define('specs/kernel/define/f', ['specs','kernel','define','f']);
+            define('specs/kernel/module/f', ['specs','kernel','module','f']);
             
-            define(['specs/kernel/define/f'], function(A){
+            define(['specs/kernel/module/f'], function(A){
                 a = A.join('-');
             });
             
-            expect(a).toEqual('specs-kernel-define-f');
+            expect(a).toEqual('specs-kernel-module-f');
         } );
         
     } );
@@ -113,22 +107,22 @@ describe( 'lofty/kernel/define', function(){
         it( 'require', function(){
             var a;
             
-            define('specs/kernel/define/g', function(){
-                return 'specs-kernel-define-g';
+            define('specs/kernel/module/g', function(){
+                return 'specs-kernel-module-g';
             } );
             
             define(['require'], function(require){
-                a = require('specs/kernel/define/g');
+                a = require('specs/kernel/module/g');
             });
             
-            expect(a).toEqual('specs-kernel-define-g');
+            expect(a).toEqual('specs-kernel-module-g');
         } );
         
         it( 'require只读', function(){
             var a;
             
             define(['require'], function(require){
-                require.temp = 'specs-kernel-define-h';
+                require.temp = 'specs-kernel-module-h';
             });
             
             define(['require'], function(require){
@@ -143,49 +137,53 @@ describe( 'lofty/kernel/define', function(){
         it( 'exports', function(){
             var a;
             
-            define('specs/kernel/define/i', ['exports'], function(exports){
+            define('specs/kernel/module/i', ['exports'], function(exports){
                 exports.specs = 'specs';
                 exports.kernel = 'kernel';
-                exports.define = 'define';
+                exports.module = 'module';
                 exports.a = 'i';
             } );
             
             define(['require'], function(require){
-                var A = require('specs/kernel/define/i');
-                a = A.specs +'-'+ A.kernel +'-'+ A.define +'-'+ A.a;
+                var A = require('specs/kernel/module/i');
+                var temp = [];
+                for ( var i in A ){
+                    temp.push(A[i]);
+                }
+                a = temp.join('-');
             } );
             
-            expect(a).toEqual('specs-kernel-define-i');
+            expect(a).toEqual('specs-kernel-module-i');
         } );
         
         it( 'exports不能被重写', function(){
             var a;
             
-            define('specs/kernel/define/j', ['exports'], function(exports){
-                exports = 'specs-kernel-define-j';
+            define('specs/kernel/module/j', ['exports'], function(exports){
+                exports = 'specs-kernel-module-j';
             } );
             
             define(['require'], function(require){
-                a = require('specs/kernel/define/j');
+                a = require('specs/kernel/module/j');
             });
             
-            expect(a).not.toBe('specs-kernel-define-j');
+            expect(a).not.toBe('specs-kernel-module-j');
         } );
         
         it( 'return将覆盖exports', function(){
             var a;
             
-            define('specs/kernel/define/k', ['exports'], function(exports){
-                exports.temp = 'specs-kernel-define-k-temp';
-                return { temp: 'specs-kernel-define-k' };
+            define('specs/kernel/module/k', ['exports'], function(exports){
+                exports.temp = 'specs-kernel-module-k-temp';
+                return { temp: 'specs-kernel-module-k' };
             } );
             
             define(['require'], function(require){
-                var A = require('specs/kernel/define/k');
+                var A = require('specs/kernel/module/k');
                 a = A.temp;
             });
             
-            expect(a).toEqual('specs-kernel-define-k');
+            expect(a).toEqual('specs-kernel-module-k');
         } );
     } );
     
@@ -194,30 +192,30 @@ describe( 'lofty/kernel/define', function(){
         it( 'module.id', function(){
             var a;
             
-            define('specs/kernel/define/l', ['module'], function(module){
+            define('specs/kernel/module/l', ['module'], function(module){
                 return module.id;
             });
             
             define(['require'], function(require){
-                var A = require('specs/kernel/define/l');
+                var A = require('specs/kernel/module/l');
                 a = A.replace(/\//g,'-');
             });
             
-            expect(a).toEqual('specs-kernel-define-l');
+            expect(a).toEqual('specs-kernel-module-l');
         } );
         
         it( 'module.exports', function(){
             var a;
             
-            define('specs/kernel/define/m', ['module'], function(module){
-                module.exports = 'specs-kernel-define-m';
+            define('specs/kernel/module/m', ['module'], function(module){
+                module.exports = 'specs-kernel-module-m';
             });
             
             define(['require'], function(require){
-                a = require('specs/kernel/define/m');
+                a = require('specs/kernel/module/m');
             });
             
-            expect(a).toEqual('specs-kernel-define-m');
+            expect(a).toEqual('specs-kernel-module-m');
         } );
     } );
     
@@ -226,14 +224,14 @@ describe( 'lofty/kernel/define', function(){
         it( 'alias', function(){
             var a;
             
-            define('specs/kernel/define/n', function(){
-                return 'specs-kernel-define-n';
+            define('specs/kernel/module/n', function(){
+                return 'specs-kernel-module-n';
             });
             
             define(['config'], function(config){
                 config({
                     alias: {
-                        'utconfiga': 'specs/kernel/define/n'
+                        'utconfiga': 'specs/kernel/module/n'
                     }
                 });
             });
@@ -242,7 +240,7 @@ describe( 'lofty/kernel/define', function(){
                 a = utconfiga;
             });
             
-            expect(a).toEqual('specs-kernel-define-n');
+            expect(a).toEqual('specs-kernel-module-n');
         } );
     } );
     

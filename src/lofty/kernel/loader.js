@@ -6,13 +6,8 @@
  * */
 
 
-(function( sdk, global ){
+lofty( 'loader', ['cache','global'], function( cache, global ){
     'use strict';
-    
-    if ( sdk.util.load ){
-        return;
-    }
-    
     
     /**
      * Thanks to:
@@ -24,8 +19,7 @@
      * cujo.js, https://github.com/cujojs/curl/blob/master/src/curl.js
      * */
     
-    var configCache = sdk.cache.config,
-        util = sdk.util,
+    var configCache = cache.config,
         doc = global.document,
         nav = global.navigator;
     
@@ -130,6 +124,6 @@
     };
     
     
-    util.load = loadAsset;
+    return loadAsset;
     
-})( lofty.sdk, this );
+} );

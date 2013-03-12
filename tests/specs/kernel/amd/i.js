@@ -1,1 +1,1 @@
-define( 'specs/kernel/amd/i', ['specs/kernel/amd/h'], function( H ){ return H+'i'; } );
+define( 'specs/kernel/amd/i', function(){ return 'i'; } );
