@@ -2,7 +2,7 @@
  * @module lofty/kernel/appframe
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130221
+ * @date 130315
  * */
 
 
@@ -10,13 +10,13 @@ lofty( 'appframe', ['module','cache','global','event','config'],
     function( module, cache, global, event, config ){
     'use strict';
     
-    var configCache = cache.config;
-    
-    config.addRuleKey( 'rAppframeExcept', 'array' );
+    var configCache = cache.config,
+        appframeCache = cache.appframe = {};
     
     
     var appframe = {
         isExcept: function( id ){
+            
             var isExcept = false,
                 rAppframeExcept = configCache.rAppframeExcept;
             
@@ -31,18 +31,38 @@ lofty( 'appframe', ['module','cache','global','event','config'],
             
             return isExcept;
         },
+        
         getRealId: function( id, scope ){
+            
             var isExcept = appframe.isExcept( id );
             
             return isExcept ? id : ( scope.appframe + ':' + id );
+        },
+        
+        create: function( name ){
+            
+            if ( appframeCache[name] ){
+                configCache.appframe = name;
+            } else {
+                global[name] = {
+                    log: this.log,
+                    define: this.define,
+                    appframe: name
+                };
+                
+                configCache.appframe = name;
+                appframeCache[name] = true;
+            }
         }
     };
     
     
-    event.on( 'initialized', function( mod ){
+    config.addRuleKey( 'rAppframeExcept', 'array' );
+    
+    event.on( 'define', function( mod, scope ){
         
         if ( configCache.appframe ){
-            mod.appframe = configCache.appframe;
+            mod.appframe = scope && appframeCache[scope.appframe] ? scope.appframe : configCache.appframe;
             
             if ( !module.isAnon( mod ) ){
                 mod._id = appframe.getRealId( mod.id, mod );
@@ -57,22 +77,7 @@ lofty( 'appframe', ['module','cache','global','event','config'],
         }
     } );
     
-    
-    this.appframe = function( name ){
-        
-        var app = global[name];
-        
-        if ( app ){
-            app.define === this.define && ( configCache.appframe = name );
-        } else {
-            global[name] = {
-                log: this.log,
-                define: this.define
-            };
-            
-            configCache.appframe = name;
-        }
-    };
+    this.appframe = appframe.create;
     
     
     return appframe;

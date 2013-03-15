@@ -20,10 +20,10 @@ lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
             
             return isDebug;
         }()
-    };
+    },
     
+    rulesCache = cache.configRules = {};
     
-    var rules = {};
     
     var config = {
         config: function( options ){
@@ -40,21 +40,19 @@ lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
             }
         },
         
-        addRule: function( ruleName, rule, key ){
+        addRule: function( ruleName, rule ){
             
-            rules[ruleName] = {
+            rulesCache[ruleName] = {
                 rule: rule,
                 keys: []
             };
-            
-            key && config.addRuleKey( key, ruleName );
             
             return this;
         },
         
         addRuleKey: function( key, ruleName ){
             
-            rules[ruleName] && rules[ruleName].keys.push( key );
+            rulesCache[ruleName] && rulesCache[ruleName].keys.push( key );
             
             return this;
         },
@@ -64,9 +62,9 @@ lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
             var hasApply = false,
                 item;
 
-            for ( var ruleName in rules ){
+            for ( var ruleName in rulesCache ){
                 if ( !hasApply ){
-                    item = rules[ruleName];
+                    item = rulesCache[ruleName];
                     hasApply = lang.indexOf( item.keys, key ) > -1 && item.rule( target, key, opts );
                 } else {
                     break;

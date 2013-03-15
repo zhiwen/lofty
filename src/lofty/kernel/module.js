@@ -2,7 +2,7 @@
  * @module lofty/kernel/module
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130310
+ * @date 130315
  * */
 
 
@@ -95,8 +95,6 @@ lofty( 'module', ['global','cache','lang','event','config'],
             anonymousIndex++;
             this._id = id;
         }
-        
-        event.emit( 'initialized', this );
     };
     
     
@@ -129,6 +127,7 @@ lofty( 'module', ['global','cache','lang','event','config'],
         }
         
         mod = new Module( id, deps, factory );
+        event.emit( 'define', mod, this );
         
         module.save( mod );
         module.autocompile( mod );
@@ -161,7 +160,7 @@ lofty( 'module', ['global','cache','lang','event','config'],
             
             event.emit( 'compiled', mod );
         } catch ( ex ){
-            event.emit( 'compileFail', mod, ex );
+            event.emit( 'compileFail', ex, mod );
         }
     };
     
