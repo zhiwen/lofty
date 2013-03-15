@@ -5,7 +5,6 @@
  * */
 
 
-
 describe( 'lofty/kernel/appframe', function(){
     
     describe( 'lofty.appframe', function(){
@@ -52,6 +51,16 @@ describe( 'lofty/kernel/appframe', function(){
             expect(b).toEqual(2);
             expect(!!lofty.cache.modules['alpha:specs/kernel/appframe/b']).toEqual(true);
             expect(!!lofty.cache.modules['beta:specs/kernel/appframe/b']).toEqual(true);
+        } );
+        
+        it( 'appframe.define处理当前appframe正确', function(){
+            var a;
+            
+            alpha.define( 'specs/kernel/appframe/c', function(){ return 'c'; } );
+            alpha.define(['specs/kernel/appframe/c'], function( A ){ a = A; } );
+            
+            expect(a).toEqual('c');
+            expect(!!lofty.cache.modules['alpha:specs/kernel/appframe/c']).toEqual(true);
         } );
     } );
     

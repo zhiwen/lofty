@@ -5,6 +5,7 @@
  * @date 130216
  * */
 
+
 lofty( 'alicn', ['cache','global'], function( cache, global ){
     'use strict';
     
