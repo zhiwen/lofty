@@ -2,11 +2,12 @@
  * @module lofty/kernel/request
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130311
+ * @date 130321
  * */
 
 
-lofty( 'request', ['cache','path','event','loader','global'], function( cache, path, event, loader, global ){
+lofty( 'request', ['cache','event','loader','global'],
+    function( cache, event, loader, global ){
     'use strict';
     
     var configCache = cache.config,
@@ -19,36 +20,33 @@ lofty( 'request', ['cache','path','event','loader','global'], function( cache, p
     configCache.loadTimeout = 10000;
     
     
-    var createAsset = function( id ){
+    var getAsset = function( url ){
         
-        return {
-            id: id,
-            url: path.idToUrl( id ),
-            callbackQueue: [],
-            errorbackQueue: [],
-            status: 0,
-            timeout: false,
-            timeoutTimer: null
+        var asset = {
+            url: url
         };
         
+        event.emit( 'request', asset );
+        
+        return assetsCache[asset.url] || ( assetsCache[asset.url] = asset );
     },
     
-    completeLoad = function( asset, type ){
+    completeLoad = function( asset, isCallback ){
         
         if ( asset.timeout ){
             return;
         }
         
-        global.clearTimeout( asset.timeoutTimer );
+        global.clearTimeout( asset.timer );
         
         var call, queue;
         
-        if ( type === 'callback' ){
+        if ( isCallback ){
             asset.status = STATUS_LOADED;
-            queue = asset.callbackQueue;
+            queue = asset.callQueue;
         } else {
             asset.status = STATUS_TIMEOUT;
-            queue = asset.errorbackQueue;
+            queue = asset.errorQueue;
         }
         
         while ( call = queue.shift() ){
@@ -57,33 +55,32 @@ lofty( 'request', ['cache','path','event','loader','global'], function( cache, p
         
     },
     
-    request = function( id, callback, errorback ){
-        var asset = assetsCache[id] || createAsset( id ),
-            fallback;
+    request = function( url, callback, errorback ){
+        
+        var asset = getAsset( url );
         
         if ( asset.status === STATUS_LOADED ){
             callback && callback();
             return;
         }
         
-        asset.callbackQueue.push( callback );
-        asset.errorbackQueue.push( errorback );
+        asset.callQueue ? asset.callQueue.push( callback ) : ( asset.callQueue = [callback] );
+        asset.errorQueue ? asset.errorQueue.push( errorback ) : ( asset.errorQueue = [errorback] );
         
         if ( asset.status === STATUS_LOADING ){
             return;
         }
         
-        assetsCache[id] = asset;
         asset.status = STATUS_LOADING;
         
-        asset.timeoutTimer = setTimeout( function(){
+        asset.timer = setTimeout( function(){
             asset.timeout = true;
-            completeLoad( asset, 'errorback' );
+            completeLoad( asset, false );
             event.emit( 'requestTimeout', asset );
         }, configCache.loadTimeout );
 
         loader( asset.url, function(){
-            completeLoad( asset, 'callback' );
+            completeLoad( asset, true );
         } );
         
     };

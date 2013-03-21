@@ -6,7 +6,7 @@
  * */
 
 
-lofty( 'logger', ['lang','global'], function( lang, global ){
+lofty( 'logger', ['global','lang'], function( global, lang ){
     'use strict';
     
     /**

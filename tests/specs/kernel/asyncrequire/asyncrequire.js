@@ -72,7 +72,7 @@ describe( 'lofty/kernel/asyncrequire', function(){
             
             runs(function(){
                 define(['require'],function(require){
-                    require.async( ['config','specs/kernel/asyncrequire/d'], function(A,B){
+                    require.async( ['module','specs/kernel/asyncrequire/d'], function(A,B){
                         a = A === null;
                         b = B;
                     } );
@@ -92,13 +92,11 @@ describe( 'lofty/kernel/asyncrequire', function(){
         it( '引用别名模块', function(){
             var a, b;
             
-            define(['config'],function(config){
-                config({
-                    alias: {
-                        'utrequirealiashas': 'specs/kernel/module/b',
-                        'utrequirealiasnth': 'specs/kernel/asyncrequire/e'
-                    }
-                });
+            lofty.config({
+                alias: {
+                    'utrequirealiashas': 'specs/kernel/module/b',
+                    'utrequirealiasnth': 'specs/kernel/asyncrequire/e'
+                }
             });
             
             runs(function(){

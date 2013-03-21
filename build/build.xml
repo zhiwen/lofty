@@ -55,6 +55,32 @@
     </target>
 
     <!-- 合并 -->
+    <target name="concat_classic_debug">
+
+        <!-- 目录准备 -->
+        <mkdir dir="${dist.dir}"/>
+
+        <!-- 合并 package 文件 -->
+        <concat destfile="${classic.debug.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${kernel.dir}/boot.js"/>
+        <path path="${kernel.dir}/lang.js"/>
+        <path path="${kernel.dir}/event.js"/>
+        <path path="${kernel.dir}/config.js"/>
+        <path path="${kernel.dir}/alias.js"/>
+        <path path="${kernel.dir}/module.js"/>
+        <path path="${kernel.dir}/loader.js"/>
+        <path path="${kernel.dir}/path.js"/>
+        <path path="${kernel.dir}/request.js"/>
+        <path path="${kernel.dir}/deferred.js"/>
+        <path path="${kernel.dir}/asyncrequire.js"/>
+        <path path="${kernel.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+    <!-- 合并 -->
     <target name="concat_classic" depends="version">
 
         <!-- 目录准备 -->
@@ -69,13 +95,13 @@
         <path path="${tmp.dir}/lang.js"/>
         <path path="${tmp.dir}/event.js"/>
         <path path="${tmp.dir}/config.js"/>
+        <path path="${tmp.dir}/alias.js"/>
         <path path="${tmp.dir}/module.js"/>
         <path path="${tmp.dir}/loader.js"/>
         <path path="${tmp.dir}/path.js"/>
         <path path="${tmp.dir}/request.js"/>
         <path path="${tmp.dir}/deferred.js"/>
         <path path="${tmp.dir}/asyncrequire.js"/>
-        <path path="${tmp.dir}/appframe.js"/>
         <path path="${tmp.dir}/alicn.js"/>
 
         </concat>
@@ -95,6 +121,7 @@
         <path path="${tmp.dir}/lang.js"/>
         <path path="${tmp.dir}/event.js"/>
         <path path="${tmp.dir}/config.js"/>
+        <path path="${tmp.dir}/alias.js"/>
         <path path="${tmp.dir}/module.js"/>
         <path path="${tmp.dir}/loader.js"/>
         <path path="${tmp.dir}/path.js"/>
@@ -102,13 +129,12 @@
         <path path="${tmp.dir}/deferred.js"/>
         <path path="${tmp.dir}/asyncrequire.js"/>
         <path path="${tmp.dir}/amd.js"/>
-        <path path="${tmp.dir}/appframe.js"/>
         <path path="${tmp.dir}/alicn.js"/>
 
         </concat>
     </target>
     
-    <target name="concat" depends="concat_classic,concat_aio"/>
+    <target name="concat" depends="concat_classic_debug,concat_classic,concat_aio"/>
     
     <target name="destroy">
 

@@ -6,13 +6,13 @@
  * */
 
 
-define(['config'], function(config){
+define(function(){
     
     var doc = window.document,
         rRoot = /^specs\//;
         
     
-    config({
+    lofty.config({
         hasStamp: true,
         resolve: function( id ){
             

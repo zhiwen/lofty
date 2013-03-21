@@ -19,21 +19,21 @@ lofty( 'amd', ['cache','module','lang','deferred','asyncrequire'],
         loader: function( ids, callback ){
         
             var scope = this,
-                idsFetch = amd.getIdsFetch( ids, scope );
+                idsFetch = amd.getIdsFetch( ids );
             
             if ( idsFetch.length ){
-                amd.fetch.call( scope, idsFetch, callback );
+                amd.fetch( idsFetch, callback );
             } else {
                 callback();
             }
         },
         
-        getIdsFetch: function( ids, scope ){
+        getIdsFetch: function( ids ){
         
             var idsFetch = [];
             
             lang.forEach( ids, function( id ){
-                if ( !module.has( id, scope ) ){
+                if ( !module.has( id ) ){
                     idsFetch.push( id );
                 }
             } );
@@ -42,14 +42,13 @@ lofty( 'amd', ['cache','module','lang','deferred','asyncrequire'],
         },
         
         fetch: function( idsFetch, callback ){
-            var scope = this;
             
-            asyncrequire.fetch.call( scope, idsFetch, function(){
+            asyncrequire.fetch( idsFetch, function(){
                 deferred.apply( null, lang.map( idsFetch, function( id ){
                     return function( promise ){
-                        var mod = module.get( id, scope );
+                        var mod = module.get( id );
                         
-                        amd.loader.call( mod, mod.deps, function(){
+                        amd.loader( mod.deps, function(){
                             promise.resolve();
                         } );
                     }
@@ -63,7 +62,7 @@ lofty( 'amd', ['cache','module','lang','deferred','asyncrequire'],
         
         if ( module.isAnon( mod ) ){
             if ( configCache.amd ){
-                amd.loader.call( mod, mod.deps, function(){
+                amd.loader( mod.deps, function(){
                     module.compile( mod );
                 } );
             } else {

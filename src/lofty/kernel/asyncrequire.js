@@ -13,11 +13,10 @@ lofty( 'asyncrequire', ['lang','event','module','request','deferred'],
     var asyncrequire = {};
     
     asyncrequire.fetch = function( ids, callback, errorback ){
-        var scope = this;
         
         deferred.apply( null, lang.map( ids, function( id ){
             return function( promise ) {
-                if ( module.has( id, scope ) ){
+                if ( module.has( id ) ){
                     promise.resolve();
                 } else {
                     request( id, function(){
@@ -32,14 +31,12 @@ lofty( 'asyncrequire', ['lang','event','module','request','deferred'],
         
     asyncrequire.loader = asyncrequire.fetch;
         
-    asyncrequire.realize = function( ids, callback, errorback, scope ){
-        if ( !lang.isArray(ids) ){
-            ids = [ids];
-        }
+    asyncrequire.realize = function( ids, callback, errorback ){
+        lang.isArray( ids ) || ( ids = [ids] );
         
-        asyncrequire.loader.call( scope, ids, function(){
+        asyncrequire.loader( ids, function(){
             var args = lang.map( ids, function( id ){
-                return module.require( id, scope );
+                return module.require( id );
             } );
             
             callback && callback.apply( null, args );
@@ -48,10 +45,10 @@ lofty( 'asyncrequire', ['lang','event','module','request','deferred'],
     };
     
     
-    event.on( 'makeRequire', function( require, scope ){
+    event.on( 'makeRequire', function( require ){
         
         require.async = function( ids, callback, errorback ){
-            asyncrequire.realize( ids, callback, errorback, scope );
+            asyncrequire.realize( ids, callback, errorback );
         };
         
     } );
