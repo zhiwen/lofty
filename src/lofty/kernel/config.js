@@ -9,24 +9,12 @@
 lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
     'use strict';
     
-    var configCache = cache.config = {
-        debug: function(){
-            var isDebug = false,
-                search = global.location.search;
-            
-            if ( search.indexOf('lofty.debug=') > -1 ){
-                isDebug = true;
-            }
-            
-            return isDebug;
-        }()
-    },
-    
-    rulesCache = cache.configRules = {};
+    var configCache = cache.config = {},
+        rulesCache = cache.configRules = {};
     
     
     var config = {
-        config: function( options ){
+        realize: function( options ){
             
             for ( var key in options ){
                 if ( lang.hasOwn( options, key ) ){
@@ -91,6 +79,9 @@ lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
         
         return true;
     } );
+    
+    
+    this.config = config.realize;
     
     
     return config;

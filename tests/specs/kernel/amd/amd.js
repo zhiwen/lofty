@@ -78,12 +78,10 @@ describe( 'lofty/kernel/amd', function(){
         it( '±√˚“¿¿µ', function(){
             var a;
             
-            define(['config'],function(config){
-                config({
-                    alias: {
-                        'utamdalias': 'specs/kernel/amd/i'
-                    }
-                });
+            lofty.config({
+                alias: {
+                    'utamdalias': 'specs/kernel/amd/i'
+                }
             });
             
             runs(function(){

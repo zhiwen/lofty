@@ -6,23 +6,13 @@
  * */
 
 
-lofty( 'alicn', ['cache','global'], function( cache, global ){
+lofty( 'alicn', ['cache','global','event'], function( cache, global, event ){
     'use strict';
     
     var configCache = cache.config;
     
-    var substitute = function( str, data ){
-        return str.replace(/\{(\w+)\}/g, function( r, m ){
-            return data[m] !== undefined ? data[m] : '{' + m + '}';
-        });
-    };
     
-    var rStyle = /\.css(?:\?|$)/,
-        urlFormat = {
-            'lofty': '/fdevlib/{type}/lofty/{id}',
-            'makeup': '/fdevlib/{type}/makeup/{id}',
-            'sys': '/sys/{type}{id}'
-        };
+    var rStyle = /\.css(?:\?|$)/;
     
     var resolve = function( id ){
         
@@ -31,17 +21,41 @@ lofty( 'alicn', ['cache','global'], function( cache, global ){
             type = rStyle.test( id ) ? 'css' : 'js',
             format;
         
-        if ( format = urlFormat[root] ){
-            id = substitute( format, { type: type, id: id } );
+        switch ( root ){
+            case 'lofty':
+            case 'makeup':
+                id = '/fdevlib/' + type + id;
+                break;
+            case 'sys':
+                id = '/sys/' + type + parts.slice( 1 );
+                break;
         }
         
         return id;
-        
     };
-    
     
     configCache.hasStamp = true;
     configCache.resolve = [resolve];
-    configCache.rAppframeExcept = [/^(lofty|makeup|sys)\//];
+    
+    
+    configCache.debug = function(){
+            var isDebug = false,
+                search = global.location.search;
+            
+            if ( search.indexOf('lofty.debug=') > -1 ){
+                isDebug = true;
+            }
+            
+            return isDebug;
+    }();
+    
+    
+    this.appframe = function( name ){
+        global[name] = {
+            log: this.log,
+            define: this.define,
+            on: event.on
+        };
+    };
     
 } );

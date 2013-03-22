@@ -220,7 +220,7 @@ describe( 'lofty/kernel/module', function(){
     } );
     
     
-    describe( 'config关键模块', function(){
+    xdescribe( 'config关键模块', function(){
         it( 'alias', function(){
             var a;
             

@@ -6,8 +6,8 @@
  * */
 
 
-lofty( 'module', ['global','cache','lang','event','config'],
-    function( global, cache, lang, event, config ){
+lofty( 'module', ['global','cache','lang','event'],
+    function( global, cache, lang, event ){
     'use strict';
     
     /**
@@ -24,45 +24,27 @@ lofty( 'module', ['global','cache','lang','event','config'],
         
     var anonymousIndex = 0;
     
-    var modulesCache = cache.modules = {},
-        configCache = cache.config;
+    var modulesCache = cache.modules = {};
     
     
     var module = {
-        get: function( id, scope ){
-            var meta = {
-                id: module.parseAlias( id )
-            };
-            event.emit( 'get', meta, scope );
+        get: function( id ){
+            var meta = { id: id };
+            event.emit( 'alias', meta );
             
             return modulesCache[meta.id];
         },
-        has: function( id, scope ){
-            if ( module.get( id, scope ) || keyModules[id] ){
-                return true;
-            }
-            
-            return false;
+        has: function( id ){
+            return ( module.get( id ) || keyModules[id] ) ? true : false;
         },
         hasDefine: function( id ){
             return modulesCache[id] ? true : false;
-        },
-        parseAlias: function( id ){
-            var alias;
-            
-            if ( configCache.alias && ( alias = configCache.alias[id] ) ){
-                id = alias;
-            }
-            
-            return id;
         },
         isAnon: function( mod ){
             return mod.id === EMPTY_ID;
         },
         save: function( mod ){
-            var id = mod._id || mod.id;
-            
-            modulesCache[id] = mod;
+            modulesCache[mod._id || mod.id] = mod;
         },
         autocompile: function( mod ){
             module.isAnon( mod ) && module.compile( mod );
@@ -70,8 +52,8 @@ lofty( 'module', ['global','cache','lang','event','config'],
         compile: function( mod ){
             compile( mod );
         },
-        require: function( id, scope ){
-            return require( id, scope );
+        require: function( id ){
+            return require( id );
         }
     };
     
@@ -127,7 +109,7 @@ lofty( 'module', ['global','cache','lang','event','config'],
         }
         
         mod = new Module( id, deps, factory );
-        event.emit( 'define', mod, this );
+        event.emit( 'define', mod );
         
         module.save( mod );
         module.autocompile( mod );
@@ -192,9 +174,9 @@ lofty( 'module', ['global','cache','lang','event','config'],
      * @param {string} module's id
      * @param {object} module's execute scope
      * */
-    var require = function( id, scope ){
+    var require = function( id ){
         
-        var mod = module.get( id, scope );
+        var mod = module.get( id );
         
         if ( !mod ){
             event.emit( 'requireFail', { id: id } );
@@ -219,10 +201,10 @@ lofty( 'module', ['global','cache','lang','event','config'],
         'require': function( mod ){
             
             function require( id ){
-                return module.require( id, mod );
+                return module.require( id );
             }
             
-            event.emit( 'makeRequire', require, mod );
+            event.emit( 'makeRequire', require );
             
             return require;
         },
@@ -236,14 +218,8 @@ lofty( 'module', ['global','cache','lang','event','config'],
             };
             
             return mod.entity;
-        },
-        'config': function( mod ){
-            return config.config;
         }
     };
-    
-    
-    config.addRuleKey( 'alias', 'object' );
     
     
     var originalDefine = global.define;

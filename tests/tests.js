@@ -5,11 +5,11 @@
  * */
 
 
-define(['config'], function(config){
+define(function(){
     
     var rRoot = /^specs\//;
     
-    config({
+    lofty.config({
         hasStamp: true,
         resolve: function( id ){
             
@@ -20,6 +20,5 @@ define(['config'], function(config){
             return id;
         }
     });
-    
     
 });

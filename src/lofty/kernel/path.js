@@ -6,13 +6,15 @@
  * */
 
 
-lofty( 'path', ['global','cache','module','lang','config'], function( global, cache, module, lang, config ){
+lofty( 'path', ['global','cache','config','event'], function( global, cache, config, event ){
     'use strict';
     
     var configCache = cache.config,
         doc = global.document;
     
-    var rFileSuffix = /\?|\.(?:css|js)$|\/$/;
+    var rFileSuffix = /\?|\.(?:css|js)$|\/$/,
+        rAbsolute = /^https?:\/\//,
+        timeStamp = (new Date()).getTime();
     
     configCache.protocol = 'http';
     configCache.domain = (function(){
@@ -29,60 +31,59 @@ lofty( 'path', ['global','cache','module','lang','config'], function( global, ca
     
     
     var path = {
-        parseResolve: function( id ){
+        parseResolve: function( asset ){
             
             var resolve = configCache.resolve,
                 url;
             
             if ( resolve ){
                 for ( var i = 0, l = resolve.length; i < l; i++ ){
-                    url = resolve[i]( id );
+                    url = resolve[i]( asset.id );
                     
-                    if ( url !== id ){
+                    if ( url !== asset.id ){
                         break;
                     }
                 }
             }
             
-            return configCache.protocol +'://' + configCache.domain + url;
+            asset.url = rAbsolute.test( url ) ? url : configCache.protocol +'://' + configCache.domain + url;
         },
         
-        addFileSuffix: function( url ){
+        addFileSuffix: function( asset ){
             
-            if ( !rFileSuffix.test(url) ){
-                url += '.js';
+            if ( !rFileSuffix.test(asset.url) ){
+                asset.url += '.js';
             }
-            
-            return url;
         },
         
-        addStamp: function( url, id ){
+        addStamp: function( asset ){
             
-            var stamp,
-                t = configCache.hasStamp ? lang.now() : null;
+            var t = configCache.hasStamp ? timeStamp : null,
+                stamp = configCache.stamp;
                 
-            if ( configCache.stamp && ( stamp = configCache.stamp[id] ) ){
-                t = stamp;
+            if ( stamp && stamp[asset.id] ){
+                t = stamp[asset.id];
             }
             
-            t && ( url += '?lofty.stamp=' + t );
-            
-            return url;
+            t && ( asset.url += '?lofty.stamp=' + t );
         },
         
-        idToUrl: function( id ){
+        idToUrl: function( asset ){
             
-            var url = '';
+            if ( asset.id ){
+                return;
+            }
             
-            id = module.parseAlias( id );
-            url = path.parseResolve( id );
-            url = path.addFileSuffix( url );
-            url = path.addStamp( url, id );
+            asset.id = asset.url;
             
-            return url;
+            event.emit( 'alias', asset );
+            path.parseResolve( asset );
+            path.addFileSuffix( asset );
+            path.addStamp( asset );
         }
     };
     
+    event.on( 'request', path.idToUrl );
     
     return path;
     

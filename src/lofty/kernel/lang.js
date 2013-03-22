@@ -16,9 +16,6 @@ lofty( 'lang', function(){
     
     var lang = {
         slice: [].slice,
-        now: Date.now || function(){
-            return new Date().getTime();
-        },
         
         hasOwn: function( obj, prop ){
             return HAS_OWN.call( obj, prop );
