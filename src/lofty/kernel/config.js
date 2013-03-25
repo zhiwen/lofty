@@ -2,32 +2,49 @@
  * @module lofty/kernel/config
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130310
+ * @date 130322
  * */
 
 
-lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
+lofty( 'config', ['lang'], function( lang ){
     'use strict';
     
-    var configCache = cache.config = {},
+    var cache = this.cache,
+        configCache = cache.config = {},
         rulesCache = cache.configRules = {};
     
     
-    var config = {
-        realize: function( options ){
-            
-            for ( var key in options ){
-                if ( lang.hasOwn( options, key ) ){
-                    var target = configCache[key],
-                        opts = options[key];
-                    
-                    if ( !config.applyRules( target, key, opts ) ){
-                        configCache[key] = opts;
-                    };
-                }
-            }
-        },
+    var realize = function( options ){
         
+        for ( var key in options ){
+            var target = configCache[key],
+                val = options[key];
+            
+            if ( !applyRules( target, key, val ) ){
+                configCache[key] = val;
+            };
+        }
+    },
+    
+    applyRules = function( target, key, val ){
+        
+        var hasApply = false,
+            item;
+
+        for ( var ruleName in rulesCache ){
+            if ( !hasApply ){
+                item = rulesCache[ruleName];
+                hasApply = lang.indexOf( item.keys, key ) > -1 && item.rule.call( configCache, target, key, val );
+            } else {
+                break;
+            }
+        }
+        
+        return hasApply;
+    };
+    
+    
+    var config = {
         addRule: function( ruleName, rule ){
             
             rulesCache[ruleName] = {
@@ -37,51 +54,33 @@ lofty( 'config', ['global','cache','lang'], function( global, cache, lang ){
             
             return this;
         },
-        
         addRuleKey: function( key, ruleName ){
             
             rulesCache[ruleName] && rulesCache[ruleName].keys.push( key );
             
             return this;
-        },
-        
-        applyRules: function( target, key, opts ){
-            
-            var hasApply = false,
-                item;
-
-            for ( var ruleName in rulesCache ){
-                if ( !hasApply ){
-                    item = rulesCache[ruleName];
-                    hasApply = lang.indexOf( item.keys, key ) > -1 && item.rule( target, key, opts );
-                } else {
-                    break;
-                }
-            }
-            
-            return hasApply;
         }
     };
     
     
-    config.addRule( 'object', function( target, key, opts ){
+    config.addRule( 'object', function( target, key, val ){
         if ( target ){
-            for ( var i in opts ){
-                target[i] = opts[i];
+            for ( var i in val ){
+                target[i] = val[i];
             }
             return true;
         }
         
         return false;
     })
-    .addRule( 'array', function( target, key, opts ){
-        target ? target.push( opts ) : ( configCache[key] = [opts] );
+    .addRule( 'array', function( target, key, val ){
+        target ? target.push( val ) : ( this[key] = [val] );
         
         return true;
     } );
     
     
-    this.config = config.realize;
+    this.config = realize;
     
     
     return config;

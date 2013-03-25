@@ -6,7 +6,7 @@
  * */
 
 
-lofty( 'loader', ['cache','global'], function( cache, global ){
+lofty( 'loader', ['global'], function( global ){
     'use strict';
     
     /**
@@ -19,7 +19,7 @@ lofty( 'loader', ['cache','global'], function( cache, global ){
      * cujo.js, https://github.com/cujojs/curl/blob/master/src/curl.js
      * */
     
-    var configCache = cache.config,
+    var configCache = this.cache.config,
         doc = global.document,
         nav = global.navigator;
     

@@ -2,15 +2,13 @@
  * @module lofty/kernel/alicn
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130216
+ * @date 130324
  * */
 
 
-lofty( 'alicn', ['cache','global','event'], function( cache, global, event ){
+lofty( 'alicn', ['global','event'],
+    function( global, event ){
     'use strict';
-    
-    var configCache = cache.config;
-    
     
     var rStyle = /\.css(?:\?|$)/;
     
@@ -18,8 +16,7 @@ lofty( 'alicn', ['cache','global','event'], function( cache, global, event ){
         
         var parts = id.split('/'),
             root = parts[0],
-            type = rStyle.test( id ) ? 'css' : 'js',
-            format;
+            type = rStyle.test( id ) ? 'css/' : 'js/';
         
         switch ( root ){
             case 'lofty':
@@ -27,27 +24,25 @@ lofty( 'alicn', ['cache','global','event'], function( cache, global, event ){
                 id = '/fdevlib/' + type + id;
                 break;
             case 'sys':
-                id = '/sys/' + type + parts.slice( 1 );
+                id = '/sys/' + type + parts.slice( 1 ).join('/');
                 break;
         }
         
         return id;
     };
     
-    configCache.hasStamp = true;
-    configCache.resolve = [resolve];
-    
-    
-    configCache.debug = function(){
+    this.config({
+        hasStamp: true,
+        resolve: resolve,
+        debug: function(){
             var isDebug = false,
-                search = global.location.search;
+                href = global.location.href;
             
-            if ( search.indexOf('lofty.debug=') > -1 ){
-                isDebug = true;
-            }
+            href.indexOf('lofty.debug=true') > 0 && ( isDebug = true );
             
             return isDebug;
-    }();
+        }()
+    });
     
     
     this.appframe = function( name ){

@@ -6,28 +6,27 @@
 
 describe( 'lofty/kernel/alias', function(){
     
-    xdescribe( 'config¹Ø¼üÄ£¿é', function(){
-        it( 'alias', function(){
-            var a;
-            
-            define('specs/kernel/module/n', function(){
-                return 'specs-kernel-module-n';
-            });
-            
-            define(['config'], function(config){
-                config({
-                    alias: {
-                        'utconfiga': 'specs/kernel/module/n'
-                    }
-                });
-            });
-            
-            define(['utconfiga'], function(utconfiga){
-                a = utconfiga;
-            });
-            
-            expect(a).toEqual('specs-kernel-module-n');
-        } );
+    var alias = lofty.cache.kernel.alias.exports;
+    
+    it( 'alias', function(){
+        lofty.config({
+            alias: {
+                'a': 'ayj6yuyj',
+                'b': 'yuj0ijedqr'
+            }
+        });
+        
+        var a = { id: 'a' };
+        var b = { id: 'b' };
+        var c = { id: 'c' };
+        
+        alias(a);
+        alias(b);
+        alias(c);
+        
+        expect(a.id).toEqual('ayj6yuyj');
+        expect(b.id).toEqual('yuj0ijedqr');
+        expect(c.id).toEqual('c');
     } );
     
 } );

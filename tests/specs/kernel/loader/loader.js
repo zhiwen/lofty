@@ -4,78 +4,73 @@
  * @build 130129
  * */
 
-var getStyle = function( node, name ){
-    var ret;
-    
-    if ( window.getComputedStyle ){
-        ret = getComputedStyle( node );
-    } else {
-        ret = node.currentStyle;
-    }
-    
-    return ret[name];
-};
-
-define('specs/kernel/loader/b',function(){ return 'specs-kernel-loader-b'; });
 
 describe( 'lofty/kernel/loader', function(){
     
-    describe( 'loader', function(){
-        it( 'º”‘ÿjs', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty( 'specs/kernel/loader/a', ['loader'],function(loader){
-                        loader( '/tests/specs/kernel/loader/a.js', function(){
-                            a = require('specs/kernel/loader/a');
-                        } );
-                    });
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('specs-kernel-loader-a');
-            });
-        } );
+    var getStyle = function( node, name ){
+        var ret;
         
-        var el;
-            
-        beforeEach(function(){
-            el = document.createElement('div');
-            el.id = 'lofty';
-            document.body.appendChild( el );
+        if ( window.getComputedStyle ){
+            ret = getComputedStyle( node );
+        } else {
+            ret = node.currentStyle;
+        }
+        
+        return ret[name];
+    };
+
+    define('specs/kernel/loader/b',function(){ return 'specs-kernel-loader-b'; });
+    
+    var loader = lofty.cache.kernel.loader.exports;
+    
+    it( 'load js', function(){
+        var a;
+        
+        runs(function(){
+            define(['require'],function(require){
+                loader( '/tests/specs/kernel/loader/a.js', function(){
+                    a = require('specs/kernel/loader/a');
+                } );
+           } );
         });
         
-        it( 'º”‘ÿcss', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    lofty('specs/kernel/loader/b',['loader'],function(loader){
-                        loader( '/tests/specs/kernel/loader/a.css?130220', function(){
-                            a = getStyle( el, 'width');
-                        } );
-                    });
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('100px');
-            });
-        } );
+        waitsFor(function(){
+            return !!a;
+        });
         
-        afterEach(function(){
-            document.body.removeChild( el );
+        runs(function(){
+            expect(a).toEqual('specs-kernel-loader-a');
         });
     } );
+    
+    var el;
+        
+    beforeEach(function(){
+        el = document.createElement('div');
+        el.id = 'lofty';
+        document.body.appendChild( el );
+    });
+    
+    it( 'load css', function(){
+        var a;
+        
+        runs(function(){
+            loader( '/tests/specs/kernel/loader/a.css?130220', function(){
+                a = getStyle( el, 'width');
+            } );
+        });
+        
+        waitsFor(function(){
+            return !!a;
+        });
+        
+        runs(function(){
+            expect(a).toEqual('100px');
+        });
+    } );
+    
+    afterEach(function(){
+        document.body.removeChild( el );
+    });
     
 } );

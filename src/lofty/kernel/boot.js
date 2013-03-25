@@ -72,18 +72,15 @@
     
     lofty.version = '0.1';
     
-    lofty.log = global.console ? function( message, level ){
-        level = level || 'log';
-        console[level]( message );
-    } : function(){};
-    
     lofty.cache = {
         kernel: cache
     };
     
     
     lofty( 'global', global );
-    lofty( 'cache', lofty.cache );
+    lofty( 'require', function(){
+        return require;
+    } );
     
     global.lofty = lofty;
     

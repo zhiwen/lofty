@@ -2,32 +2,39 @@
  * @module lofty/kernel/event
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130308
+ * @date 130322
  * */
 
 
-lofty( 'event', ['lang','cache'], function( lang, cache ){
+lofty( 'event', function(){
     'use strict';
     
-    var eventsCache = cache.events = {};
+    /**
+     * Thanks to:
+     * SeaJS, http://seajs.org/
+     * */
     
-    var event = {
+    var eventsCache = this.cache.events = {},
+        slice = [].slice;
+    
+    var exports = {
         on: function( name, callback ){
             var list = eventsCache[name] || ( eventsCache[name] = [] );
             list.push( callback );
         },
         emit: function( name ){
-            var args = lang.slice.call( arguments, 1 ),
-                list = eventsCache[name];
+            var args = slice.call( arguments, 1 ),
+                list = eventsCache[name],
+                fn, i = 0;
             
             if ( list ){
-                lang.forEach( list, function( item ){
-                    item.apply( null, args );
-                } );
+                while ( ( fn = list[i++] ) ){
+                    fn.apply( null, args );
+                }
             }
         }
     };
     
-    return event;
+    return exports;
     
 } );
