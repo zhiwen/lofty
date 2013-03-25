@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/amd', function(){
     
-    describe( 'define支持amd', function(){
+    describe( 'define支持循环依赖解析', function(){
         it( '一级依赖', function(){
             var a, b, c;
             
@@ -136,73 +136,4 @@ describe( 'lofty/kernel/amd', function(){
         } );
     } );
     
-    describe( 'require.async支持amd', function(){
-        it( '二级引用', function(){
-            var a;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    require.async( 'specs/kernel/amd/k', function(A){
-                        a = A;
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a;
-            });
-            
-            runs(function(){
-                expect(a).toEqual('k1k');
-            });
-        } );
-        
-        it( '重复一级引用', function(){
-            var a, b, c;
-            
-            window.specsKernelAmdB = 0;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    require.async( 'specs/kernel/amd/l', function(A){
-                        a = A;
-                    } );
-                    require.async( ['specs/kernel/amd/l','specs/kernel/amd/m'], function(A,B){
-                        b = A;
-                        c = B;
-                    } );
-               } );
-            });
-            
-            waitsFor(function(){
-                return !!a && !!b && !!c;
-            });
-            
-            runs(function(){
-                expect(a).toEqual(1);
-                expect(b).toEqual(1);
-                expect(c).toEqual('m');
-            });
-        } );
-        
-        it( '不能引用关键模块', function(){
-            var a = false;
-            
-            runs(function(){
-                define(['require'],function(require){
-                    require.async( ['require'], function(A){
-                        a = A === null;
-                    } );
-                });
-            });
-            
-            waitsFor(function(){
-                return typeof a === 'boolean';
-            });
-            
-            runs(function(){
-                expect(a).toBe(true);
-            });
-        } );
-    } );
 } );
