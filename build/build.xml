@@ -1,6 +1,6 @@
 <project name="lofty-build" default="build" basedir="../">
     <description>Lofty Build File</description>
-
+    
     <dirname property="root.dir" file="${ant.file.lofty-build}/../"/>
     <property name="src.dir" location="${root.dir}/src/"/>
     <property name="lofty.dir" location="${src.dir}/lofty/"/>
@@ -18,9 +18,11 @@
     <property name="classic.file" value="${dist.dir}/classic.js"/>
     <property name="aio.file" value="${dist.dir}/aio.js"/>
     <property name="classic.debug.file" value="${dist.dir}/classic-debug.js"/>
+    <property name="aio.debug.file" value="${dist.dir}/aio-debug.js"/>
 
 
     <!-- 压缩 -->
+    <!-- Thanks to: https://github.com/seajs/seajs/blob/1.3.1/tools/build.xml -->
     <target name="compress">
         <mkdir dir="${tmp.dir}"/>
         <!-- 用 Google Closure Compiler 压缩 JS -->
@@ -72,10 +74,39 @@
         <path path="${kernel.dir}/alias.js"/>
         <path path="${kernel.dir}/module.js"/>
         <path path="${kernel.dir}/loader.js"/>
-        <path path="${kernel.dir}/path.js"/>
+        <path path="${kernel.dir}/id2url.js"/>
         <path path="${kernel.dir}/request.js"/>
         <path path="${kernel.dir}/deferred.js"/>
-        <path path="${kernel.dir}/asyncrequire.js"/>
+        <path path="${kernel.dir}/use.js"/>
+        <path path="${kernel.dir}/debug.js"/>
+        <path path="${kernel.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+    <!-- 合并 -->
+    <target name="concat_aio_debug">
+
+        <!-- 目录准备 -->
+        <mkdir dir="${dist.dir}"/>
+
+        <!-- 合并 package 文件 -->
+        <concat destfile="${aio.debug.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${kernel.dir}/boot.js"/>
+        <path path="${kernel.dir}/lang.js"/>
+        <path path="${kernel.dir}/event.js"/>
+        <path path="${kernel.dir}/config.js"/>
+        <path path="${kernel.dir}/alias.js"/>
+        <path path="${kernel.dir}/module.js"/>
+        <path path="${kernel.dir}/loader.js"/>
+        <path path="${kernel.dir}/id2url.js"/>
+        <path path="${kernel.dir}/request.js"/>
+        <path path="${kernel.dir}/deferred.js"/>
+        <path path="${kernel.dir}/use.js"/>
+        <path path="${kernel.dir}/amd.js"/>
+        <path path="${kernel.dir}/debug.js"/>
         <path path="${kernel.dir}/alicn.js"/>
 
         </concat>
@@ -98,10 +129,11 @@
         <path path="${tmp.dir}/alias.js"/>
         <path path="${tmp.dir}/module.js"/>
         <path path="${tmp.dir}/loader.js"/>
-        <path path="${tmp.dir}/path.js"/>
+        <path path="${tmp.dir}/id2url.js"/>
         <path path="${tmp.dir}/request.js"/>
         <path path="${tmp.dir}/deferred.js"/>
-        <path path="${tmp.dir}/asyncrequire.js"/>
+        <path path="${tmp.dir}/use.js"/>
+        <path path="${tmp.dir}/debug.js"/>
         <path path="${tmp.dir}/alicn.js"/>
 
         </concat>
@@ -124,17 +156,18 @@
         <path path="${tmp.dir}/alias.js"/>
         <path path="${tmp.dir}/module.js"/>
         <path path="${tmp.dir}/loader.js"/>
-        <path path="${tmp.dir}/path.js"/>
+        <path path="${tmp.dir}/id2url.js"/>
         <path path="${tmp.dir}/request.js"/>
         <path path="${tmp.dir}/deferred.js"/>
-        <path path="${tmp.dir}/asyncrequire.js"/>
+        <path path="${tmp.dir}/use.js"/>
         <path path="${tmp.dir}/amd.js"/>
+        <path path="${tmp.dir}/debug.js"/>
         <path path="${tmp.dir}/alicn.js"/>
 
         </concat>
     </target>
     
-    <target name="concat" depends="concat_classic_debug,concat_classic,concat_aio"/>
+    <target name="concat" depends="concat_classic_debug,concat_aio_debug,concat_classic,concat_aio"/>
     
     <target name="destroy">
 
