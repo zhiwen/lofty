@@ -6,8 +6,8 @@
  * */
 
 
-lofty( 'module', ['global','cache','lang','event'],
-    function( global, cache, lang, event ){
+lofty( 'module', ['global','lang','event','alias'],
+    function( global, lang, event, alias ){
     'use strict';
     
     /**
@@ -24,13 +24,13 @@ lofty( 'module', ['global','cache','lang','event'],
         
     var anonymousIndex = 0;
     
-    var modulesCache = cache.modules = {};
+    var modulesCache = this.cache.modules = {};
     
     
     var module = {
         get: function( id ){
             var meta = { id: id };
-            event.emit( 'alias', meta );
+            alias( meta );
             
             return modulesCache[meta.id];
         },

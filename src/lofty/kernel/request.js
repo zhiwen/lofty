@@ -2,15 +2,16 @@
  * @module lofty/kernel/request
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130321
+ * @date 130324
  * */
 
 
-lofty( 'request', ['cache','event','loader','global'],
-    function( cache, event, loader, global ){
+lofty( 'request', ['global','event','loader','id2url'],
+    function( global, event, loader, id2url ){
     'use strict';
     
-    var configCache = cache.config,
+    var cache = this.cache,
+        configCache = cache.config,
         assetsCache = cache.assets = {};
         
     var STATUS_TIMEOUT = -1,
@@ -20,13 +21,13 @@ lofty( 'request', ['cache','event','loader','global'],
     configCache.loadTimeout = 10000;
     
     
-    var getAsset = function( url ){
+    var getAsset = function( id ){
         
         var asset = {
-            url: url
+            id: id
         };
         
-        event.emit( 'request', asset );
+        id2url( asset );
         
         return assetsCache[asset.url] || ( assetsCache[asset.url] = asset );
     },
@@ -55,9 +56,9 @@ lofty( 'request', ['cache','event','loader','global'],
         
     },
     
-    request = function( url, callback, errorback ){
+    request = function( id, callback, errorback ){
         
-        var asset = getAsset( url );
+        var asset = getAsset( id );
         
         if ( asset.status === STATUS_LOADED ){
             callback && callback();

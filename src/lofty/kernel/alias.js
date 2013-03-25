@@ -2,17 +2,17 @@
  * @module lofty/kernel/alias
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130208
+ * @date 130322
  * */
 
 
-lofty( 'alias', ['cache','config','event'] ,function( cache, config, event ){
+lofty( 'alias', ['config','event'] ,function( config, event ){
     
-    var configCache = cache.config;
+    var configCache = this.cache.config;
     
     config.addRuleKey( 'alias', 'object' );
     
-    event.on( 'alias', function( meta ){
+    var alias = function( meta ){
         
         var aliases = configCache.alias,
             alias;
@@ -20,6 +20,10 @@ lofty( 'alias', ['cache','config','event'] ,function( cache, config, event ){
         if ( aliases && ( alias = aliases[meta.id] ) ){
             meta.id = alias;
         }
-    } );
+        
+        event.emit( 'alias', meta );
+    };
+    
+    return alias;
     
 } );

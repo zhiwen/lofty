@@ -2,11 +2,11 @@
  * @module lofty/kernel/deferred
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130308
+ * @date 130322
  * */
 
 
-lofty( 'deferred', ['lang'], function( lang ){
+lofty( 'deferred', function(){
     'use strict';
     
     /**
@@ -67,21 +67,19 @@ lofty( 'deferred', ['lang'], function( lang ){
             rejected++;
             probe();
         };
-        
     };
     
     var when = function(){
         
-        var args = lang.slice.call( arguments, 0 ),
-            l = args.length,
-            promise = new Promise(l);
+        var l = arguments.length,
+            promise = new Promise(l),
+            fn, i = 0;
         
-        lang.forEach( args, function( arg ){
-            arg( promise );
-        } );
+        while ( ( fn = arguments[i++] ) ){
+            fn( promise );
+        }
         
         return promise;
-        
     };
     
     

@@ -1,12 +1,12 @@
 /**
- * @module lofty/kernel/log
+ * @module lofty/kernel/console
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130216
+ * @date 130324
  * */
 
 
-lofty( 'logger', ['global','lang'], function( global, lang ){
+lofty( 'console', ['global','lang'], function( global, lang ){
     'use strict';
     
     /**
@@ -66,7 +66,7 @@ lofty( 'logger', ['global','lang'], function( global, lang ){
         
         var item = {
             'message': message,
-            'type': type
+            'type': type || 'log'
         };
         
         !prepared && messagePrepare();
@@ -77,13 +77,6 @@ lofty( 'logger', ['global','lang'], function( global, lang ){
     };
     
     
-    return {
-        log: function( message ){
-            console( message, 'info' );
-        },
-        error: function( message ){
-            console( message, 'warn' );
-        }
-    };
+    return console;
     
 } );

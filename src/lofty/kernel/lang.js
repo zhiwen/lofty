@@ -2,31 +2,23 @@
  * @module lofty/kernel/lang
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
- * @date 130308
+ * @date 130322
  * */
 
 
 lofty( 'lang', function(){
     'use strict';
     
-    var EMPTY_OBJ = {},
-        HAS_OWN = EMPTY_OBJ.hasOwnProperty,
-        toString = EMPTY_OBJ.toString,
+    var toString = {}.toString,
         AP = Array.prototype;
     
     var lang = {
-        slice: [].slice,
-        
-        hasOwn: function( obj, prop ){
-            return HAS_OWN.call( obj, prop );
-        },
-        
         isFunction: function( it ){
-            return this.toString.call( it ) === '[object Function]';
+            return toString.call( it ) === '[object Function]';
         },
         
         isArray: Array.isArray || function( it ){
-            return this.toString.call( it ) === '[object Array]';
+            return toString.call( it ) === '[object Array]';
         },
         
         isString: function( it ){
@@ -55,7 +47,6 @@ lofty( 'lang', function(){
                 
                 return ret;
             },
-        
         indexOf: AP.indexOf ? 
             function( arr, item ){
                 return arr.indexOf( item );

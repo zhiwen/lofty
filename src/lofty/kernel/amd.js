@@ -6,39 +6,39 @@
  * */
 
 
-lofty( 'amd', ['cache','module','lang','deferred','asyncrequire'],
-    function( cache, module, lang, deferred, asyncrequire ){
+lofty( 'amd', ['lang','module','deferred','asyncrequire'],
+    function( lang, module, deferred, asyncrequire ){
     'use strict';
 
-    var configCache = cache.config;
+    var configCache = this.cache.config;
     
     configCache.amd = true;
     
+    
+    var getIdsFetch = function( ids ){
+        
+        var idsFetch = [];
+        
+        lang.forEach( ids, function( id ){
+            if ( !module.has( id ) ){
+                idsFetch.push( id );
+            }
+        } );
+        
+        return idsFetch;
+    };
     
     var amd = {
         loader: function( ids, callback ){
         
             var scope = this,
-                idsFetch = amd.getIdsFetch( ids );
+                idsFetch = getIdsFetch( ids );
             
             if ( idsFetch.length ){
                 amd.fetch( idsFetch, callback );
             } else {
                 callback();
             }
-        },
-        
-        getIdsFetch: function( ids ){
-        
-            var idsFetch = [];
-            
-            lang.forEach( ids, function( id ){
-                if ( !module.has( id ) ){
-                    idsFetch.push( id );
-                }
-            } );
-            
-            return idsFetch;
         },
         
         fetch: function( idsFetch, callback ){
