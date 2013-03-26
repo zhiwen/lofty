@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<project name="lofty-kernel-build" default="build" basedir="../">
+    <description>Lofty Kernel Build File</description>
+    
+    <dirname property="root.dir" file="${ant.file.lofty-kernel-build}/../"/>
+    <property name="src.dir" location="${root.dir}/src/"/>
+    <property name="lofty.dir" location="${src.dir}/lofty/"/>
+    <property name="kernel.dir" location="${lofty.dir}/kernel/"/>
+    <property name="dist.dir" location="${lofty.dir}/port/"/>
+
+    <property name="version" value="0.1"/>
+
+    <property name="build.dir" location="${root.dir}/build/"/>
+    <property name="gcc.jar" location="${build.dir}/compiler.jar"/>
+    <property name="charset" value="utf-8"/>
+
+    <property name="starter.debug.file" value="${dist.dir}/starter-debug.js"/>
+    <property name="starter.file" value="${dist.dir}/starter.js"/>
+    <property name="classic.debug.file" value="${dist.dir}/classic-debug.js"/>
+    <property name="classic.file" value="${dist.dir}/classic.js"/>
+    <property name="aio.debug.file" value="${dist.dir}/aio-debug.js"/>
+    <property name="aio.file" value="${dist.dir}/aio.js"/>
+
+
+    <target name="concat_starter_debug">
+        <mkdir dir="${dist.dir}"/>
+        <concat destfile="${starter.debug.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${kernel.dir}/boot.js"/>
+        <path path="${kernel.dir}/lang.js"/>
+        <path path="${kernel.dir}/event.js"/>
+        <path path="${kernel.dir}/config.js"/>
+        <path path="${kernel.dir}/alias.js"/>
+        <path path="${kernel.dir}/module.js"/>
+        <path path="${kernel.dir}/console.js"/>
+        <path path="${kernel.dir}/debug.js"/>
+        <path path="${kernel.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+
+    <target name="concat_classic_debug">
+        <mkdir dir="${dist.dir}"/>
+        <concat destfile="${classic.debug.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${kernel.dir}/boot.js"/>
+        <path path="${kernel.dir}/lang.js"/>
+        <path path="${kernel.dir}/event.js"/>
+        <path path="${kernel.dir}/config.js"/>
+        <path path="${kernel.dir}/alias.js"/>
+        <path path="${kernel.dir}/module.js"/>
+        <path path="${kernel.dir}/loader.js"/>
+        <path path="${kernel.dir}/id2url.js"/>
+        <path path="${kernel.dir}/request.js"/>
+        <path path="${kernel.dir}/deferred.js"/>
+        <path path="${kernel.dir}/use.js"/>
+        <path path="${kernel.dir}/debug.js"/>
+        <path path="${kernel.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+    
+    <target name="concat_aio_debug">
+        <mkdir dir="${dist.dir}"/>
+        <concat destfile="${aio.debug.file}"
+            encoding="${charset}"
+            outputencoding="${charset}">
+
+        <path path="${kernel.dir}/boot.js"/>
+        <path path="${kernel.dir}/lang.js"/>
+        <path path="${kernel.dir}/event.js"/>
+        <path path="${kernel.dir}/config.js"/>
+        <path path="${kernel.dir}/alias.js"/>
+        <path path="${kernel.dir}/module.js"/>
+        <path path="${kernel.dir}/loader.js"/>
+        <path path="${kernel.dir}/id2url.js"/>
+        <path path="${kernel.dir}/request.js"/>
+        <path path="${kernel.dir}/deferred.js"/>
+        <path path="${kernel.dir}/use.js"/>
+        <path path="${kernel.dir}/amd.js"/>
+        <path path="${kernel.dir}/debug.js"/>
+        <path path="${kernel.dir}/alicn.js"/>
+
+        </concat>
+    </target>
+
+    <target name="concat" depends="concat_starter_debug,concat_classic_debug,concat_aio_debug"/>
+
+    <target name="version" depends="concat">
+        <replaceregexp match="%VERSION%"
+                       replace="${version}"
+                       flags="g"
+                       encoding="${charset}">
+            <fileset dir="${dist.dir}" includes="*.js"/>
+        </replaceregexp>
+        <replaceregexp file="${starter.debug.file}"
+                       match="%EDITION%"
+                       replace="Classic"
+                       flags="g"
+                       encoding="${charset}"/>
+        <replaceregexp file="${classic.debug.file}"
+                       match="%EDITION%"
+                       replace="Classic"
+                       flags="g"
+                       encoding="${charset}"/>
+        <replaceregexp file="${aio.debug.file}"
+                       match="%EDITION%"
+                       replace="AIO"
+                       flags="g"
+                       encoding="${charset}"/>
+    </target>
+
+    <!-- Thanks to: https://github.com/seajs/seajs/blob/1.3.1/tools/build.xml -->
+    <target name="compress" depends="version">
+        <mkdir dir="${dist.dir}"/>
+        <!-- 用 Google Closure Compiler 压缩 JS -->
+        <apply executable="java" verbose="true" dest="${dist.dir}" failonerror="true">
+            <fileset dir="${dist.dir}" includes="*.js"/>
+
+            <arg line="-jar"/>
+            <arg path="${gcc.jar}"/>
+            <arg line="--externs ${build.dir}/extern.js"/>
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS"/>
+
+            <!-- http://code.google.com/p/closure-compiler/wiki/Warnings -->
+            <arg line="--warning_level VERBOSE"/>
+            <arg line="--jscomp_off=checkTypes"/>
+            <arg line="--jscomp_error=checkDebuggerStatement"/>
+
+            <arg line="--js"/>
+            <srcfile/>
+            <arg value="--js_output_file"/>
+            <targetfile/>
+            <mapper type="regexp" from="^(.*)-debug\.js$" to="\1.js"/>
+        </apply>
+
+    </target>
+
+    <target name="lofty_kernel_alicn" depends="compress"/>
+</project>
