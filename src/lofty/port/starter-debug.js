@@ -1,4 +1,4 @@
-/** @preserve Lofty v0.1 AIO http://lofty.fangdeng.org/ MIT */
+/** @preserve Lofty v0.1 Classic http://lofty.fangdeng.org/ MIT */
 /**
  * @module lofty/kernel/boot
  * @author Edgar Hoo <edgarhoo@gmail.com>
@@ -547,522 +547,85 @@ lofty( 'module', ['global','lang','event','alias'],
     
 } );
 /**
- * @module lofty/kernel/loader
- * @author Edgar Hoo <edgarhoo@gmail.com>
- * @version v0.1
- * @date 130131
- * */
-
-
-lofty( 'loader', ['global'], function( global ){
-    'use strict';
-    
-    /**
-     * Thanks to:
-     * SeaJS, https://github.com/seajs/seajs/blob/master/src/util-request.js
-     *        https://github.com/seajs/seajs/blob/master/tests/research/load-js-css/test.html
-     *        https://github.com/seajs/seajs/blob/master/tests/research/load-js-css/load-css.html
-     * HeadJS, https://github.com/headjs/headjs/blob/master/src/load.js
-     * Do, https://github.com/kejun/Do/blob/master/do.js
-     * cujo.js, https://github.com/cujojs/curl/blob/master/src/curl.js
-     * */
-    
-    var configCache = this.cache.config,
-        doc = global.document,
-        nav = global.navigator;
-    
-    var rStyle = /\.css(?:\?|$)/,
-        rReadyStates = /loaded|complete|undefined/;
-        
-    var isOldWebKit = ( nav.userAgent.replace(/.*AppleWebKit\/(\d+)\..*/, "$1") ) * 1 < 536;
-    
-    var head = doc && ( doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement ),
-        //getBaseElement = function(){
-        //    return doc.getElementsByTagName('base')[0];
-        //},
-        baseElement = doc.getElementsByTagName('base')[0];
-        //todo, testing in ie6 when lofty put before base element
-    
-    
-    var loadAsset = function( url, callback ){
-        
-        var node;
-        
-        if ( rStyle.test( url ) ){
-            node = doc.createElement('link');
-            onLoadStyle( node, url, callback );
-            
-            node.rel = 'stylesheet';
-            node.href = url;
-        } else {
-            node = doc.createElement('script');
-            onLoadScript( node, callback );
-            
-            node.async = true;
-            node.src = url;
-        }
-        
-        if ( configCache.charset ){
-            node.charset = configCache.charset;
-        }
-        
-        baseElement ?
-            head.insertBefore( node, baseElement ) :
-            head.appendChild( node );
-        
-    },
-    
-    onLoadStyle = function( node, url, callback ){
-        
-        if ( isOldWebKit || !( 'onload' in node ) ){
-            var img = doc.createElement('img');
-            
-            img.onerror = function(){
-                callback();
-                img.onerror = null;
-                img = undefined;
-            };
-            
-            img.src = url;
-        } else {
-            node.onload = node.onreadystatechange = function(){
-                if ( rReadyStates.test( node.readyState ) ){
-                    node.onload = node.onreadystatechange = node.onerror =  null;
-                    node = undefined;
-                    callback && callback();
-                }
-            };
-            
-            onLoadError( node, callback );
-        }
-        
-    },
-    
-    onLoadScript = function( node, callback ){
-        
-        node.onload = node.onreadystatechange = function( event ){
-            
-            event = event || global.event;
-            
-            if ( event.type === 'load' || rReadyStates.test( node.readyState ) ){
-                
-                node.onload = node.onreadystatechange = node.onerror = null;
-                
-                if ( !configCache.debug ){
-                    head.removeChild( node );
-                }
-                
-                node = undefined;
-                callback && callback();
-            }
-        };
-        
-        onLoadError( node, callback );
-        
-    },
-    
-    onLoadError = function( node, callback ){
-        
-        node.onerror = function(){
-            node.onload = node.onreadystatechange = node.onerror = null;
-            node = undefined;
-            callback && callback();
-        };
-        
-    };
-    
-    
-    return loadAsset;
-    
-} );
-/**
- * @module lofty/kernel/id2url
+ * @module lofty/kernel/console
  * @author Edgar Hoo <edgarhoo@gmail.com>
  * @version v0.1
  * @date 130324
  * */
 
 
-lofty( 'id2url', ['global','event','config','alias'], function( global, event, config, alias ){
-    'use strict';
-    
-    var configCache = this.cache.config;
-    
-    var rFileSuffix = /\?|\.(?:css|js)$|\/$/,
-        rAbsolute = /^https?:\/\//,
-        timeStamp = ( new Date() ).getTime();
-    
-    configCache.baseUrl = (function(){
-        var rUrl = /([\w]+)\:\/\/([\w|\.|\:]+)\//i,
-            scripts = global.document.getElementsByTagName('script'),
-            selfScript = scripts[scripts.length-1],
-            selfUrl = ( selfScript.hasAttribute ? selfScript.src : selfScript.getAttribute("src", 4) ).match( rUrl );
-        
-        return selfUrl[0];
-    })();
-    
-    config.addRuleKey( 'resolve', 'array' )
-        .addRuleKey( 'stamp', 'object' );
-    
-    
-    var parseResolve = function( asset ){
-            
-        var resolve = configCache.resolve,
-            url;
-        
-        if ( resolve ){
-            for ( var i = 0, l = resolve.length; i < l; i++ ){
-                url = resolve[i]( asset.id );
-                
-                if ( url !== asset.id ){
-                    break;
-                }
-            }
-        }
-        
-        asset.url = url ? url : asset.id;
-    },
-    
-    addBaseUrl = function( asset ){
-        rAbsolute.test( asset.url ) || ( asset.url = configCache.baseUrl + asset.url );
-    },
-    
-    addSuffix = function( asset ){
-        
-        !rFileSuffix.test(asset.url) && ( asset.url += '.js' );
-    },
-    
-    addStamp = function( asset ){
-            
-        var t = configCache.hasStamp ? timeStamp : null,
-            stamp = configCache.stamp;
-            
-        if ( stamp && stamp[asset.id] ){
-            t = stamp[asset.id];
-        }
-        
-        t && ( asset.url += '?lofty.stamp=' + t );
-    },
-    
-    id2url = function( asset ){
-        
-        alias( asset );
-        parseResolve( asset );
-        addBaseUrl( asset );
-        addSuffix( asset );
-        addStamp( asset );
-        
-        event.emit( 'id2url', asset );
-    };
-    
-    
-    return id2url;
-    
-} );
-/**
- * @module lofty/kernel/request
- * @author Edgar Hoo <edgarhoo@gmail.com>
- * @version v0.1
- * @date 130324
- * */
-
-
-lofty( 'request', ['global','event','loader','id2url'],
-    function( global, event, loader, id2url ){
-    'use strict';
-    
-    var cache = this.cache,
-        configCache = cache.config,
-        assetsCache = cache.assets = {};
-        
-    var STATUS_TIMEOUT = -1,
-        STATUS_LOADING = 1,
-        STATUS_LOADED = 2;
-    
-    configCache.loadTimeout = 10000;
-    
-    
-    var getAsset = function( id ){
-        
-        var asset = {
-            id: id
-        };
-        
-        id2url( asset );
-        
-        return assetsCache[asset.url] || ( assetsCache[asset.url] = asset );
-    },
-    
-    completeLoad = function( asset, isCallback ){
-        
-        if ( asset.timeout ){
-            return;
-        }
-        
-        global.clearTimeout( asset.timer );
-        
-        var call, queue;
-        
-        if ( isCallback ){
-            asset.status = STATUS_LOADED;
-            queue = asset.callQueue;
-        } else {
-            asset.status = STATUS_TIMEOUT;
-            queue = asset.errorQueue;
-        }
-        
-        while ( call = queue.shift() ){
-            call();
-        };
-        
-    },
-    
-    request = function( id, callback, errorback ){
-        
-        var asset = getAsset( id );
-        
-        if ( asset.status === STATUS_LOADED ){
-            callback && callback();
-            return;
-        }
-        
-        asset.callQueue ? asset.callQueue.push( callback ) : ( asset.callQueue = [callback] );
-        asset.errorQueue ? asset.errorQueue.push( errorback ) : ( asset.errorQueue = [errorback] );
-        
-        if ( asset.status === STATUS_LOADING ){
-            return;
-        }
-        
-        asset.status = STATUS_LOADING;
-        
-        asset.timer = setTimeout( function(){
-            asset.timeout = true;
-            completeLoad( asset, false );
-            event.emit( 'requestTimeout', asset );
-        }, configCache.loadTimeout );
-
-        loader( asset.url, function(){
-            completeLoad( asset, true );
-        } );
-        
-    };
-    
-    
-    return request;
-    
-} );
-/**
- * @module lofty/kernel/deferred
- * @author Edgar Hoo <edgarhoo@gmail.com>
- * @version v0.1
- * @date 130322
- * */
-
-
-lofty( 'deferred', function(){
+lofty( 'console', ['global','lang'], function( global, lang ){
     'use strict';
     
     /**
      * Thanks to:
-     * cujo.js, https://github.com/cujojs/curl/blob/master/src/curl.js
-     * jQuery, https://github.com/jquery/jquery/blob/1.7.2/src/deferred.js
+     * http://jquery.glyphix.com/jquery.debug/jquery.debug.js
      * */
-     
-    var noop = function(){};
     
-    var Promise = function( len ){
-        
-        var _this = this,
-            thens = [],
-            resolved = 0,
-            rejected = 0;
-        
-        len = len || 1;
-
-        var probe = function(){
-            if ( resolved + rejected === len ){
-                complete();
-            }
-        },
-        
-        complete = function(){
-            _this.then = !rejected ?
-                function( resolved, rejected ){ resolved && resolved() } :
-                function( resolved, rejected ){ rejected && rejected() };
-                
-            complete = noop;
-            
-            notify( !rejected ? 0 : 1 );
-            
-            notify = noop;
-            thens = [];
-        },
-        
-        notify = function( which ){
-            var then, callback, i = 0;
-            
-            while ( ( then = thens[i++] ) ){
-                callback = then[which];
-                callback && callback();
-            }
-        };
-        
-        this.then = function( resolved, rejected ){
-            thens.push( [resolved, rejected] );
-        };
-        
-        this.resolve = function(){
-            resolved++;
-            probe();
-        };
-        
-        this.reject = function(){
-            rejected++;
-            probe();
-        };
-    };
+    var doc = global.document;
     
-    var when = function(){
-        
-        var l = arguments.length,
-            promise = new Promise(l),
-            fn, i = 0;
-        
-        while ( ( fn = arguments[i++] ) ){
-            fn( promise );
-        }
-        
-        return promise;
-    };
+    var messageList = [],
+        messageBox = null,
+        prepared = false;
     
+    var createMessage = function( item ){
+        
+        var li = doc.createElement('li');
+        li.style.color = 'warn' === item.type ? 'red' : '#000';
+        li.innerHTML = item.message;
+        messageBox.appendChild( li );
+    },
     
-    return when;
+    messagePrepare = function(){
+        
+        var box = doc.createElement('div');
+        
+        box.id = 'lofty-debug-console';
+        box.style.margin = '10px 0';
+        box.style.border = '1px dashed red';
+        box.style.padding = '4px 8px';
+        box.style.fontSize = '14px';
+        box.style.lineHeight = '1.5';
+        box.style.textAlign = 'left';
+        
+        appendTo( box );
+        prepared = true;
+    },
     
-} );
-/**
- * @module lofty/kernel/use
- * @author Edgar Hoo <edgarhoo@gmail.com>
- * @version v0.1
- * @date 130325
- * */
-
-
-lofty( 'use', ['lang','event','module','request','deferred'],
-    function( lang, event, module, request, deferred ){
-    'use strict';
-    
-    var getIdsFetch = function( ids ){
+    appendTo = function( box ){
         
-        var idsFetch = [];
-        
-        lang.forEach( ids, function( id ){
-            if ( !module.has( id ) ){
-                idsFetch.push( id );
-            }
-        } );
-        
-        return idsFetch;
-    };
-    
-    var use = {
-        realize: function( ids, callback, errorback ){
+        if ( doc.body ){
+            doc.body.appendChild( box );
+            messageBox = doc.createElement('ol');
+            messageBox.style.listStyleType = 'decimal';
+            box.appendChild( messageBox );
             
-            lang.isArray( ids ) || ( ids = [ids] );
-            
-            use.load( ids, function(){
-                var args = lang.map( ids, function( id ){
-                    return module.require( id );
-                } );
-                
-                callback && callback.apply( null, args );
-            } /* call errorback */ );
-        },
-        
-        load: function( ids, callback ){
-            
-            var idsFetch = getIdsFetch( ids );
-            
-            if ( idsFetch.length ){
-                use.fetch( idsFetch, callback );
-            } else {
-                callback();
-            }
-        },
-        
-        fetch: function( idsFetch, callback ){
-            
-            use.get( idsFetch, function(){
-                deferred.apply( null, lang.map( idsFetch, function( id ){
-                    return function( promise ){
-                        var mod = module.get( id );
-                        
-                        mod ? use.load( mod.deps, function(){
-                            promise.resolve();
-                        } ) : promise.resolve();
-                    }
-                } ) ).then( callback );
+            lang.forEach( messageList, function( item ){
+                createMessage( item );
             } );
-        },
-        
-        get: function( idsFetch, callback, errorback ){
-            
-            deferred.apply( null, lang.map( idsFetch, function( id ){
-                return function( promise ) {
-                    /* leave a question: need to delete this if? */
-                    if ( module.has( id ) ){
-                        promise.resolve();
-                    } else {
-                        request( id, function(){
-                            promise.resolve();
-                        }, function(){
-                            promise.reject();
-                        } );
-                    }
-                }
-            } ) ).then( callback, errorback );
+        } else {
+            global.setTimeout( function(){
+                appendTo( box );
+            }, 200 );
         }
-    };
+    },
     
-    
-    event.on( 'makeRequire', function( require ){
+    console = function( message, type ){
         
-        require.use = function( ids, callback, errorback ){
-            use.realize( ids, callback, errorback );
+        var item = {
+            'message': message,
+            'type': type || 'log'
         };
-    } );
-    
-    
-    return use;
-    
-} );
-/**
- * @module lofty/kernel/amd
- * @author Edgar Hoo <edgarhoo@gmail.com>
- * @version v0.1
- * @date 130325
- * */
-
-
-lofty( 'amd', ['module','use'],
-    function( module, use ){
-    'use strict';
-
-    var configCache = this.cache.config;
-    
-    configCache.amd = true;
-    
-    module.autocompile = function( mod ){
         
-        if ( module.isAnon( mod ) ){
-            if ( configCache.amd ){
-                use.load( mod.deps, function(){
-                    module.compile( mod );
-                } );
-            } else {
-                module.compile( mod );
-            }
-        }
+        !prepared && messagePrepare();
+        messageBox ?
+            createMessage( item ) :
+            messageList.push( item );
+        
     };
+    
+    
+    return console;
     
 } );
 /**

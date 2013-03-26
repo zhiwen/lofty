@@ -1,6 +1,4 @@
-/**
- * @preserve Lofty, v%VERSION% http://lofty.fangdeng.org/ MIT
- * */
+/** @preserve Lofty v%VERSION% %EDITION% http://lofty.fangdeng.org/ MIT */
 /**
  * @module lofty/kernel/boot
  * @author Edgar Hoo <edgarhoo@gmail.com>
