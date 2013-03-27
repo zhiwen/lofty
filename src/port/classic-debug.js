@@ -1,4 +1,4 @@
-/** @preserve Lofty v0.1 Classic http://lofty.fangdeng.org/ MIT */
+/** @preserve Lofty v0.1 beta Classic http://lofty.fangdeng.org/ MIT */
 /**
  * @module lofty/kernel/boot
  * @author Edgar Hoo <edgarhoo@gmail.com>
@@ -1097,7 +1097,7 @@ lofty( 'alicn', ['global','event'],
         
         switch ( root ){
             case 'lofty':
-            case 'makeup':
+            case 'avid':
                 id = '/fdevlib/' + type + id;
                 break;
             case 'sys':

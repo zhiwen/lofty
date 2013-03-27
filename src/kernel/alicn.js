@@ -20,7 +20,7 @@ lofty( 'alicn', ['global','event'],
         
         switch ( root ){
             case 'lofty':
-            case 'makeup':
+            case 'avid':
                 id = '/fdevlib/' + type + id;
                 break;
             case 'sys':
