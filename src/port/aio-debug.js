@@ -1,4 +1,4 @@
-/** @preserve Lofty v0.1 beta AIO http://lofty.fangdeng.org/ MIT */
+/*! Lofty v0.1 beta AIO http://lofty.fangdeng.org/ MIT*/
 /**
  * @module lofty/kernel/boot
  * @author Edgar Hoo <edgarhoo@gmail.com>

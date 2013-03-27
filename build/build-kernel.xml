@@ -20,9 +20,9 @@
     <property name="aio.debug.file" value="${dist.dir}/aio-debug.js"/>
     <property name="aio.file" value="${dist.dir}/aio.js"/>
 
-    <target name="concat_starter_debug">
+    <target name="concat">
         <mkdir dir="${dist.dir}"/>
-        <concat destfile="${starter.debug.file}" encoding="${charset}" outputencoding="${charset}">
+        <concat destfile="${starter.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
             <path path="${kernel.dir}/boot.js"/>
             <path path="${kernel.dir}/lang.js"/>
             <path path="${kernel.dir}/event.js"/>
@@ -33,11 +33,8 @@
             <path path="${kernel.dir}/debug.js"/>
             <path path="${kernel.dir}/alicn.js"/>
         </concat>
-    </target>
-
-    <target name="concat_classic_debug">
-        <mkdir dir="${dist.dir}"/>
-        <concat destfile="${classic.debug.file}" encoding="${charset}" outputencoding="${charset}">
+        
+        <concat destfile="${classic.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
             <path path="${kernel.dir}/boot.js"/>
             <path path="${kernel.dir}/lang.js"/>
             <path path="${kernel.dir}/event.js"/>
@@ -52,11 +49,8 @@
             <path path="${kernel.dir}/debug.js"/>
             <path path="${kernel.dir}/alicn.js"/>
         </concat>
-    </target>
-    
-    <target name="concat_aio_debug">
-        <mkdir dir="${dist.dir}"/>
-        <concat destfile="${aio.debug.file}" encoding="${charset}" outputencoding="${charset}">
+        
+        <concat destfile="${aio.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
             <path path="${kernel.dir}/boot.js"/>
             <path path="${kernel.dir}/lang.js"/>
             <path path="${kernel.dir}/event.js"/>
@@ -74,23 +68,12 @@
         </concat>
     </target>
 
-    <target name="concat" depends="concat_starter_debug,concat_classic_debug,concat_aio_debug"/>
-
-    <target name="version" depends="concat">
-        <replaceregexp match="@VERSION" replace="${version}" flags="g" encoding="${charset}">
-            <fileset dir="${dist.dir}" includes="*.js"/>
-        </replaceregexp>
-        <replaceregexp file="${starter.debug.file}" match="@EDITION" replace="Starter" flags="g" encoding="${charset}"/>
-        <replaceregexp file="${classic.debug.file}" match="@EDITION" replace="Classic" flags="g" encoding="${charset}"/>
-        <replaceregexp file="${aio.debug.file}" match="@EDITION" replace="AIO" flags="g" encoding="${charset}"/>
-    </target>
-
     <!-- Thanks to: https://github.com/seajs/seajs/blob/1.3.1/tools/build.xml -->
-    <target name="compress" depends="version">
+    <target name="compress" depends="concat">
         <mkdir dir="${dist.dir}"/>
         <!-- 用 Google Closure Compiler 压缩 JS -->
         <apply executable="java" verbose="true" dest="${dist.dir}" failonerror="true">
-            <fileset dir="${dist.dir}" includes="*.js"/>
+            <fileset dir="${dist.dir}" includes="*.js.tmp"/>
 
             <arg line="-jar"/>
             <arg path="${gcc.jar}"/>
@@ -106,10 +89,43 @@
             <srcfile/>
             <arg value="--js_output_file"/>
             <targetfile/>
-            <mapper type="regexp" from="^(.*)-debug\.js$" to="\1.js"/>
+            <mapper type="regexp" from="^(.*)-debug\.js\.tmp$" to="\1.js\.tmp"/>
         </apply>
 
     </target>
 
-    <target name="lofty_kernel_alicn" depends="compress"/>
+    <target name="license" depends="compress">
+        <concat destfile="${starter.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} Starter http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${starter.debug.file}.tmp"/>
+        </concat>
+        <concat destfile="${starter.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} Starter http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${starter.file}.tmp"/>
+        </concat>
+        <concat destfile="${classic.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} Classic http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${classic.debug.file}.tmp"/>
+        </concat>
+        <concat destfile="${classic.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} Classic http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${classic.file}.tmp"/>
+        </concat>
+        <concat destfile="${aio.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} AIO http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${aio.debug.file}.tmp"/>
+        </concat>
+        <concat destfile="${aio.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <header>/*! Lofty v${version} AIO http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${aio.file}.tmp"/>
+        </concat>
+    </target>
+    
+    <target name="clean">
+        <delete>
+            <fileset dir="${dist.dir}" includes="*.js.tmp"/>
+        </delete>
+    </target>
+
+    <target name="lofty_kernel_alicn" depends="license,clean"/>
 </project>
