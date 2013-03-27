@@ -7,7 +7,7 @@
 
 lofty.config({
     resolve: function( id ){
-        id === 'lofty/kernel/console' && ( id = 'src/' + id );
+        id === 'lofty/kernel/console' && ( id = id.replace( /lofty/, 'src' ) );
         return id;
     }
 });

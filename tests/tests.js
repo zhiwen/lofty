@@ -9,14 +9,14 @@ define(function(){
     
     var rRoot = /^specs\//;
     
+    lofty.cache.kernel.event.exports.on( 'alias', function( meta ){
+        meta.id === 'lofty/kernel/console' && ( meta.id = meta.id.replace( /lofty/, 'src' ) );
+    } );
+    
     lofty.config({
         hasStamp: true,
         resolve: function( id ){
-            
-            if ( rRoot.test(id) ){
-                id = '/tests/' + id;
-            }
-            
+            rRoot.test( id ) && ( id = 'tests/' + id );
             return id;
         }
     });
