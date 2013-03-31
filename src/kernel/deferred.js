@@ -1,6 +1,6 @@
 /**
  * @module lofty/kernel/deferred
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130322
  * */

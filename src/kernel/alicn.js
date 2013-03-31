@@ -1,6 +1,6 @@
 /**
  * @module lofty/kernel/alicn
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130324
  * */
@@ -10,9 +10,14 @@ lofty( 'alicn', ['global','event'],
     function( global, event ){
     'use strict';
     
-    var rStyle = /\.css(?:\?|$)/;
+    var rStyle = /\.css(?:\?|$)/,
+        rId = /([a-z])([A-Z])/g;
     
     var resolve = function( id ){
+        
+        id = id.replace( rId, function( s, s1, s2 ){
+            return s1 + '-' + s2;
+        } ).toLowerCase();
         
         var parts = id.split('/'),
             root = parts[0],

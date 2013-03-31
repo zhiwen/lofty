@@ -1,0 +1,40 @@
+/**
+ * @module lofty/kernel/layout.css
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130328
+ * */
+
+
+.screen{
+	width: 990px;
+	margin: 0 auto;
+	padding: 0 5px;
+}
+
+
+#header,
+#content,
+#footer,
+.layout{
+	*zoom: 1;
+}
+
+#header:after,
+#content:after,
+#footer:after,
+.layout:after{
+	display: block;
+	clear: both;
+	height: 0;
+	content: "\0020";
+}
+
+
+.layout .grid{
+    float: left;
+}
+
+.layout .grid-fixed{
+    margin-right:0 !important;
+}

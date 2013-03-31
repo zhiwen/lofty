@@ -1,0 +1,32 @@
+/**
+ * @module lofty/kernel/gridFlying.css
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130329
+ * */
+
+
+.layout .grid-main{
+    float: left;
+    width: 100%;
+    min-height: 1px;
+}
+
+.layout .grid-sub,
+.layout .grid-extra{
+    float: left;
+    *zoom: 1;
+}
+
+.layout .main-wrap{
+    *zoom: 1;
+}
+
+.layout .main-wrap:after,
+.layout .grid-sub:after,
+.layout .grid-extra:after{
+	display: block;
+	clear: both;
+	height: 0;
+	content: "\0020";
+}

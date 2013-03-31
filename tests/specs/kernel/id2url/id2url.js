@@ -73,8 +73,8 @@ describe( 'lofty/kernel/id2url', function(){
         var b = { id: 'ij/bjop' };
         lofty.config({
             stamp: {
-                'yhm/ghi': '130324',
-                'ij/bjop': '0.122'
+                '^yhm': '130324',
+                '.*bjop': '0.122'
             }
         });
         
