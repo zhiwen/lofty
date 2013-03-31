@@ -1,0 +1,110 @@
+/**
+ * @module lofty/kernel/reset.css
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130328
+ * */
+
+
+/**
+ * Thanks to:
+ * yaosl, happyyaosl@gmail.com
+ * YUI, http://yuilibrary.com/
+ * */
+ 
+html{
+	color: #000;
+	overflow-y: scroll;
+	background: #fff;
+}
+
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote,  /* structural elements */
+dl, dt, dd, ul, ol, li, /* list elements */
+pre, /* text formatting elements */
+fieldset, lengend, button, input, textarea, form, /* form elements */
+th, td{ /* table elements */
+    margin: 0;
+    padding: 0;
+}
+
+
+/* fonts */
+body, button, input, select, textarea{
+    font: 12px/1.5 Tahoma, Arial, "\5b8b\4f53", sans-serif;
+}
+
+h1, h2,	h3,	h4, h5, h6{ 
+	font-size: 100%; 
+	font-weight: normal; 
+}
+
+address, cite, dfn, em, var{
+    font-style: normal;
+}
+
+code, kbd, pre, samp, tt{
+    font-family: "Courier New", Courier, monospace;
+}
+
+small{
+    font-size: 12px;
+}
+
+
+/* style */
+ul, ol{
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+abbr[title], acronym[title]{
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+
+q:before, q:after{
+    content: '';
+}
+
+:focus{
+    outline: 0;
+}
+
+
+/* form */
+legend{
+    color: #000;
+}
+
+fieldset, img{
+    border: none;
+}
+
+button, input, select, textarea{
+    font-size: 100%;
+}
+
+
+table{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+hr{
+    border: none;
+    height: 1px;
+    *color: #fff;
+}
+
+
+img{
+    -ms-interpolation-mode: bicubic;
+}

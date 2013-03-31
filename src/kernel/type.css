@@ -1,0 +1,64 @@
+/**
+ * @module lofty/kernel/type.css
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130329
+ * */
+
+
+/* float */
+.fd-left{
+    float: left;
+}
+
+.fd-right{
+    float: right;
+}
+
+.fd-clear{
+    clear: both;
+}
+
+.fd-clr{
+    *zoom: 1;
+}
+
+.fd-clr:after{
+    display: block;
+    clear: both;
+    height: 0;
+    content: "\0020";
+}
+
+
+/* display */
+.fd-hide{
+    display: none;
+}
+.fd-show{
+    display: block;
+}
+
+
+/* position */
+.fd-locate{
+    position: relative;
+}
+
+
+/**
+ * CNY symbol
+ * usage: <span class="fd-cny">&yen;</span>
+ * */
+.fd-cny{
+    font-family: Helvetica, Arial;
+}
+
+/* text */
+.fd-gray{
+    color:#666;
+}
+
+.fd-bold{
+    font-weight:700;
+}

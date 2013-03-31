@@ -1,0 +1,17 @@
+/**
+ * @module lofty/kernel/alicn.css
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130328
+ * */
+
+
+.w952{
+	width: 952px;
+	margin: 0 auto;
+	padding: 0 4px;
+}
+
+a:hover{
+	color: #ff7300; 
+}

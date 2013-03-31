@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<project name="lofty-kernel-build" default="build" basedir="../">
-    <description>Lofty Kernel Build File</description>
+<project name="lofty-kernel-js-build" default="build" basedir="../">
+    <description>Lofty Kernel JS Build File</description>
     
-    <dirname property="root.dir" file="${ant.file.lofty-kernel-build}/../"/>
+    <dirname property="root.dir" file="${ant.file.lofty-kernel-js-build}/../"/>
     <property name="src.dir" location="${root.dir}/src/"/>
     <property name="kernel.dir" location="${src.dir}/kernel/"/>
     <property name="dist.dir" location="${src.dir}/port/"/>
@@ -10,6 +10,7 @@
     <property name="version" value="0.1 beta"/>
 
     <property name="build.dir" location="${root.dir}/build/"/>
+    <property name="license.file" value="${build.dir}/license"/>
     <property name="gcc.jar" location="${build.dir}/compiler.jar"/>
     <property name="charset" value="utf-8"/>
 
@@ -95,29 +96,40 @@
     </target>
 
     <target name="license" depends="compress">
-        <concat destfile="${starter.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} Starter http://lofty.fangdeng.org/ MIT*/</header>
-            <path path="${starter.debug.file}.tmp"/>
-        </concat>
-        <concat destfile="${starter.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} Starter http://lofty.fangdeng.org/ MIT*/</header>
-            <path path="${starter.file}.tmp"/>
-        </concat>
-        <concat destfile="${classic.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} Classic http://lofty.fangdeng.org/ MIT*/</header>
-            <path path="${classic.debug.file}.tmp"/>
-        </concat>
+        <copy file="${license.file}" tofile="${license.file}.tmp" overwrite="true"/>
+        <replaceregexp file="${license.file}.tmp" match="@VERSION" replace="${version}" flags="g" encoding="${charset}"/>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
+        <replaceregexp file="${license.file}.js" match="@EDITION" replace="Classic" flags="g" encoding="${charset}"/>
         <concat destfile="${classic.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} Classic http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${license.file}.js"/>
             <path path="${classic.file}.tmp"/>
         </concat>
-        <concat destfile="${aio.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} AIO http://lofty.fangdeng.org/ MIT*/</header>
-            <path path="${aio.debug.file}.tmp"/>
+        <concat destfile="${classic.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.js"/>
+            <path path="${classic.debug.file}.tmp"/>
         </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
+        <replaceregexp file="${license.file}.js" match="@EDITION" replace="Starter" flags="g" encoding="${charset}"/>
+        <concat destfile="${starter.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.js"/>
+            <path path="${starter.file}.tmp"/>
+        </concat>
+        <concat destfile="${starter.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.js"/>
+            <path path="${starter.debug.file}.tmp"/>
+        </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
+        <replaceregexp file="${license.file}.js" match="@EDITION" replace="AIO" flags="g" encoding="${charset}"/>
         <concat destfile="${aio.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <header>/*! Lofty v${version} AIO http://lofty.fangdeng.org/ MIT*/</header>
+            <path path="${license.file}.js"/>
             <path path="${aio.file}.tmp"/>
+        </concat>
+        <concat destfile="${aio.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.js"/>
+            <path path="${aio.debug.file}.tmp"/>
         </concat>
     </target>
     
@@ -125,7 +137,9 @@
         <delete>
             <fileset dir="${dist.dir}" includes="*.js.tmp"/>
         </delete>
+        <delete file="${license.file}.tmp"/>
+        <delete file="${license.file}.js"/>
     </target>
 
-    <target name="lofty_kernel_alicn" depends="license,clean"/>
+    <target name="lofty_kernel_js" depends="license,clean"/>
 </project>

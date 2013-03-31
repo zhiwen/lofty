@@ -1,6 +1,6 @@
 /**
  * @module lofty/kernel/id2url
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130324
  * */
@@ -60,8 +60,13 @@ lofty( 'id2url', ['global','event','config','alias'], function( global, event, c
         var t = configCache.hasStamp ? timeStamp : null,
             stamp = configCache.stamp;
             
-        if ( stamp && stamp[asset.id] ){
-            t = stamp[asset.id];
+        if ( stamp ){
+            for ( var key in stamp ){
+                if ( ( new RegExp( key ) ).test( asset.id ) ){
+                    t = stamp[key];
+                    break;
+                }
+            }
         }
         
         t && ( asset.url += '?lofty.stamp=' + t );

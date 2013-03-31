@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<project name="lofty-kernel-css-build" default="build" basedir="../">
+    <description>Lofty Kernel JS Build File</description>
+    
+    <dirname property="root.dir" file="${ant.file.lofty-kernel-css-build}/../"/>
+    <property name="src.dir" location="${root.dir}/src/"/>
+    <property name="kernel.dir" location="${src.dir}/kernel/"/>
+    <property name="dist.dir" location="${src.dir}/port/"/>
+
+    <property name="version" value="0.1 beta"/>
+
+    <property name="build.dir" location="${root.dir}/build/"/>
+    <property name="license.file" value="${build.dir}/license"/>
+    <property name="yuic.jar" location="${build.dir}/yuicompressor-2.4.2.jar"/>
+    <property name="charset" value="utf-8"/>
+    
+    <property name="classic.file" value="${dist.dir}/classic.css"/>
+    <property name="float.file" value="${dist.dir}/float.css"/>
+    <property name="wide.file" value="${dist.dir}/wide.css"/>
+    <property name="flying.file" value="${dist.dir}/flying.css"/>
+    <property name="op.file" value="${dist.dir}/op.css"/>
+
+    <target name="concat">
+        <mkdir dir="${dist.dir}"/>
+        <concat destfile="${classic.file}" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kernel.dir}/reset.css"/>
+            <path path="${kernel.dir}/type.css"/>
+            <path path="${kernel.dir}/layout.css"/>
+            <path path="${kernel.dir}/alicn.css"/>
+        </concat>
+        
+        <concat destfile="${float.file}" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kernel.dir}/reset.css"/>
+            <path path="${kernel.dir}/type.css"/>
+            <path path="${kernel.dir}/layout.css"/>
+            <path path="${kernel.dir}/alicn.css"/>
+            <path path="${kernel.dir}/grid-float.css"/>
+        </concat>
+        
+        <concat destfile="${wide.file}" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kernel.dir}/reset.css"/>
+            <path path="${kernel.dir}/type.css"/>
+            <path path="${kernel.dir}/layout.css"/>
+            <path path="${kernel.dir}/alicn.css"/>
+            <path path="${kernel.dir}/grid-wide.css"/>
+        </concat>
+        
+        <concat destfile="${flying.file}" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kernel.dir}/reset.css"/>
+            <path path="${kernel.dir}/type.css"/>
+            <path path="${kernel.dir}/layout.css"/>
+            <path path="${kernel.dir}/alicn.css"/>
+            <path path="${kernel.dir}/grid-flying.css"/>
+        </concat>
+        
+        <concat destfile="${op.file}" encoding="${charset}" outputencoding="${charset}">
+            <path path="${kernel.dir}/reset.css"/>
+            <path path="${kernel.dir}/type.css"/>
+            <path path="${kernel.dir}/layout.css"/>
+            <path path="${kernel.dir}/alicn.css"/>
+            <path path="${kernel.dir}/grid-op.css"/>
+        </concat>
+    </target>
+
+    <target name="compress" depends="concat">
+        <mkdir dir="${dist.dir}"/>
+        <apply executable="java" verbose="true" dest="${dist.dir}" failonerror="true">
+            <fileset dir="${dist.dir}" includes="*.css"/>
+
+            <arg line="-jar"/>
+            <arg path="${yuic.jar}"/>
+            <arg line="--charset ${charset}"/>
+            <arg value="--type"/>
+            <arg value="css"/>
+            <arg value="-o"/>
+            <targetfile/>
+            <mapper type="regexp" from="^(.*)\.css$" to="\1.css.tmp"/>
+        </apply>
+    </target>
+
+    <target name="license" depends="compress">
+        <copy file="${license.file}" tofile="${license.file}.tmp" overwrite="true"/>
+        <replaceregexp file="${license.file}.tmp" match="@VERSION" replace="${version}" flags="g" encoding="${charset}"/>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.css" overwrite="true"/>
+        <replaceregexp file="${license.file}.css" match="@EDITION" replace="Classic" flags="g" encoding="${charset}"/>
+        <concat destfile="${classic.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.css"/>
+            <path path="${classic.file}.tmp"/>
+        </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.css" overwrite="true"/>
+        <replaceregexp file="${license.file}.css" match="@EDITION" replace="Float" flags="g" encoding="${charset}"/>
+        <concat destfile="${float.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.css"/>
+            <path path="${float.file}.tmp"/>
+        </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.css" overwrite="true"/>
+        <replaceregexp file="${license.file}.css" match="@EDITION" replace="Wide" flags="g" encoding="${charset}"/>
+        <concat destfile="${wide.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.css"/>
+            <path path="${wide.file}.tmp"/>
+        </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.css" overwrite="true"/>
+        <replaceregexp file="${license.file}.css" match="@EDITION" replace="Flying" flags="g" encoding="${charset}"/>
+        <concat destfile="${flying.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.css"/>
+            <path path="${flying.file}.tmp"/>
+        </concat>
+        
+        <copy file="${license.file}.tmp" tofile="${license.file}.css" overwrite="true"/>
+        <replaceregexp file="${license.file}.css" match="@EDITION" replace="OP" flags="g" encoding="${charset}"/>
+        <concat destfile="${op.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
+            <path path="${license.file}.css"/>
+            <path path="${op.file}.tmp"/>
+        </concat>
+    </target>
+    
+    <target name="clean">
+        <delete>
+            <fileset dir="${dist.dir}" includes="*.css.tmp"/>
+        </delete>
+        <delete file="${license.file}.tmp"/>
+        <delete file="${license.file}.css"/>
+    </target>
+
+    <target name="lofty_kernel_css" depends="license,clean"/>
+</project>

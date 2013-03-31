@@ -1,7 +1,7 @@
 /*! Lofty v0.1 beta Starter http://lofty.fangdeng.org/ MIT*/
 /**
  * @module lofty/kernel/boot
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130307
  * */
@@ -85,7 +85,7 @@
 })( this );
 /**
  * @module lofty/kernel/lang
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130322
  * */
@@ -153,7 +153,7 @@ lofty( 'lang', function(){
 } );
 /**
  * @module lofty/kernel/event
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130322
  * */
@@ -193,7 +193,7 @@ lofty( 'event', function(){
 } );
 /**
  * @module lofty/kernel/config
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130322
  * */
@@ -281,7 +281,7 @@ lofty( 'config', ['lang'], function( lang ){
 } );
 /**
  * @module lofty/kernel/alias
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130322
  * */
@@ -310,7 +310,7 @@ lofty( 'alias', ['config','event'] ,function( config, event ){
 } );
 /**
  * @module lofty/kernel/module
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130315
  * */
@@ -548,7 +548,7 @@ lofty( 'module', ['global','lang','event','alias'],
 } );
 /**
  * @module lofty/kernel/console
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130324
  * */
@@ -630,7 +630,7 @@ lofty( 'console', ['global','lang'], function( global, lang ){
 } );
 /**
  * @module lofty/kernel/debug
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130325
  * */
@@ -670,7 +670,7 @@ lofty( 'debug', ['global','config','console','request','require'],
 } );
 /**
  * @module lofty/kernel/alicn
- * @author Edgar Hoo <edgarhoo@gmail.com>
+ * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
  * @date 130324
  * */
@@ -680,9 +680,14 @@ lofty( 'alicn', ['global','event'],
     function( global, event ){
     'use strict';
     
-    var rStyle = /\.css(?:\?|$)/;
+    var rStyle = /\.css(?:\?|$)/,
+        rId = /([a-z])([A-Z])/g;
     
     var resolve = function( id ){
+        
+        id = id.replace( rId, function( s, s1, s2 ){
+            return s1 + '-' + s2;
+        } ).toLowerCase();
         
         var parts = id.split('/'),
             root = parts[0],
