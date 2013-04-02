@@ -1,4 +1,5 @@
-baseurl: http://lofty.fangdeng.org/
+baseurl: http://lofty.fangdeng.org
 auto: true
 pygments: true
-permalink: none
+permalink: /docs/:title.html
+markdown: kramdown
