@@ -2,12 +2,12 @@
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130324
+ * @date 130403
  * */
 
 
-lofty( 'alicn', ['global','event'],
-    function( global, event ){
+lofty( 'alicn', ['global','event','config'],
+    function( global, event, config ){
     'use strict';
     
     var rStyle = /\.css(?:\?|$)/,
@@ -51,11 +51,15 @@ lofty( 'alicn', ['global','event'],
     
     
     this.appframe = function( name ){
-        global[name] = {
-            log: this.log,
+        var frame = global[name] = {
             define: this.define,
+            log: this.log,
+            config: this.config,
             on: event.on
         };
+        
+        frame.config.addRule = config.addRule;
+        frame.config.addItem = config.addItem;
     };
     
 } );

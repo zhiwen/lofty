@@ -195,7 +195,7 @@ lofty( 'event', function(){
  * @module lofty/kernel/config
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130403
  * */
 
 
@@ -247,9 +247,9 @@ lofty( 'config', ['lang'], function( lang ){
             
             return this;
         },
-        addRuleKey: function( key, ruleName ){
+        addItem: function( item, ruleName ){
             
-            rulesCache[ruleName] && rulesCache[ruleName].keys.push( key );
+            rulesCache[ruleName] && rulesCache[ruleName].keys.push( item );
             
             return this;
         }
@@ -283,7 +283,7 @@ lofty( 'config', ['lang'], function( lang ){
  * @module lofty/kernel/alias
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130403
  * */
 
 
@@ -291,7 +291,7 @@ lofty( 'alias', ['config','event'] ,function( config, event ){
     
     var configCache = this.cache.config;
     
-    config.addRuleKey( 'alias', 'object' );
+    config.addItem( 'alias', 'object' );
     
     var alias = function( meta ){
         
@@ -312,7 +312,7 @@ lofty( 'alias', ['config','event'] ,function( config, event ){
  * @module lofty/kernel/module
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130315
+ * @date 130403
  * */
 
 
@@ -441,7 +441,7 @@ lofty( 'module', ['global','lang','event','alias'],
                 if ( exports !== undefined ){
                     mod.exports = exports;
                 } else {
-                    mod.entity && ( mod.exports = mod.entity.exports );
+                    mod.entity && mod.entity.exports && ( mod.exports = mod.entity.exports );
                 }
                 
                 mod.entity && ( delete mod.entity );
@@ -679,7 +679,7 @@ lofty( 'loader', ['global'], function( global ){
  * @module lofty/kernel/id2url
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130324
+ * @date 130403
  * */
 
 
@@ -701,8 +701,8 @@ lofty( 'id2url', ['global','event','config','alias'], function( global, event, c
         return selfUrl[0];
     })();
     
-    config.addRuleKey( 'resolve', 'array' )
-        .addRuleKey( 'stamp', 'object' );
+    config.addItem( 'resolve', 'array' )
+        .addItem( 'stamp', 'object' );
     
     
     var parseResolve = function( asset ){
@@ -1074,7 +1074,7 @@ lofty( 'amd', ['module','use'],
  * @module lofty/kernel/debug
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130325
+ * @date 130403
  * */
 
 
@@ -1107,19 +1107,19 @@ lofty( 'debug', ['global','config','console','request','require'],
         this[key] = val;
         return true;
     } )
-    .addRuleKey( 'debug', 'debug' );
+    .addItem( 'debug', 'debug' );
     
 } );
 /**
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130324
+ * @date 130403
  * */
 
 
-lofty( 'alicn', ['global','event'],
-    function( global, event ){
+lofty( 'alicn', ['global','event','config'],
+    function( global, event, config ){
     'use strict';
     
     var rStyle = /\.css(?:\?|$)/,
@@ -1163,11 +1163,15 @@ lofty( 'alicn', ['global','event'],
     
     
     this.appframe = function( name ){
-        global[name] = {
-            log: this.log,
+        var frame = global[name] = {
             define: this.define,
+            log: this.log,
+            config: this.config,
             on: event.on
         };
+        
+        frame.config.addRule = config.addRule;
+        frame.config.addItem = config.addItem;
     };
     
 } );

@@ -2,7 +2,7 @@
  * @module lofty/kernel/debug
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130325
+ * @date 130403
  * */
 
 
@@ -35,6 +35,6 @@ lofty( 'debug', ['global','config','console','request','require'],
         this[key] = val;
         return true;
     } )
-    .addRuleKey( 'debug', 'debug' );
+    .addItem( 'debug', 'debug' );
     
 } );

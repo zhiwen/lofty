@@ -2,7 +2,7 @@
  * @module lofty/kernel/alias
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130403
  * */
 
 
@@ -10,7 +10,7 @@ lofty( 'alias', ['config','event'] ,function( config, event ){
     
     var configCache = this.cache.config;
     
-    config.addRuleKey( 'alias', 'object' );
+    config.addItem( 'alias', 'object' );
     
     var alias = function( meta ){
         

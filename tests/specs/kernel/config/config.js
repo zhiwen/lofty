@@ -22,10 +22,10 @@ describe( 'lofty/kernel/config', function(){
         expect(configRules.ruleA.rule.toString()).toEqual(ruleA.toString());
     } );
     
-    it( 'config.addRuleKey', function(){
-        config.addRuleKey( 'logLevel1', 'ruleA' );
+    it( 'config.addItem', function(){
+        config.addItem( 'logLevel1', 'ruleA' );
         var a = configRules.ruleA.keys.slice();
-        config.addRuleKey( 'log1', 'ruleA' );
+        config.addItem( 'log1', 'ruleA' );
         var b = configRules.ruleA.keys.slice();
         
         var c = configCache.debug1;
@@ -54,7 +54,7 @@ describe( 'lofty/kernel/config', function(){
     } );
     
     it( 'config rule "object"', function(){
-        config.addRuleKey( 'alias1', 'object' );
+        config.addItem( 'alias1', 'object' );
         lofty.config({
             alias1: {
                 'aa': '123456aa',
@@ -62,7 +62,7 @@ describe( 'lofty/kernel/config', function(){
             }
         });
         
-        config.addRuleKey( 'alias2', 'object' );
+        config.addItem( 'alias2', 'object' );
         lofty.config({
             alias2: {
                 'aa': 'dfghjk',
@@ -77,7 +77,7 @@ describe( 'lofty/kernel/config', function(){
     } );
     
     it( 'config rule "array"', function(){
-        config.addRuleKey( 'resolve1', 'array' );
+        config.addItem( 'resolve1', 'array' );
         var a = configCache.resolve1;
         lofty.config({
             resolve1: '1thj6y'
