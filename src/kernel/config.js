@@ -2,7 +2,7 @@
  * @module lofty/kernel/config
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130403
  * */
 
 
@@ -54,9 +54,9 @@ lofty( 'config', ['lang'], function( lang ){
             
             return this;
         },
-        addRuleKey: function( key, ruleName ){
+        addItem: function( item, ruleName ){
             
-            rulesCache[ruleName] && rulesCache[ruleName].keys.push( key );
+            rulesCache[ruleName] && rulesCache[ruleName].keys.push( item );
             
             return this;
         }

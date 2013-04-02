@@ -2,7 +2,7 @@
  * @module lofty/kernel/id2url
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130324
+ * @date 130403
  * */
 
 
@@ -24,8 +24,8 @@ lofty( 'id2url', ['global','event','config','alias'], function( global, event, c
         return selfUrl[0];
     })();
     
-    config.addRuleKey( 'resolve', 'array' )
-        .addRuleKey( 'stamp', 'object' );
+    config.addItem( 'resolve', 'array' )
+        .addItem( 'stamp', 'object' );
     
     
     var parseResolve = function( asset ){

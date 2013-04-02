@@ -2,7 +2,7 @@
  * @module lofty/kernel/module
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130315
+ * @date 130403
  * */
 
 
@@ -131,7 +131,7 @@ lofty( 'module', ['global','lang','event','alias'],
                 if ( exports !== undefined ){
                     mod.exports = exports;
                 } else {
-                    mod.entity && ( mod.exports = mod.entity.exports );
+                    mod.entity && mod.entity.exports && ( mod.exports = mod.entity.exports );
                 }
                 
                 mod.entity && ( delete mod.entity );
