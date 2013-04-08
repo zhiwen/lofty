@@ -2,7 +2,7 @@
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130403
+ * @date 130409
  * */
 
 
@@ -51,15 +51,18 @@ lofty( 'alicn', ['global','event','config'],
     
     
     this.appframe = function( name ){
+        
         var frame = global[name] = {
             define: this.define,
             log: this.log,
             config: this.config,
             on: event.on
-        };
+        },
         
-        frame.config.addRule = config.addRule;
-        frame.config.addItem = config.addItem;
+        cfg = frame.config;
+        
+        cfg.addRule = config.addRule;
+        cfg.addItem = config.addItem;
     };
     
 } );
