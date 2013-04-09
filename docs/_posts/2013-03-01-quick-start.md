@@ -31,6 +31,7 @@ define( 'output', ['exports'], function( exports ){
         document.write( message );
     };
 } );
+
 define( 'hello', function(){
     
     return 'hello';
@@ -83,4 +84,4 @@ define(['require','output','world'], function( require, output, world ){
     
 # 示例 {#example}
 
-[hello world](/examples/hello-world/runner.html)
+[hello world debug](/examples/hello-world/runner.html?lofty.debug=true)
