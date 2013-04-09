@@ -1,0 +1,44 @@
+/**
+ * for lofty.fangdeng.org
+ * @author Edgar
+ * @date 130409
+ * */
+ 
+@import url(http://static.edgarhoo.net/sys/reset/base.css);
+@import url(http://static.edgarhoo.net/sys/highlight/pygments.css);
+
+html{
+    color: #333;
+}
+article h1{
+    font-size: 30px;
+}
+
+article h2{
+    font-size: 26px;
+}
+
+article h3{
+    font-size: 20px;
+}
+
+article h4{
+    font-size: 18px;
+}
+footer{
+    padding-top: 48px;
+}
+
+p code{
+    border: 1px solid #eaeaea;
+    background: #f8f8f8;
+    padding: 2px 5px;
+    margin: 0 2px;
+    border-radius: 3px;
+}
+pre{
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    padding: 6px 10px;
+    border-radius: 3px;
+}

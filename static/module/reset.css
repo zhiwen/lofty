@@ -1,0 +1,107 @@
+/**
+ * base.css
+ * 
+ * @author Edgar
+ * @build 09.27.2012
+ * */
+
+html{
+    background: #fff;
+    color: #000;
+    overflow-y: scroll;
+}
+
+body{
+    margin: 0;
+    font: 16px/1.5 "Helvetica Neue", Georgia, "\6587\6CC9\9A7F\5FAE\7C73\9ED1", "\5FAE\8F6F\96C5\9ED1", Times, sans-serif;
+    padding: 0 72px 24px;
+}
+
+img, fieldset{
+    border: 0 none;
+}
+
+article, aside, footer, header, hgroup, nav, section, /* section elements */
+figcaption, /* grouping elements */
+details, summary{ /* interactive elements */
+    display: block;
+}
+
+menu{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+figure{
+    display: block;
+    margin: 0;
+}
+
+output,time{
+    display: inline;
+}
+
+mark{
+    display: inline;
+    background: yellow;
+    color: #000;
+}
+
+address{
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+blockquote{
+    padding: 3px 6px;
+    background-color: #f0f0f0;
+}
+
+table{
+    border-spacing: 1px;
+}
+
+table tr:nth-child(2n){
+    background: #f0f0f0;
+}
+
+table tr:nth-child(2n+1){
+    background: #fff;
+}
+
+table thead tr:nth-child(2n+1){
+    background: #f0f0f0;
+}
+
+table th,
+table td{
+    padding: 2px 8px;
+}
+
+a:link,
+a:visited{
+    color: #00e;
+}
+
+a:hover,
+a:active{
+    color: #c00;
+    text-decoration: underline;
+}
+
+a:focus{
+    outline: #ff7d00 dashed 1px;
+}
+
+a[rel*="external"]{
+    background: url(http://static.edgarhoo.net/img/icon/out-site.png) no-repeat right;
+    padding-right: 16px !important;
+}
+
+iframe{
+    border: 0 none;
+}
