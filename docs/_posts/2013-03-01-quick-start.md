@@ -8,6 +8,7 @@ layout: default
 * [引入Lofty](#import-lofty)
 * [模块书写](#module-write)
 * [调试](#debug)
+* [示例](#example)
 
 # 引入Lofty {#import-lofty}
 
@@ -80,4 +81,6 @@ define(['require','output','world'], function( require, output, world ){
         debug: true
     });
     
+# 示例 {#example}
 
+[hello world](/examples/hello-world/runner.html)
