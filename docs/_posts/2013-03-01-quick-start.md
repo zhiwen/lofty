@@ -12,13 +12,15 @@ layout: default
 
 # 引入Lofty {#import-lofty}
 
-直接在页面中用script引用：
+直接在页面中通过标签引用：
 
     <script src="http://style.china.alibaba.com/fdevlib/js/lofty/port/classic.js"></script>
+    <link href="http://style.china.alibaba.com/fdevlib/css/lofty/port/classic.css" rel="stylesheet"/>
     
 或者，加入到merge文件中：
 
     ImportJavscript.url('http://style.china.alibaba.com/fdevlib/js/lofty/port/classic.js');
+    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/classic.css);
 
 # 模块书写 {#module-write}
 
