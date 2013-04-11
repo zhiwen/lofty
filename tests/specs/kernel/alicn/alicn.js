@@ -9,11 +9,11 @@ describe( 'lofty/kernel/alicn', function(){
     var configCache = lofty.cache.config,
         id2url = lofty.cache.kernel.id2url;
     
-    id2url && describe( 'configÅäÖÃ', function(){
+    id2url && describe( 'configé…ç½®', function(){
         
         id2url = id2url.exports;
         
-        it( 'Ê±¼ä´ÁhasStampÎªtrue', function(){
+        it( 'æ—¶é—´æˆ³hasStampä¸ºtrue', function(){
             var a = { id: 'jioje/wwfdfe' };
             id2url(a);
             
@@ -21,11 +21,11 @@ describe( 'lofty/kernel/alicn', function(){
             expect(a.url.indexOf('lofty.stamp=')>0).toEqual(true);
         } );
         
-        it( 'ÆôÓÃhref debug±ê¼Ç', function(){
+        it( 'å¯ç”¨href debugæ ‡è®°', function(){
             expect(configCache.debug).toEqual(location.href.indexOf('lofty.debug=true')>0);
         } );
         
-        it( 'resolve´¦Àílofty/avid/sys', function(){
+        it( 'resolveå¤„ç†lofty/avid/sys', function(){
             var a = { id: 'lofty/tests/a' };
             var b = { id: 'lofty/tests/a.css' };
             var c = { id: 'avid/tests/a' };
@@ -49,7 +49,7 @@ describe( 'lofty/kernel/alicn', function(){
         } );
     } );
     
-    describe( 'Éú³ÉÓ¦ÓÃ¿ò¼ÜÃû', function(){
+    describe( 'ç”Ÿæˆåº”ç”¨æ¡†æ¶å', function(){
         it( 'lofty.appframe', function(){
             lofty.appframe('alpha');
             

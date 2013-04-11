@@ -83,7 +83,7 @@ describe( 'lofty/kernel/deferred', function(){
         
     } );
     
-    it( 'deferred²»ÑÓÊ±', function(){
+    it( 'deferredä¸å»¶æ—¶', function(){
         var a = [];
         
         var b = function( promise ){
@@ -114,7 +114,7 @@ describe( 'lofty/kernel/deferred', function(){
         
     } );
     
-    it( 'deferred²¿·ÖÑÓÊ±²¿·Ö²»ÑÓÊ±', function(){
+    it( 'deferredéƒ¨åˆ†å»¶æ—¶éƒ¨åˆ†ä¸å»¶æ—¶', function(){
         var a = [];
         
         var b = function( promise ){

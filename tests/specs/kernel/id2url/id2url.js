@@ -25,7 +25,7 @@ describe( 'lofty/kernel/id2url', function(){
         expect(b.url).toEqual(baseUrl+'wegf.css');
     } );
     
-    it( 'id2url´æÔÚalias', function(){
+    it( 'id2urlå­˜åœ¨alias', function(){
         var a = { id: 'dj' };
         var b = { id: 'uj' };
         lofty.config({
@@ -42,7 +42,7 @@ describe( 'lofty/kernel/id2url', function(){
         expect(b.url).toEqual(baseUrl+'hd0efjj.js');
     } );
     
-    it( 'id2url´æÔÚresolve', function(){
+    it( 'id2urlå­˜åœ¨resolve', function(){
         var a = { id: 'ed/ge'};
         var b = { id: 'ws/ged' };
         lofty.config({
@@ -68,7 +68,7 @@ describe( 'lofty/kernel/id2url', function(){
         expect(b.url).toEqual(baseUrl+'wsfd/ged.js');
     });
     
-    it( 'id2url´æÔÚstamp', function(){
+    it( 'id2urlå­˜åœ¨stamp', function(){
         var a = { id: 'yhm/ghi' };
         var b = { id: 'ij/bjop' };
         lofty.config({
