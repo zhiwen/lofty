@@ -19,10 +19,10 @@ describe( 'lofty/kernel/debug', function(){
         });
         var b = lofty.log;
         
-        a('ÕâĞĞ´òÓ¡²»³öÀ´','info');
-        a('ÕâĞĞÒ²´òÓ¡²»³öÀ´','warn')
-        b('ÕâÊÇ´òÓ¡ÈÕÖ¾','info');
-        b('ÕâÊÇ³ö´íÈÕÖ¾','warn');
+        a('è¿™è¡Œæ‰“å°ä¸å‡ºæ¥','info');
+        a('è¿™è¡Œä¹Ÿæ‰“å°ä¸å‡ºæ¥','warn')
+        b('è¿™æ˜¯æ‰“å°æ—¥å¿—','info');
+        b('è¿™æ˜¯å‡ºé”™æ—¥å¿—','warn');
         
         lofty.config({
             debug: originDebug

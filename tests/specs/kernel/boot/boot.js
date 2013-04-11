@@ -6,14 +6,14 @@
 
 describe( 'lofty/kernel/boot', function(){
 
-    describe( 'lofty¹Ø¼ü×Ö', function(){
-        it( '´æÔÚ¹Ø¼ü×Ölofty', function(){
+    describe( 'loftyå…³é”®å­—', function(){
+        it( 'å­˜åœ¨å…³é”®å­—lofty', function(){
             expect(lofty).toBeTruthy();
         } );
     } );
     
-    describe( 'lofty¶¨ÒåÄ£¿é', function(){
-        it( 'Ò»¾­¶¨Òå£¬¼´¿ÌÖ´ĞĞ', function(){
+    describe( 'loftyå®šä¹‰æ¨¡å—', function(){
+        it( 'ä¸€ç»å®šä¹‰ï¼Œå³åˆ»æ‰§è¡Œ', function(){
             var a, c;
             
             lofty( 'specs/kernel/boot/a', function(){
@@ -32,7 +32,7 @@ describe( 'lofty/kernel/boot', function(){
             expect(c).toEqual('bc');
         } );
         
-        it( 'ÖØ¸´¶¨Òå£¬Ö»È¡Ç°Õß', function(){
+        it( 'é‡å¤å®šä¹‰ï¼Œåªå–å‰è€…', function(){
             var a;
             
             lofty( 'specs/kernel/boot/d', function(){
@@ -51,7 +51,7 @@ describe( 'lofty/kernel/boot', function(){
         } );
     } );
     
-    describe( 'Ä¬ÈÏÄ£¿é', function(){
+    describe( 'é»˜è®¤æ¨¡å—', function(){
         it( 'module global', function(){
             var a;
             lofty( 'specs/kernel/boot/f', ['global'], function( global ){

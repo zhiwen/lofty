@@ -7,18 +7,18 @@
 describe( 'lofty/kernel/module', function(){
     
     
-    describe( 'define¹Ø¼ü×Ö', function(){
-        it( '´æÔÚ¹Ø¼ü×Ödefine', function(){
+    describe( 'defineå…³é”®å­—', function(){
+        it( 'å­˜åœ¨å…³é”®å­—define', function(){
             expect(define).toBeTruthy();
         } );
         
-        it( 'defineÊÇº¯Êı', function(){
+        it( 'defineæ˜¯å‡½æ•°', function(){
             expect(typeof define).toEqual('function');
         } );
     } );
     
     
-    describe( 'defineÓï·¨', function(){
+    describe( 'defineè¯­æ³•', function(){
         it( 'define(id, factory)', function(){
             var a;
             
@@ -103,7 +103,7 @@ describe( 'lofty/kernel/module', function(){
     } );
     
     
-    describe( 'require¹Ø¼üÄ£¿é', function(){
+    describe( 'requireå…³é”®æ¨¡å—', function(){
         it( 'require', function(){
             var a;
             
@@ -118,7 +118,7 @@ describe( 'lofty/kernel/module', function(){
             expect(a).toEqual('specs-kernel-module-g');
         } );
         
-        it( 'requireÖ»¶Á', function(){
+        it( 'requireåªè¯»', function(){
             var a;
             
             define(['require'], function(require){
@@ -133,7 +133,7 @@ describe( 'lofty/kernel/module', function(){
     } );
     
     
-    describe( 'exports¹Ø¼üÄ£¿é', function(){
+    describe( 'exportså…³é”®æ¨¡å—', function(){
         it( 'exports', function(){
             var a;
             
@@ -156,7 +156,7 @@ describe( 'lofty/kernel/module', function(){
             expect(a).toEqual('specs-kernel-module-i');
         } );
         
-        it( 'exports²»ÄÜ±»ÖØĞ´', function(){
+        it( 'exportsä¸èƒ½è¢«é‡å†™', function(){
             var a;
             
             define('specs/kernel/module/j', ['exports'], function(exports){
@@ -170,7 +170,7 @@ describe( 'lofty/kernel/module', function(){
             expect(a).not.toBe('specs-kernel-module-j');
         } );
         
-        it( 'return½«¸²¸Çexports', function(){
+        it( 'returnå°†è¦†ç›–exports', function(){
             var a;
             
             define('specs/kernel/module/k', ['exports'], function(exports){
@@ -188,7 +188,7 @@ describe( 'lofty/kernel/module', function(){
     } );
     
     
-    describe( 'module¹Ø¼üÄ£¿é', function(){
+    describe( 'moduleå…³é”®æ¨¡å—', function(){
         it( 'module.id', function(){
             var a;
             
@@ -220,7 +220,7 @@ describe( 'lofty/kernel/module', function(){
     } );
     
     
-    xdescribe( 'config¹Ø¼üÄ£¿é', function(){
+    xdescribe( 'configå…³é”®æ¨¡å—', function(){
         it( 'alias', function(){
             var a;
             

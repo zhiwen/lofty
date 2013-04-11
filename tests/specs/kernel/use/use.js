@@ -7,7 +7,7 @@
 describe( 'lofty/kernel/use', function(){
     
     describe( 'require.use', function(){
-        it( '异步使用模块', function(){
+        it( '寮傛浣跨敤妯″潡', function(){
             var a;
             
             runs(function(){
@@ -27,7 +27,7 @@ describe( 'lofty/kernel/use', function(){
             });
         } );
         
-        it( '重复异步使用模块', function(){
+        it( '閲嶅寮傛浣跨敤妯″潡', function(){
             var a, b, c;
             
             window.specsKernelUseB = 0;
@@ -55,7 +55,7 @@ describe( 'lofty/kernel/use', function(){
             });
         } );
         
-        it( '使用已存在的模块', function(){
+        it( '浣跨敤宸插瓨鍦ㄧ殑妯″潡', function(){
             var a;
             
             define(['require'], function(require){
@@ -67,7 +67,7 @@ describe( 'lofty/kernel/use', function(){
             expect(a).toEqual('specs-kernel-module-a');
         } );
         
-        it( '不能使用关键模块', function(){
+        it( '涓嶈兘浣跨敤鍏抽敭妯″潡', function(){
             var a = false, b;
             
             runs(function(){
@@ -89,7 +89,7 @@ describe( 'lofty/kernel/use', function(){
             });
         } );
         
-        it( '使用别名模块', function(){
+        it( '浣跨敤鍒悕妯″潡', function(){
             var a, b;
             
             lofty.config({
@@ -119,8 +119,8 @@ describe( 'lofty/kernel/use', function(){
         } );
     } );
     
-    describe( 'require.use支持循环依赖', function(){
-        it( '二级依赖', function(){
+    describe( 'require.use鏀寔寰幆渚濊禆', function(){
+        it( '浜岀骇渚濊禆', function(){
             var a;
             
             runs(function(){
@@ -140,7 +140,7 @@ describe( 'lofty/kernel/use', function(){
             });
         } );
         
-        it( '多级依赖', function(){
+        it( '澶氱骇渚濊禆', function(){
             var a, b, c;
             // e > f1 > f
             // f21 > f2 > 

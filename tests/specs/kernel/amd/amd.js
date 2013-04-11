@@ -6,8 +6,8 @@
 
 describe( 'lofty/kernel/amd', function(){
     
-    describe( 'defineÖ§³ÖÑ­»·ÒÀÀµ½âÎö', function(){
-        it( 'Ò»¼¶ÒÀÀµ', function(){
+    describe( 'defineæ”¯æŒå¾ªç¯ä¾èµ–è§£æ', function(){
+        it( 'ä¸€çº§ä¾èµ–', function(){
             var a, b, c;
             
             runs(function(){
@@ -29,7 +29,7 @@ describe( 'lofty/kernel/amd', function(){
             });
         } );
         
-        it( 'Ò»¡¢¶ş¼¶ÒÀÀµ', function(){
+        it( 'ä¸€ã€äºŒçº§ä¾èµ–', function(){
             var a, b;
             //   > d
             // e1 > e
@@ -50,7 +50,7 @@ describe( 'lofty/kernel/amd', function(){
             });
         } );
         
-        it( '¶à¼¶ÒÀÀµ', function(){
+        it( 'å¤šçº§ä¾èµ–', function(){
             var a, b, c;
             // e > f1 > f
             // f21 > f2 > 
@@ -75,7 +75,7 @@ describe( 'lofty/kernel/amd', function(){
             });
         } );
         
-        it( '±ğÃûÒÀÀµ', function(){
+        it( 'åˆ«åä¾èµ–', function(){
             var a;
             
             lofty.config({
@@ -99,7 +99,7 @@ describe( 'lofty/kernel/amd', function(){
             });
         } );
         
-        it( 'ÒÑ´æÔÚµÄÒÀÀµ', function(){
+        it( 'å·²å­˜åœ¨çš„ä¾èµ–', function(){
             var a;
             
             runs(function(){
@@ -117,7 +117,7 @@ describe( 'lofty/kernel/amd', function(){
             });
         } );
         
-        it( '¹Ø¼üÄ£¿éÒÀÀµ', function(){
+        it( 'å…³é”®æ¨¡å—ä¾èµ–', function(){
             var a;
             
             runs(function(){

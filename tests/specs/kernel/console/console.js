@@ -9,8 +9,8 @@ describe( 'lofty/kernel/console', function(){
     var console = lofty.cache.kernel.console.exports;
     
     it( 'console', function(){
-        console('ÕâĞĞÊÇ´òÓ¡ÈÕÖ¾','info');
-        console('ÕâĞĞÊÇ³ö´íÈÕÖ¾','warn');
+        console('è¿™è¡Œæ˜¯æ‰“å°æ—¥å¿—','info');
+        console('è¿™è¡Œæ˜¯å‡ºé”™æ—¥å¿—','warn');
     } );
     
 } );
