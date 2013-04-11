@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>lofty/port/flying.css - Lofty Specs Render - Lofty单元测试</title>
+        <link href="/src/port/flying.css" rel="stylesheet"/>
+        <style>
+            #footer{ margin-top: 20px; }
+            .layout{ margin-top: 8px; background: #f0f0f0; }
+            .layout div{ text-align: center; }
+            .main-wrap{ background: pink; }
+            .grid-sub{ background: gold; }
+            .grid-extra{ background: aqua; }
+            
+            .layout-e5m0s6 .main-wrap{ margin:0 240px 0 200px; }
+            .layout-e5m0s6 .grid-sub{ width:232px; margin-left:-232px; }
+            .layout-e5m0s6 .grid-extra{ width:192px; margin-left:-100%; }
+
+            .layout-s6m0e5 .main-wrap{ margin: 0 200px 0 240px; }
+            .layout-s6m0e5 .grid-sub{ width: 232px; margin-left: -100%; }
+            .layout-s6m0e5 .grid-extra{ width: 192px; margin-left: -192px; }
+
+            .layout-m0s6e5 .main-wrap{ margin-right: 440px; }
+            .layout-m0s6e5 .grid-sub{ width: 232px; margin-left: -432px; }
+            .layout-m0s6e5 .grid-extra{ width: 192px; margin-left: -192px; }
+
+            .layout-m0e5s6 .main-wrap{ margin-right: 440px; }
+            .layout-m0e5s6 .grid-sub{ width: 232px; margin-left: -232px; }
+            .layout-m0e5s6 .grid-extra{ width: 192px; margin-left: -432px; }
+        </style>
+    </head>
+    <body>
+        <div id="doc">
+            <div id="header">
+                header
+            </div>
+            <div id="content" class="screen">
+                <div class="layout layout-e5m0s6">
+                    <div class="grid-main"><div class="main-wrap">grid main 512</div></div>
+                    <div class="grid-sub">grid sub 232px</div>
+                    <div class="grid-extra">grid extra 192px</div>
+                </div>
+                <div class="layout layout-s6m0e5">
+                    <div class="grid-main"><div class="main-wrap">grid main 512</div></div>
+                    <div class="grid-sub">grid sub 232px</div>
+                    <div class="grid-extra">grid extra 192px</div>
+                </div>
+                <div class="layout layout-m0s6e5">
+                    <div class="grid-main"><div class="main-wrap">grid main 512</div></div>
+                    <div class="grid-sub">grid sub 232px</div>
+                    <div class="grid-extra">grid extra 192px</div>
+                </div>
+                <div class="layout layout-m0e5s6">
+                    <div class="grid-main"><div class="main-wrap">grid main 512</div></div>
+                    <div class="grid-sub">grid sub 232px</div>
+                    <div class="grid-extra">grid extra 192px</div>
+                </div>
+            </div>
+            <div id="footer">
+                footer
+            </div>
+        </div>
+    </body>
+</html>

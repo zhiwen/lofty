@@ -30,3 +30,36 @@
 	height: 0;
 	content: "\0020";
 }
+
+
+/**
+ * layout命名规则: .layout-sXm0eY
+约定：
+1. Grid ＝ 栅格单元的颗粒大小，中文站支持两种： 40px、30px
+2. W ＝ 页面宽度，中文站支持两种： 952px、990px。当Grid=32px||24px，W为952px，Gap为8px；当Grid＝30px，W为990px，Gap为10px
+3. Gap ＝ 栅格之间的间距。当W＝952px，Gap＝8px；当W＝990px，Gap＝10px
+4. sX 表示 gird-sub 的宽度 ＝ X * Grid - Gap
+5. eY  表示 grid-extra 的宽度 ＝ Y * Grid - Gap
+4. m0 表示 grid-main 的宽度 ＝ W - ( X + Y ) * Grid，始终为m0
+5. s-m-e 的顺序，表示各列的排列顺序
+
+例：layout-e5m0s6 当Grid＝40px，W＝952px时，表示 grid-extra(192) | grid-main(512) | grid-sub(232)
+
+.layout-e5m0s6 .main-wrap{ margin:0 240px 0 200px; }
+.layout-e5m0s6 .grid-sub{ width:232px; margin-left:-232px; }
+.layout-e5m0s6 .grid-extra{ width:192px; margin-left:-100%; }
+
+.layout-s6m0e5 .main-wrap{ margin: 0 200px 0 240px; }
+.layout-s6m0e5 .grid-sub{ width: 232px; margin-left: -100%; }
+.layout-s6m0e5 .grid-extra{ width: 192px; margin-left: -192px; }
+
+.layout-m0s6e5 .main-wrap{ margin-right: 440px; }
+.layout-m0s6e5 .grid-sub{ width: 232px; margin-left: -432px; }
+.layout-m0s6e5 .grid-extra{ width: 192px; margin-left: -192px; }
+
+.layout-m0e5s6 .main-wrap{ margin-right: 440px; }
+.layout-m0e5s6 .grid-sub{ width: 232px; margin-left: -232px; }
+.layout-m0e5s6 .grid-extra{ width: 192px; margin-left: -432px; }
+
+ *
+ */
