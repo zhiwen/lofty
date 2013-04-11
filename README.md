@@ -1,3 +1,81 @@
+# documentation
+
+fangdeng.org
+    club.fangdeng.org
+    weekly.fangdeng.org
+
+    work.fangdeng.org
+    
+    wiki.fangdeng.org
+    
+    lib.fangdeng.org
+        fdev4
+        fdev3
+        
+        lofty.fangdeng.org
+            docs
+            api
+        
+
+# classify
+
+
+lofty/kernel 核心模块
+lofty/port 核心出口文件
+lofty/alicn 中文站专用模块
+    web-alitalk
+    web-addons
+    util-cookie
+    web-suggestion
+    
+lofty/adapter 适配fdev4专用模块
+
+lofty/ecma 语言相关，deferred,callbacks,observer
+    util-date
+    util-json
+    web-websocket
+    
+lofty/device 设备相关，浏览器，鼠标，键盘，屏幕，and etc.
+    ui-mouse
+    util-histroy 浏览器历史
+    web-browser
+    util-storage
+
+lofty/dhtml 
+    ui-draggable 拖动
+    ui-droppable 拖放
+    ui-portlets 模块排序
+    ui-sortable 排序
+    ui-tabs 切换
+    ui-scrollto 平滑滚动
+    ui-position 定位
+    
+avid 三方库
+    web-sweet 模板语言
+
+
+ui-autocomplete
+ui-colorbox 取色盒
+ui-combobox 模拟下拉
+ui-datepicker 日历
+ui-dialog 浮层
+ui-progressbar 进度条
+ui-timer 计时器
+
+
+
+web-stylesheet
+web-dataLazyload
+
+
+
+web-pca 省市区三级联动
+web-valid 验证
+
+util-debug del
+
+
+
 #pre
 
 1. src、doc、ut同步进行
@@ -8,40 +86,9 @@
 
 lang -> unit -> zone -> mod -> region -> grid -> layout -> district -> layer
 
-#fine.css
+# lang
 
-1. lang/reset
-1. lang/common
-1. lang/grid 只有最简单的grid公共样式
-
-1. lang/editor?
-
-#fine.js
-
-1. define.js
-    1. 一切都是模块
-    1. 一切都要简单，看到什么就是什么
-    1. 统一的书写格式，define( id?, dependencies?, factory )
-    1. id，字符串，跟路径相关
-    1. dependencies，数组
-    1. factory，所有依赖必须以模块方式引入，不支持require/exports/module的自由变量
-    1. define是同步的，不支持AMD
-    1. 模块不支持domready
-    1. require，参数等同id
-    1. exports，等于module.exports
-    1. module，返回自己
-    1. config以模块方式
-    1. 支持id别名
-    1. fv.noConflict挂靠在框架名
-    1. fv.log，代替console.info
-    1. fv.debug，在url加，即进入debug状态
 1. domready.js
-1. amd.js
-1. async.js
-1. config.js
-
-#lang
-
 1. 常用函数：extendIf、substitute etc.
 1. exposure.js 曝光
 1. observer.js 观察者
@@ -51,19 +98,6 @@ lang -> unit -> zone -> mod -> region -> grid -> layout -> district -> layer
 
 1. module.js
 1. cookie.js
-
-
-#action:
-
-1. fdev5的名字:lofty
-
-
-#remark
-1. 对id的解析，自行处理，由async.config来定义
-1. 
-
-
-
 
 #Roadmap
 
