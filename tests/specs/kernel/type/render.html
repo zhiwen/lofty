@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>lofty/kernel/type.css - Lofty Specs Render - Lofty单元测试</title>
+        <link href="/src/kernel/reset.css" rel="stylesheet"/>
+        <link href="/src/kernel/type.css" rel="stylesheet"/>
+        <style>
+            #doc{ width: 952px; margin: 0 auto; }
+            .row{ margin-top: 20px; background: #f0f0f0; }
+            .col{ width: 300px; text-indent: 20px; }
+            .row span{ padding-left: 20px; }
+            .blue{ background: blue; }
+            .pink{ background: pink; }
+            .gold{ background: gold; }
+            .offset{ top: 5px; left: 20px; }
+        </style>
+    </head>
+    <body>
+        <div id="doc">
+            <div class="row">
+                <div class="fd-clr blue">
+                    <div class="fd-left col pink">
+                        left
+                    </div>
+                    <div class="fd-right col gold">
+                        right
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="blue" style="_height: 100%;">
+                    <div class="fd-left col pink">
+                        left
+                    </div>
+                    <div class="fd-right col gold">
+                        right
+                    </div>
+                    <div class="fd-clear"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="fd-hide">hide</div>
+                <span class="fd-show col pink">show</span>
+            </div>
+            <div class="row">
+                <div class="fd-locate offset col pink">locate</div>
+            </div>
+            <div class="row">
+                <span class="fd-cny">&yen;</span>
+            </div>
+            <div class="row">
+                <span class="fd-gray">text gray</span>
+                <span class="fd-bold">text bold</span>
+            </div>
+        </div>
+    </body>
+</html>

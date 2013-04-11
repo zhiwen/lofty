@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>lofty/port/op.css - Lofty Specs Render - Lofty单元测试</title>
+        <link href="/src/port/op.css" rel="stylesheet"/>
+        <style>
+            #footer{ margin-top: 20px; }
+            .layout{ margin-top: 8px; background: #f0f0f0; }
+            .layout div{ text-align: center; }
+            .grid,
+            .grid-main{ background: pink; }
+            .grid-sub,
+            .grid-extra,
+            .grid-main .main-warp{ background: gold; }
+            
+        </style>
+    </head>
+    <body>
+        <div id="doc">
+            <div id="header">
+                header
+            </div>
+            <div id="content" class="screen">
+                <div class="layout layout-col">
+                    <div class="grid">grid 990</div>
+                </div>
+                <div class="layout layout-2col">
+                    <div class="grid">grid 490</div>
+                    <div class="grid grid-fixed">grid 490</div>
+                </div>
+                <div class="layout layout-4col">
+                    <div class="grid">grid 240</div>
+                    <div class="grid">grid 240</div>
+                    <div class="grid">grid 240</div>
+                    <div class="grid grid-fixed">grid 240</div>
+                </div>
+                <div class="layout layout-e5m0s6">
+                    <div class="grid-extra">grid 200</div>
+                    <div class="grid-main">grid 530</div>
+                    <div class="grid-sub">grid 240</div>
+                </div>
+                <div class="layout layout-flying-e5m0s6">
+                    <div class="grid-main"><div class="main-warp">flying grid 530</div></div>
+                    <div class="grid-sub">flying grid 240</div>
+                    <div class="grid-extra">flying grid 200</div>
+                </div>
+                <div class="layout layout-s8m0e8">
+                    <div class="grid-sub">grid 320</div>
+                    <div class="grid-main">grid 330</div>
+                    <div class="grid-extra">grid 320</div>
+                </div>
+                <div class="layout layout-s5m0">
+                    <div class="grid-sub">grid 200</div>
+                    <div class="grid-main">grid 780</div>
+                </div>
+                <div class="layout layout-s8m0">
+                    <div class="grid-sub">grid 320</div>
+                    <div class="grid-main">grid 660</div>
+                </div>
+                <div class="layout layout-m0s8">
+                    <div class="grid-main">grid 660</div>
+                    <div class="grid-sub">grid 320</div>
+                </div>
+                <div class="layout layout-m0s6">
+                    <div class="grid-main">grid 740</div>
+                    <div class="grid-sub">grid 240</div>
+                </div>
+            </div>
+            <div id="footer">
+                footer
+            </div>
+        </div>
+    </body>
+</html>
