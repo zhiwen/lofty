@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>{{page.title}} - Lofty API</title>
+        <link href="/static/page/default.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="lofty-api">
+            <header>
+                <h1>{{page.title}}</h1>
+            </header>
+            <article>
+                {{ content }}
+            </article>
+            {% include footer.html %}
+        </div>
+        <script src="/static/page/api.js"></script>
+    </body>
+</html>

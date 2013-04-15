@@ -11,20 +11,23 @@ body{
     color: #333;
     line-height: 1.6;
 }
+header h1{
+    font-size: 2.4em;
+}
 article h1{
-    font-size: 30px;
+    font-size: 2em;
 }
 
 article h2{
-    font-size: 26px;
+    font-size: 1.8em;
 }
 
 article h3{
-    font-size: 20px;
+    font-size: 1.4em;
 }
 
 article h4{
-    font-size: 18px;
+    font-size: 1.2em;
 }
 footer{
     padding-top: 48px;
@@ -33,11 +36,13 @@ footer{
 p code{
     border: 1px solid #eaeaea;
     background: #f8f8f8;
-    padding: 0 5px;
+    padding: 1px 5px;
     margin: 0 2px;
     border-radius: 3px;
+    color: #d14;
 }
 p + pre,
+h1 + pre,
 h2 + pre,
 h3 + pre,
 h4 + pre,
@@ -46,4 +51,14 @@ h5 + pre{
     background: #f8f8f8;
     padding: 6px 10px;
     border-radius: 3px;
+    max-width: 1200px;
+}
+iframe{
+    width: 100%;
+}
+.demo{
+    border: 1px solid #ccc;
+    margin: 24px 0;
+    padding: 16px;
+    max-width: 1200px;
 }

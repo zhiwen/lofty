@@ -26,51 +26,45 @@ layout: default
 
 假如存在`output`、`hello`、`world`三个模块如下：
 
-{% highlight js %}
-define( 'output', ['exports'], function( exports ){
-    
-    exports.page = function( message ){
-        document.write( message );
-    };
-} );
+    define( 'output', ['exports'], function( exports ){
+        
+        exports.page = function( message ){
+            document.write( message );
+        };
+    } );
 
-define( 'hello', function(){
-    
-    return 'hello';
-} );
+    define( 'hello', function(){
+        
+        return 'hello';
+    } );
 
-define( 'world', ['module'], function( module ){
-    
-    module.exports = 'world';
-});
-{% endhighlight %}
+    define( 'world', ['module'], function( module ){
+        
+        module.exports = 'world';
+    });
 
 现在想要在页面上输出`hello world`，可以这么做：
 
-{% highlight js %}
-define(['require','output','world'], function( require, output, world ){
-    
-    var hello = require('hello');
-    
-    output.page( hello + ' ' + world );
-} );
-{% endhighlight %}
+    define(['require','output','world'], function( require, output, world ){
+        
+        var hello = require('hello');
+        
+        output.page( hello + ' ' + world );
+    } );
 
 # 调试 {#debug}
 
 若要打印调试信息出来，可以使用`lofty.log`函数，将上一个匿名模块改写之：
 
-{% highlight js %}
-define(['require','output','world'], function( require, output, world ){
-    
-    var hello = require('hello');
-    
-    lofty.log(hello);
-    lofty.log(world);
-    
-    output.page( hello + ' ' + world );
-} );
-{% endhighlight %}
+    define(['require','output','world'], function( require, output, world ){
+        
+        var hello = require('hello');
+        
+        lofty.log(hello);
+        lofty.log(world);
+        
+        output.page( hello + ' ' + world );
+    } );
 
 `lofty.log`只有在debug状态才会输出内容
 
