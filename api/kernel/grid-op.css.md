@@ -1,5 +1,5 @@
 ---
-title: lofty/kernel/gridOp
+title: lofty/kernel/gridOp.css
 layout: api
 ---
 

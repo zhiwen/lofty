@@ -1,5 +1,5 @@
 ---
-title: lofty/kernel/gridFloat
+title: lofty/kernel/gridFloat.css
 layout: api
 ---
 

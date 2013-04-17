@@ -1,5 +1,5 @@
 ---
-title: lofty/kernel/gridWide
+title: lofty/kernel/gridWide.css
 layout: api
 ---
 

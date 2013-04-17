@@ -33,7 +33,8 @@ footer{
     padding-top: 48px;
 }
 
-p code{
+p code,
+li code{
     border: 1px solid #eaeaea;
     background: #f8f8f8;
     padding: 1px 5px;

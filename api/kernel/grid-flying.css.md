@@ -1,5 +1,5 @@
 ---
-title: lofty/kernel/gridFlying
+title: lofty/kernel/gridFlying.css
 layout: api
 ---
 
