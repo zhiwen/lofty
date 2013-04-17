@@ -14,8 +14,6 @@
     <property name="gcc.jar" location="${build.dir}/compiler.jar"/>
     <property name="charset" value="utf-8"/>
 
-    <property name="starter.debug.file" value="${dist.dir}/starter-debug.js"/>
-    <property name="starter.file" value="${dist.dir}/starter.js"/>
     <property name="classic.debug.file" value="${dist.dir}/classic-debug.js"/>
     <property name="classic.file" value="${dist.dir}/classic.js"/>
     <property name="aio.debug.file" value="${dist.dir}/aio-debug.js"/>
@@ -23,17 +21,6 @@
 
     <target name="concat">
         <mkdir dir="${dist.dir}"/>
-        <concat destfile="${starter.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
-            <path path="${kernel.dir}/boot.js"/>
-            <path path="${kernel.dir}/lang.js"/>
-            <path path="${kernel.dir}/event.js"/>
-            <path path="${kernel.dir}/config.js"/>
-            <path path="${kernel.dir}/alias.js"/>
-            <path path="${kernel.dir}/module.js"/>
-            <path path="${kernel.dir}/console.js"/>
-            <path path="${kernel.dir}/debug.js"/>
-            <path path="${kernel.dir}/alicn.js"/>
-        </concat>
         
         <concat destfile="${classic.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
             <path path="${kernel.dir}/boot.js"/>
@@ -108,17 +95,6 @@
         <concat destfile="${classic.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
             <path path="${license.file}.js"/>
             <path path="${classic.debug.file}.tmp"/>
-        </concat>
-        
-        <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
-        <replaceregexp file="${license.file}.js" match="@EDITION" replace="Starter" flags="g" encoding="${charset}"/>
-        <concat destfile="${starter.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <path path="${license.file}.js"/>
-            <path path="${starter.file}.tmp"/>
-        </concat>
-        <concat destfile="${starter.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <path path="${license.file}.js"/>
-            <path path="${starter.debug.file}.tmp"/>
         </concat>
         
         <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
