@@ -1,6 +1,6 @@
 ---
 title: Lofty Quick Start
-layout: default
+layout: docs
 ---
 
 ## Table of Contents

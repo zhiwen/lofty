@@ -1,6 +1,6 @@
 ---
 title: Lofty基本语法
-layout: default
+layout: docs
 ---
 
 ## Table of Contents

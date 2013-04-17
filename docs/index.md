@@ -1,12 +1,12 @@
 ---
 title: Lofty Docs
-layout: default
+layout: docs
 ---
 
-<ul>
-{% for post in site.pages %}
-    {% if post.url contains "/docs" %}
-        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endif %}
-{% endfor %}
-</ul>
+
+* [Quick Start](/docs/quick-start.html)
+* [基本语法](/docs/grammar.html)
+* [迁移指南](/docs/migration-guides.html)
+* [Why Lofty?](/docs/why-lofty.html)
+* [Roadmap](/docs/roadmap.html)
+

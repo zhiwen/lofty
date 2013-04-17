@@ -1,15 +1,13 @@
 ---
 title: 迁移指南
-layout: default
+layout: docs
 ---
 
 ## Table of Contents
 
 * [Lofty CSS与fdev4 CSS的差异](#difference-lofty-fdev4-css)
-* [保留fdev4](#keep-fdev4)
-* [逐步移除fdev4](#remove-fdev4)
-    * [移除fdev4 JS](#remove-fdev4-js)
-    * [移除fdev4 CSS](#remove-fdev4-css)
+* [使用Lofty CSS](#use-lofty-css)
+* [使用Lofty JS](#use-lofty-js)
 
 不论何种情况，在中文站环境下，使用Lofty时，请先创建自己业务线的应用框架，当然也可以数个业务线共用一个
 
@@ -21,9 +19,18 @@ Lofty CSS基本上继承了fdev4 CSS，把四个基本不用的class删掉了，
 
 `.fd-inline`、`.fd-lump`、`.fd-visible`、`.fd-hidden`
 
-# 保留fdev4 {#keep-fdev4}
+## 使用Lofty CSS {#use-lofty-css}
 
-此种情况下，只将Lofty JS文件加入原有的merge文件顶部，旧代码均不改动
+若没有用到`.fd-inline`、`.fd-lump`、`.fd-visible`、`.fd-hidden`这个class，可以用相应Lofty CSS版本直接替换
+
+    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/float.css);
+    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/wide.css);
+    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/flying.css);
+    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/op.css);
+
+# 使用Lofty JS {#use-lofty-js}
+
+将Lofty JS文件加入原有的merge文件顶部，旧代码均不改动
 
 在应用框架中，可以加入如下的模块：
 
@@ -37,27 +44,3 @@ Lofty CSS基本上继承了fdev4 CSS，把四个基本不用的class删掉了，
         var $el = $('.class');
         //todo sth
     });
-
-# 逐步移除fdev4 {#remove-fdev4}
-
-fdev4可以作为一个三方库存在于Lofty架构之下，像使用jQuery一样使用，但从长久看，终究是要慢慢退出历史的
-
-## 移除fdev4 JS {#remove-fdev4-js}
-
-直接使用以下两个文件代替fdev4的`fdev-min.js`
-
-    ImportJavscript.url('http://style.china.alibaba.com/fdevlib/js/avid/jquery/jquery-latest.js');
-    ImportJavscript.url('http://style.china.alibaba.com/fdevlib/js/lofty/adapter/gears.js');
-    
-**但要注意，`avid/jquery/jqueryLatest`的jQuery版本是1.8.3，使用时仍然可使用`require('jquery')`**
-
-**若要这么做，请回归功能**
-
-## 移除fdev4 CSS {#remove-fdev4-css}
-
-若没有用到`.fd-inline`、`.fd-lump`、`.fd-visible`、`.fd-hidden`这个class，可以用相应Lofty CSS版本替换
-
-    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/float.css);
-    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/wide.css);
-    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/flying.css);
-    @import url(http://style.china.alibaba.com/fdevlib/css/lofty/port/op.css);
