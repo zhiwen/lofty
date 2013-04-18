@@ -1,0 +1,6 @@
+<div id="menu">
+    <a class="home" href="/">Home</a>
+    {% if page.layout == "api" or page.layout == "docs" %}
+    <a class="index" href="/{{page.layout}}">Table of Contents</a>
+    {% endif %}
+</div>

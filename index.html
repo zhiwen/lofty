@@ -2,20 +2,48 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Lofty</title>
+        <title>Lofty, Fangdeng Team Fifth Generation Basic Framework</title>
+        <link href="/static/main.css" rel="stylesheet"/>
     </head>
     <body>
-        <h1>Lofty, Fangdeng Team Fifth Generation Basic Framework</h1>
-        <ul>
-            <li><a href="https://github.com/edgarhoo/lofty/">git repo</a></li>
-            <li><a href="/docs/quick-start.html">Quick Start</a></li>
-            <li><a href="/docs/grammar.html">基本语法</a></li>
-            <li><a href="/docs/migration-guides.html">迁移指南</a></li>
-            <li><a href="/tests/specs/port/classic/runner.html">单元测试</a></li>
-            <li><a href="/api">API</a></li>
-            <li><a href="/docs/why-lofty.html">Why Lofty?</a></li>
-            <li><a href="/docs/roadmap.html">Roadmap</a></li>
-        </ul>
-        
+        <div id="page" class="lofty-home">
+            <header>
+                <h1>Lofty, Fangdeng Team Fifth Generation Basic Framework</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/docs/quick-start.html">Quick Start</a></li>
+                        <li><a href="/docs">Documentation</a></li>
+                        <li><a href="/api">API</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <article>
+                <h2>Lofty Port</h2>
+                <div id="index-port"></div>
+            </article>
+            <aside>
+                <h1>Fangdeng Solutions</h1>
+                <nav>
+                    <ul>
+                        <li><a href="http://lib.fangdeng.org/">fdevlib</a></li>
+                        <li><a href="http://gallery.fangdeng.org/">gallery</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <aside>
+                <h1>Document</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/docs/grammar.html">基本语法</a></li>
+                        <li><a href="/docs/migration-guides.html">迁移指南</a></li>
+                        <li><a href="/docs/why-lofty.html">Why Lofty?</a></li>
+                        <li><a href="/docs/roadmap.html">Roadmap</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <footer>Copyright (C) 2013 Fangdeng Team</footer>
+        </div>
+        <script src="/src/port/aio-debug.js"></script>
+        <script src="/static/main.js" data-tasks="renderApiInHome"></script>
     </body>
 </html>

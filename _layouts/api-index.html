@@ -3,18 +3,19 @@
     <head>
         <meta charset="utf-8"/>
         <title>{{page.title}} - Lofty Docs</title>
-        <link href="/static/page/default.css" rel="stylesheet"/>
+        <link href="/static/main.css" rel="stylesheet"/>
     </head>
     <body>
-        <div id="lofty-api-index">
+        <div id="page" class="lofty-api-index">
             <header>
                 <h1>{{page.title}}</h1>
+                {% include menu.html %}
             </header>
             <article>
                 {{ content }}
             </article>
             {% include footer.html %}
         </div>
-        <script src="/static/page/api-index.js"></script>
+        <script src="/static/main.js" data-tasks="renderApiInIndex"></script>
     </body>
 </html>

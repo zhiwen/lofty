@@ -1,6 +1,6 @@
 ---
 title: Lofty Docs
-layout: docs
+layout: default
 ---
 
 

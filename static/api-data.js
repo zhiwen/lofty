@@ -2,7 +2,7 @@
 layout: nil
 ---
 
-define( 'apiData', function(){
+define( 'fangdeng/lofty/apiData', function(){
     var kernelPath = {},
         kernelSort = [],
         portPath = {},
