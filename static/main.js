@@ -9,17 +9,10 @@ fd.config({
         if ( id === 'fangdeng/lofty/apiData' ){
             id = 'http://lofty.dev.la/static/api-data';
         }
-        alert(id)
+        
         return id;
     }
 });
-
-fd.on('compileFail',function( ex, mod){
-    console.info(mod.id + ' ' + ex.message)
-});
-fd.on( 'id2url', function( meta ){
-    alert(meta.url);
-} );
 
 
 define( 'renderDemo', function(){
@@ -129,6 +122,6 @@ define(['require'], function( require ){
         tasks = targetScript.getAttribute('data-tasks').split(',');
     
     tasks.forEach(function( task ){
-        require(task);
+        require.use(task);
     });
 });
