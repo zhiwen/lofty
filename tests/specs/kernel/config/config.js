@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/config', function(){
     
-    var config = lofty.cache.kernel.config.exports,
+    var config = lofty.cache.kernel.config,
         configCache = lofty.cache.config,
         configRules = lofty.cache.configRules;
     

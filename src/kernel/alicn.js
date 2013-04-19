@@ -2,7 +2,7 @@
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130409
+ * @date 130419
  * */
 
 
@@ -15,26 +15,29 @@ lofty( 'alicn', ['global','event','config'],
     
     var resolve = function( id ){
         
-        id = id.replace( rId, function( s, s1, s2 ){
-            return s1 + '-' + s2;
-        } ).toLowerCase();
-        
         var parts = id.split('/'),
             root = parts[0],
             type = rStyle.test( id ) ? 'css/' : 'js/';
         
         switch ( root ){
             case 'lofty':
-            case 'avid':
-                id = '/fdevlib/' + type + id;
+            case 'gallery':
+                id = 'fdevlib/' + type + id;
                 break;
             case 'sys':
-                id = '/sys/' + type + parts.slice( 1 ).join('/');
+                id = 'sys/' + type + parts.slice( 1 ).join('/');
                 break;
         }
         
         return id;
     };
+    
+    event.on( 'resolve', function( asset ){
+        
+        asset.url = asset.url.replace( rId, function( s, s1, s2 ){
+            return s1 + '-' + s2;
+        } ).toLowerCase();
+    } );
     
     this.config({
         hasStamp: true,

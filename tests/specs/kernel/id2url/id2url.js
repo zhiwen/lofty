@@ -1,12 +1,12 @@
 /**
  * @fileoverview unit testing for lofty/kernel/id2url
  * @author Edgar
- * @build 130324
+ * @build 130419
  * */
 
 describe( 'lofty/kernel/id2url', function(){
     
-    var id2url = lofty.cache.kernel.id2url.exports;
+    var id2url = lofty.cache.kernel.id2url;
     
     var baseUrl = lofty.cache.config.baseUrl;
     
@@ -67,6 +67,32 @@ describe( 'lofty/kernel/id2url', function(){
         expect(a.url).toEqual(baseUrl+'sw/ed/ge.js');
         expect(b.url).toEqual(baseUrl+'wsfd/ged.js');
     });
+    
+    it( 'id2url存在多个resolve', function(){
+        var a = { id: 'eed/ge'};
+        var b = { id: 'wss/ged' };
+        lofty.config({
+            resolve: function( id ){
+                var parts = id.split('/'),
+                    root = parts[0];
+                switch(root){
+                    case 'eed':
+                        id = 'sww/'+id;
+                        break;
+                    case 'wss':
+                        id = 'wsffd/'+parts.slice(1).join('/');
+                        break;
+                }
+                return id;
+            }
+        });
+        
+        id2url(a);
+        id2url(b);
+        
+        expect(a.url).toEqual(baseUrl+'sww/eed/ge.js');
+        expect(b.url).toEqual(baseUrl+'wsffd/ged.js');
+    } );
     
     it( 'id2url存在stamp', function(){
         var a = { id: 'yhm/ghi' };

@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/console', function(){
     
-    var console = lofty.cache.kernel.console.exports;
+    var console = lofty.cache.kernel.console;
     
     it( 'console', function(){
         console('这行是打印日志','info');

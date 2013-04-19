@@ -166,5 +166,33 @@ describe( 'lofty/kernel/use', function(){
                 expect(c).toEqual('f21h');
             });
         } );
+        
+        it( '间接异步依赖', function(){
+            var a;
+            
+            define('specs/kernel/use/m',['specs/kernel/use/m1','specs/kernel/use/n'],function(A,B){
+                return A+'m'+B;
+            });
+            
+            define('specs/kernel/use/n',['specs/kernel/use/n1'],function(A){
+                return A+'n';
+            });
+            
+            runs(function(){
+                define(['require'],function(require){
+                    require.use(['specs/kernel/use/m'],function(A){
+                        a = A;
+                    });
+                });
+            });
+            
+            waitsFor(function(){
+                return !!a;
+            });
+            
+            runs(function(){
+                expect(a).toEqual('m1mn1n');
+            });
+        } );
     } );
 } );

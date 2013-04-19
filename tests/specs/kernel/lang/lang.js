@@ -1,12 +1,12 @@
 /**
  * @fileoverview unit testing for lofty/kernel/lang
  * @author Edgar
- * @build 130322
+ * @build 130419
  * */
 
 describe( 'lofty/kernel/lang', function(){
     
-    var lang = lofty.cache.kernel.lang.exports;
+    var lang = lofty.cache.kernel.lang;
     
     function A(){}
     A.prototype.aa = 1;
@@ -80,8 +80,13 @@ describe( 'lofty/kernel/lang', function(){
             return item*idx*this*arr.length;
         }, 3 );
         
+        var c = lang.map( [], function( item, idx, arr ){
+            return idx;
+        } );
+        
         expect(a).toEqual([1,2,3,4]);
         expect(b).toEqual([0,24,72,144]);
+        expect(c).toEqual([]);
     } );
     
     it( 'lang.indexOf', function(){

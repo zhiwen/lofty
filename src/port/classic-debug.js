@@ -3,7 +3,7 @@
  * @module lofty/kernel/boot
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130307
+ * @date 130419
  * */
 
 
@@ -27,45 +27,22 @@
             deps = [];
         }
         
-        var module = cache[id] = {
-            id: id,
-            deps: deps,
-            factory: factory
-        };
-        
-        compile( module );
-    },
-    
-    compile = function( module ){
-        
-        if ( typeof module.factory === 'function' ){
-            var deps = getDeps( module );
+        if ( 'function' === typeof factory ){
+            var args = [];
             
-            module.exports = module.factory.apply( lofty, deps );
-        } else {
-            module.exports = module.factory;
+            for ( var i = 0, l = deps.length; i < l; i++ ){
+                args.push( require( deps[i] ) );
+            }
+            
+            factory = factory.apply( lofty, args );
         }
         
-        delete module.factory;
-    },
-    
-    getDeps = function( module ){
-        
-        var list = [],
-            deps = module.deps;
-        
-        for ( var i = 0, l = deps.length; i < l; i++ ){
-            list.push( require( deps[i] ) );
-        }
-        
-        return list;
+        cache[id] = factory;
     },
     
     require = function( id ){
         
-        var module = cache[id];
-        
-        return module ? module.exports : null;
+        return cache[id];
     };
     
     lofty.version = '0.1';
@@ -679,7 +656,7 @@ lofty( 'loader', ['global'], function( global ){
  * @module lofty/kernel/id2url
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130403
+ * @date 130419
  * */
 
 
@@ -721,6 +698,7 @@ lofty( 'id2url', ['global','event','config','alias'], function( global, event, c
         }
         
         asset.url = url ? url : asset.id;
+        event.emit( 'resolve', asset );
     },
     
     addBaseUrl = function( asset ){
@@ -860,7 +838,7 @@ lofty( 'request', ['global','event','loader','id2url'],
  * @module lofty/kernel/deferred
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130419
  * */
 
 
@@ -882,7 +860,7 @@ lofty( 'deferred', function(){
             resolved = 0,
             rejected = 0;
         
-        len = len || 1;
+        len = len || 0;
 
         var probe = function(){
             if ( resolved + rejected === len ){
@@ -925,6 +903,8 @@ lofty( 'deferred', function(){
             rejected++;
             probe();
         };
+        
+        probe();
     };
     
     var when = function(){
@@ -948,50 +928,26 @@ lofty( 'deferred', function(){
  * @module lofty/kernel/use
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130325
+ * @date 130419
  * */
 
 
 lofty( 'use', ['lang','event','module','request','deferred'],
     function( lang, event, module, request, deferred ){
     'use strict';
-    
-    var getIdsFetch = function( ids ){
-        
-        var idsFetch = [];
-        
-        lang.forEach( ids, function( id ){
-            if ( !module.has( id ) ){
-                idsFetch.push( id );
-            }
-        } );
-        
-        return idsFetch;
-    };
-    
+
     var use = {
-        realize: function( ids, callback, errorback ){
+        load: function( ids, callback, errorback ){
             
             lang.isArray( ids ) || ( ids = [ids] );
             
-            use.load( ids, function(){
+            use.fetch( ids, function(){
                 var args = lang.map( ids, function( id ){
                     return module.require( id );
                 } );
                 
                 callback && callback.apply( null, args );
             } /* call errorback */ );
-        },
-        
-        load: function( ids, callback ){
-            
-            var idsFetch = getIdsFetch( ids );
-            
-            if ( idsFetch.length ){
-                use.fetch( idsFetch, callback );
-            } else {
-                callback();
-            }
         },
         
         fetch: function( idsFetch, callback ){
@@ -1001,7 +957,7 @@ lofty( 'use', ['lang','event','module','request','deferred'],
                     return function( promise ){
                         var mod = module.get( id );
                         
-                        mod ? use.load( mod.deps, function(){
+                        mod ? use.fetch( mod.deps, function(){
                             promise.resolve();
                         } ) : promise.resolve();
                     }
@@ -1013,7 +969,7 @@ lofty( 'use', ['lang','event','module','request','deferred'],
             
             deferred.apply( null, lang.map( idsFetch, function( id ){
                 return function( promise ) {
-                    /* leave a question: need to delete this if? */
+                    
                     if ( module.has( id ) ){
                         promise.resolve();
                     } else {
@@ -1032,7 +988,7 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     event.on( 'makeRequire', function( require ){
         
         require.use = function( ids, callback, errorback ){
-            use.realize( ids, callback, errorback );
+            use.load( ids, callback, errorback );
         };
     } );
     
@@ -1084,7 +1040,7 @@ lofty( 'debug', ['global','config','console','request','require'],
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130409
+ * @date 130419
  * */
 
 
@@ -1097,26 +1053,29 @@ lofty( 'alicn', ['global','event','config'],
     
     var resolve = function( id ){
         
-        id = id.replace( rId, function( s, s1, s2 ){
-            return s1 + '-' + s2;
-        } ).toLowerCase();
-        
         var parts = id.split('/'),
             root = parts[0],
             type = rStyle.test( id ) ? 'css/' : 'js/';
         
         switch ( root ){
             case 'lofty':
-            case 'avid':
-                id = '/fdevlib/' + type + id;
+            case 'gallery':
+                id = 'fdevlib/' + type + id;
                 break;
             case 'sys':
-                id = '/sys/' + type + parts.slice( 1 ).join('/');
+                id = 'sys/' + type + parts.slice( 1 ).join('/');
                 break;
         }
         
         return id;
     };
+    
+    event.on( 'resolve', function( asset ){
+        
+        asset.url = asset.url.replace( rId, function( s, s1, s2 ){
+            return s1 + '-' + s2;
+        } ).toLowerCase();
+    } );
     
     this.config({
         hasStamp: true,
