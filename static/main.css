@@ -70,7 +70,7 @@ iframe{
 
 #page{
     max-width: 1200px;
-    margin-left: 100px;
+    margin: 0 20px 0 100px;
 }
 
 #page > article{
@@ -132,7 +132,7 @@ iframe{
 }
 .navbar nav{
     max-width: 1200px;
-    margin-left: 100px;
+    margin: 0 20px 0 100px;
 }
 .navbar nav ul{
     margin: 0;
