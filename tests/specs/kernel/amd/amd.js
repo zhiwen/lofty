@@ -1,7 +1,7 @@
 /**
  * @fileoverview unit testing for lofty/kernel/amd
  * @author Edgar
- * @build 130129
+ * @build 130419
  * */
 
 describe( 'lofty/kernel/amd', function(){
@@ -114,6 +114,32 @@ describe( 'lofty/kernel/amd', function(){
             
             runs(function(){
                 expect(a).toEqual('specs-kernel-module-a');
+            });
+        } );
+        
+        it( '间接异步依赖', function(){
+            var a;
+            
+            define('specs/kernel/amd/m',['specs/kernel/amd/m1','specs/kernel/amd/n'],function(A,B){
+                return A+'m'+B;
+            });
+            
+            define('specs/kernel/amd/n',['specs/kernel/amd/n1'],function(A){
+                return A+'n';
+            });
+            
+            runs(function(){
+                define(['specs/kernel/amd/m'],function(A){
+                    a = A;
+                });
+            });
+            
+            waitsFor(function(){
+                return !!a;
+            });
+            
+            runs(function(){
+                expect(a).toEqual('m1mn1n');
             });
         } );
         

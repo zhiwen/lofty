@@ -1,12 +1,12 @@
 /**
  * @fileoverview unit testing for lofty/kernel/deferred
  * @author Edgar
- * @build 130322
+ * @build 130419
  * */
 
 describe( 'lofty/kernel/deferred', function(){
     
-    var deferred = lofty.cache.kernel.deferred.exports;
+    var deferred = lofty.cache.kernel.deferred;
     
     it( 'deferred resolve', function(){
         var a = [];
@@ -144,6 +144,17 @@ describe( 'lofty/kernel/deferred', function(){
             expect(a[a.length-1]).toEqual(6);
             expect(a.sort()).toEqual([4,5,6]);
         });
+        
+    } );
+    
+    it( '没有deferred条件，默认resolve', function(){
+        var a;
+        
+        deferred.apply( null, [] ).then( function(){
+            a = 1;
+        } );
+        
+        expect(a).toEqual(1);
         
     } );
     

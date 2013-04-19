@@ -2,7 +2,7 @@
  * @module lofty/kernel/deferred
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130419
  * */
 
 
@@ -24,7 +24,7 @@ lofty( 'deferred', function(){
             resolved = 0,
             rejected = 0;
         
-        len = len || 1;
+        len = len || 0;
 
         var probe = function(){
             if ( resolved + rejected === len ){
@@ -67,6 +67,8 @@ lofty( 'deferred', function(){
             rejected++;
             probe();
         };
+        
+        probe();
     };
     
     var when = function(){

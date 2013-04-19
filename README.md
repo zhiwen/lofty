@@ -1,6 +1,7 @@
 # documentation
 
 fangdeng.org
+
     club.fangdeng.org
     weekly.fangdeng.org
 
@@ -21,8 +22,11 @@ fangdeng.org
 
 
 lofty/kernel 核心模块
+
 lofty/port 核心出口文件
+
 lofty/alicn 中文站专用模块
+
     web-alitalk
     web-addons
     util-cookie
@@ -31,17 +35,20 @@ lofty/alicn 中文站专用模块
 lofty/adapter 适配fdev4专用模块
 
 lofty/ecma 语言相关，deferred,callbacks,observer
+
     util-date
     util-json
     web-websocket
     
 lofty/device 设备相关，浏览器，鼠标，键盘，屏幕，and etc.
+
     ui-mouse
     util-histroy 浏览器历史
     web-browser
     util-storage
 
 lofty/dhtml 
+
     ui-draggable 拖动
     ui-droppable 拖放
     ui-portlets 模块排序
@@ -51,28 +58,29 @@ lofty/dhtml
     ui-position 定位
     
 avid 三方库
+
     web-sweet 模板语言
 
 
-ui-autocomplete
-ui-colorbox 取色盒
-ui-combobox 模拟下拉
-ui-datepicker 日历
-ui-dialog 浮层
-ui-progressbar 进度条
-ui-timer 计时器
+    ui-autocomplete
+    ui-colorbox 取色盒
+    ui-combobox 模拟下拉
+    ui-datepicker 日历
+    ui-dialog 浮层
+    ui-progressbar 进度条
+    ui-timer 计时器
+
+
+    web-stylesheet
+    web-dataLazyload
 
 
 
-web-stylesheet
-web-dataLazyload
+    web-pca 省市区三级联动
+    web-valid 验证
 
 
-
-web-pca 省市区三级联动
-web-valid 验证
-
-util-debug del
+    util-debug del
 
 
 

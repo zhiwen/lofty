@@ -2,7 +2,7 @@
  * @module lofty/kernel/boot
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130307
+ * @date 130419
  * */
 
 
@@ -26,45 +26,22 @@
             deps = [];
         }
         
-        var module = cache[id] = {
-            id: id,
-            deps: deps,
-            factory: factory
-        };
-        
-        compile( module );
-    },
-    
-    compile = function( module ){
-        
-        if ( typeof module.factory === 'function' ){
-            var deps = getDeps( module );
+        if ( 'function' === typeof factory ){
+            var args = [];
             
-            module.exports = module.factory.apply( lofty, deps );
-        } else {
-            module.exports = module.factory;
+            for ( var i = 0, l = deps.length; i < l; i++ ){
+                args.push( require( deps[i] ) );
+            }
+            
+            factory = factory.apply( lofty, args );
         }
         
-        delete module.factory;
-    },
-    
-    getDeps = function( module ){
-        
-        var list = [],
-            deps = module.deps;
-        
-        for ( var i = 0, l = deps.length; i < l; i++ ){
-            list.push( require( deps[i] ) );
-        }
-        
-        return list;
+        cache[id] = factory;
     },
     
     require = function( id ){
         
-        var module = cache[id];
-        
-        return module ? module.exports : null;
+        return cache[id];
     };
     
     lofty.version = '0.1';

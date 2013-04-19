@@ -2,7 +2,7 @@
  * @module lofty/kernel/id2url
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130403
+ * @date 130419
  * */
 
 
@@ -44,6 +44,7 @@ lofty( 'id2url', ['global','event','config','alias'], function( global, event, c
         }
         
         asset.url = url ? url : asset.id;
+        event.emit( 'resolve', asset );
     },
     
     addBaseUrl = function( asset ){
