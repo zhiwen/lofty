@@ -13,6 +13,8 @@ a:active{
 body{
     color: #333;
     line-height: 1.6;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 header h1{
@@ -65,17 +67,30 @@ iframe{
     width: 100%;
 }
 
+
+#page{
+    max-width: 1200px;
+    margin-left: 100px;
+}
+
 #page > article{
     max-width: 1200px;
 }
 
+.demo{
+    border: 1px solid #ccc;
+    margin: 24px 0;
+    padding: 16px;
+    max-width: 1200px;
+}
 
+/* menu */
 #menu{
     text-align: center;
     background-color: whiteSmoke;
     position: fixed;
-    top: -16px;
-    left: -20px;
+    top: 20px;
+    left: -54px;
     width: 250px;
     padding-top: 2em;
     -webkit-transform-origin: 0 0;
@@ -83,11 +98,11 @@ iframe{
         -ms-transform-origin: 0 0;
          -o-transform-origin: 0 0;
             transform-origin: 0 0;
-    -webkit-transform: rotate(-35deg) translate(-92px, 22px);  /* Safari 3.1+, Chrome */
-       -moz-transform: rotate(-35deg) translate(-92px, 22px);  /* Firefox 3.5-15 */
-        -ms-transform: rotate(-35deg) translate(-92px, 22px);  /* IE9+ */
-         -o-transform: rotate(-35deg) translate(-92px, 22px);  /* Opera 10.5-12.00 */
-            transform: rotate(-35deg) translate(-92px, 22px);  /* Firefox 16+, Opera 12.50+ */
+    -webkit-transform: rotate(-57deg) translate(-104px, 22px);  /* Safari 3.1+, Chrome */
+       -moz-transform: rotate(-57deg) translate(-104px, 22px);  /* Firefox 3.5-15 */
+        -ms-transform: rotate(-57deg) translate(-104px, 22px);  /* IE9+ */
+         -o-transform: rotate(-57deg) translate(-104px, 22px);  /* Opera 10.5-12.00 */
+            transform: rotate(-57deg) translate(-104px, 22px);  /* Firefox 16+, Opera 12.50+ */
 }
 
 #menu a{
@@ -102,3 +117,88 @@ iframe{
     background: #dcdcdc;
 }
 
+#menu a.home{
+    text-indent: 40px;
+}
+
+
+.navbar{
+    height: 58px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #f0f0f0;
+}
+.navbar nav{
+    max-width: 1200px;
+    margin-left: 100px;
+}
+.navbar nav ul{
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+.navbar nav li{
+    float: left;
+    list-style: none;
+}
+.navbar nav a{
+    letter-spacing: 1px;
+    display: inline-block;
+    height: 58px;
+    line-height: 58px;
+    padding: 0 8px;
+    font-size: 17px;
+}
+.navbar nav a:hover,
+.navbar nav a:active{
+    background: #dcdcdc;
+}
+
+/* home */
+.lofty-home header{
+    height: 10em;
+}
+.lofty-home header h1{
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    font-size: 4em;
+    margin: 0.1em 0 0 1em;
+}
+.lofty-home article{
+    position: absolute;
+    left: 372px;
+    max-width: 900px !important;
+}
+.lofty-home aside{
+    width: 300px;
+}
+.lofty-home .index li{
+    list-style: none;
+    display: inline;
+    float: left;
+    margin-bottom: 8px;
+    padding: 7px 0;
+    border: 1px solid #dddfdf;
+    border-radius: 3px;
+    -webkit-transition:all 0.1s linear;
+    transition:all 0.1s linear;
+    margin-right: 12px;
+}
+.lofty-home .index li:hover{
+    background: #dddfdf;
+}
+.lofty-home .index a{
+    padding: 7px 12px;
+}
+.lofty-home article h2:first-child{
+    margin-top: 0;
+}
+.lofty-home article + aside{
+    margin-top: 2em;
+}
+.lofty-home aside h1{
+    font-size: 1.2em;
+}

@@ -362,7 +362,7 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
         //todo sth
     } );
     
-此事件在模块编译完毕生成exports，`callback`的入参`mod`是编译之后的mod对象
+此事件在模块编译完毕生成exports后，`callback`的入参`mod`是编译之后的mod对象
 
 ### 'compileFail'事件
 
@@ -370,7 +370,7 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
         //todo sth
     } );
     
-此事件在模块编译失败，`callback`的入参`ex`即是浏览器抛出的error，`mod`是编译失败的mod对象
+此事件在模块编译失败后，`callback`的入参`ex`即是浏览器抛出的error，`mod`是编译失败的mod对象
 
 ### 'required'事件
 
@@ -378,7 +378,7 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
         //todo sth
     } );
 
-此事件在引用模块成功，`callback`的入参`mod`是被引用的模块对象
+此事件在引用模块成功时，在返回exports前一刻，`callback`的入参`mod`是被引用的模块对象
 
 ### 'requireFail'事件
 
@@ -386,7 +386,7 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
         //todo sth
     } );
 
-此事件在引用模块失败，`callback`的入参`meta`只有一个子对象id，是被引用的模块的id
+此事件在引用模块失败后，`callback`的入参`meta`只有一个子对象id，是被引用的模块的id
 
 ### 'makeRequire'事件
 
@@ -404,13 +404,21 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
 
 此事件在解析别名后，`callback`的入参`meta`只有一个子对象id
 
+### 'resolve'事件
+
+    alpha.on( 'resolve', function( asset ){
+        //todo sth
+    });
+
+此事件在处理完所有resolve后，`callback`的入参`asset`有两个子对象，一为id，二为url（非完整url，仅仅经过id resolve）
+
 ### 'id2url'事件
 
-    alpha.on( 'id2url', function( meta ){
+    alpha.on( 'id2url', function( asset ){
         //todo sth
     } );
 
-此事件在id解析成url后，`callback`的入参`meta`有两个子对象，一为id，二为url
+此事件在id解析成url后，`callback`的入参`asset`有两个子对象，一为id，二为url（完整url）
 
 ### 'requestTimeout'事件
 
