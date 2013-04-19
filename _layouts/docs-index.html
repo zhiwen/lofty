@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>{{page.title}} - Lofty Docs</title>
+        <link href="/static/main.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div id="page" class="lofty-docs-index">
+            <header>
+                <h1>{{page.title}}</h1>
+                {% include menu.html %}
+            </header>
+            <article>
+                {{ content }}
+            </article>
+            {% include footer.html %}
+        </div>
+    </body>
+</html>
