@@ -7,7 +7,7 @@
 describe( 'lofty/kernel/alicn', function(){
     
     var configCache = lofty.cache.config,
-        id2url = lofty.cache.kernel.id2url;
+        id2url = lofty.cache.parts.id2url;
     
     id2url && describe( 'config配置', function(){
         
@@ -67,7 +67,7 @@ describe( 'lofty/kernel/alicn', function(){
             
             expect(alpha.log).toEqual(lofty.log);
             expect(alpha.define).toEqual(lofty.define);
-            expect(alpha.on).toEqual(lofty.cache.kernel.event.on);
+            expect(alpha.on).toEqual(lofty.cache.parts.event.on);
         } );
     } );
 } );

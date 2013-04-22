@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/request', function(){
     
-    var request = lofty.cache.kernel.request;
+    var request = lofty.cache.parts.request;
     
     it( 'request', function(){
         var a;

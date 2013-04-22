@@ -2,7 +2,7 @@
  * @module lofty/kernel/boot
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130421
  * */
 
 
@@ -36,7 +36,7 @@
             factory = factory.apply( lofty, args );
         }
         
-        cache[id] = factory;
+        cache[id] = factory || 1;
     },
     
     require = function( id ){
@@ -47,7 +47,7 @@
     lofty.version = '0.1';
     
     lofty.cache = {
-        kernel: cache
+        parts: cache
     };
     
     

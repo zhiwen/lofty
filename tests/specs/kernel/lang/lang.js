@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/lang', function(){
     
-    var lang = lofty.cache.kernel.lang;
+    var lang = lofty.cache.parts.lang;
     
     function A(){}
     A.prototype.aa = 1;

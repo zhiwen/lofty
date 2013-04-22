@@ -3,7 +3,7 @@
  * @module lofty/kernel/boot
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130421
  * */
 
 
@@ -37,7 +37,7 @@
             factory = factory.apply( lofty, args );
         }
         
-        cache[id] = factory;
+        cache[id] = factory || 1;
     },
     
     require = function( id ){
@@ -48,7 +48,7 @@
     lofty.version = '0.1';
     
     lofty.cache = {
-        kernel: cache
+        parts: cache
     };
     
     
@@ -997,6 +997,36 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     
 } );
 /**
+ * @module lofty/kernel/amd
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130325
+ * */
+
+
+lofty( 'amd', ['module','use'],
+    function( module, use ){
+    'use strict';
+
+    var configCache = this.cache.config;
+    
+    configCache.amd = true;
+    
+    module.autocompile = function( mod ){
+        
+        if ( module.isAnon( mod ) ){
+            if ( configCache.amd ){
+                use.load( mod.deps, function(){
+                    module.compile( mod );
+                } );
+            } else {
+                module.compile( mod );
+            }
+        }
+    };
+    
+} );
+/**
  * @module lofty/kernel/debug
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
@@ -1040,7 +1070,7 @@ lofty( 'debug', ['global','config','console','request','require'],
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130422
  * */
 
 
@@ -1078,6 +1108,7 @@ lofty( 'alicn', ['global','event','config'],
     } );
     
     this.config({
+        amd: false,
         hasStamp: true,
         resolve: resolve,
         debug: function(){

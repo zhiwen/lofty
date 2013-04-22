@@ -9,9 +9,21 @@ define(function(){
     
     var rRoot = /^specs\//;
     
-    lofty.cache.kernel.event.on( 'alias', function( meta ){
+    lofty.cache.parts.event.on( 'alias', function( meta ){
         meta.id === 'lofty/kernel/console' && ( meta.id = meta.id.replace( /lofty/, 'src' ) );
     } );
+    
+    if ( location.pathname.indexOf('aio') > 0 ){
+        lofty.config({
+            amd: true
+        });
+    }
+    
+    if ( location.pathname.indexOf('online') > 0 ){
+        lofty.config({
+            baseUrl: location.protocol + '//' + location.host + '/'
+        });
+    }
     
     lofty.config({
         hasStamp: true,

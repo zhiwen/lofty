@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="lofty-kernel-css-build" default="build" basedir="../">
-    <description>Lofty Kernel JS Build File</description>
+    <description>Lofty Kernel CSS Build File</description>
     
     <dirname property="root.dir" file="${ant.file.lofty-kernel-css-build}/../"/>
     <property name="src.dir" location="${root.dir}/src/"/>
