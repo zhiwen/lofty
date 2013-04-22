@@ -8,11 +8,6 @@
 lofty.config({
     resolve: function( id ){
         id === 'lofty/kernel/console' && ( id = id.replace( /lofty/, 'src' ) );
-        
-        if ( /^specs\//.test(id) ){
-            id = '/tests/' + id;
-        }
-        
         return id;
     }
 });

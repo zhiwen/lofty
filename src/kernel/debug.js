@@ -2,39 +2,60 @@
  * @module lofty/kernel/debug
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130403
+ * @date 130422
  * */
 
 
-lofty( 'debug', ['global','config','console','request','require'],
-    function( global, config, console, request, require ){
+lofty( 'debug', ['config','log','event'],
+    function( config, log, event ){
     'use strict';
     
-    var _this = this;
-    
-    var noop = this.log = function(){};
-    
-    var createLog = function( isDebug ){
-        _this.log = isDebug ? ( global.console ? function( message, level ){
-            level = level || 'log';
-            global.console[level]( message );
-        } : function( message, level ){
-            if ( console ){
-                console( message, level );
-            } else if ( request ) {
-                request( 'lofty/kernel/console', function(){
-                    console || ( console = require('console') );
-                    console( message, level );
-                } );
-            }
-        } ) : noop;
-    };
-    
     config.addRule( 'debug', function( target, key, val ){
-        createLog( val );
+        log.create( val );
         this[key] = val;
         return true;
     } )
     .addItem( 'debug', 'debug' );
+    
+    
+    var getId = function( mod ){
+        return mod._id ? mod._id : mod.id;
+    };
+    
+    event.on( 'existed', function( meta ){
+        
+        log.warn( meta.id + ': already exists.' );
+    } );
+    
+    event.on( 'compiled', function( mod ){
+        
+        log.log( getId( mod ) + ': compiled.' );
+    } );
+    
+    event.on( 'compileFail', function( ex, mod ){
+        
+        log.warn( getId( mod ) + ': ' + ex.message );
+    } );
+    
+    event.on( 'required', function( mod ){
+        
+        !mod.visits ? mod.visits = 1 : mod.visits++;
+        log.log( mod.id + ': required ' + mod.visits + '.' );
+    } );
+    
+    event.on( 'requireFail', function( meta ){
+        
+        log.warn( meta.id + ': failed to require.' );
+    } );
+    
+    event.on( 'requested', function( asset ){
+        
+        log.log( asset.url + ' requested' );
+    } );
+    
+    event.on( 'requestTimeout', function( asset ){
+        
+        log.warn( 'request ' + asset.url + ' timeout.' );
+    } );
     
 } );

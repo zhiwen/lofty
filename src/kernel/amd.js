@@ -2,7 +2,7 @@
  * @module lofty/kernel/amd
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130325
+ * @date 130422
  * */
 
 
@@ -18,7 +18,7 @@ lofty( 'amd', ['module','use'],
         
         if ( module.isAnon( mod ) ){
             if ( configCache.amd ){
-                use.load( mod.deps, function(){
+                use.fetch( mod.deps, function(){
                     module.compile( mod );
                 } );
             } else {

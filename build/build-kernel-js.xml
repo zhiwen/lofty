@@ -33,6 +33,8 @@
             <path path="${kernel.dir}/deferred.js"/>
             <path path="${kernel.dir}/use.js"/>
             <path path="${kernel.dir}/amd.js"/>
+            <path path="${kernel.dir}/appframe.js"/>
+            <path path="${kernel.dir}/log.js"/>
             <path path="${kernel.dir}/debug.js"/>
             <path path="${kernel.dir}/alicn.js"/>
         </concat>

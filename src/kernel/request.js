@@ -40,6 +40,8 @@ lofty( 'request', ['global','event','loader','id2url'],
         
         global.clearTimeout( asset.timer );
         
+        event.emit( 'requested', asset );
+        
         var call, queue;
         
         if ( isCallback ){
@@ -76,8 +78,8 @@ lofty( 'request', ['global','event','loader','id2url'],
         
         asset.timer = setTimeout( function(){
             asset.timeout = true;
-            completeLoad( asset, false );
             event.emit( 'requestTimeout', asset );
+            completeLoad( asset, false );
         }, configCache.loadTimeout );
 
         loader( asset.url, function(){

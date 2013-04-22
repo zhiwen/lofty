@@ -62,6 +62,8 @@ avid 三方库
     web-sweet 模板语言
 
 
+其他待定
+
     ui-autocomplete
     ui-colorbox 取色盒
     ui-combobox 模拟下拉

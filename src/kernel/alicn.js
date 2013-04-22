@@ -6,8 +6,8 @@
  * */
 
 
-lofty( 'alicn', ['global','event','config'],
-    function( global, event, config ){
+lofty( 'alicn', ['global','event'],
+    function( global, event ){
     'use strict';
     
     var rStyle = /\.css(?:\?|$)/,
@@ -52,21 +52,5 @@ lofty( 'alicn', ['global','event','config'],
             return isDebug;
         }()
     });
-    
-    
-    this.appframe = function( name ){
-        
-        var frame = global[name] = {
-            define: this.define,
-            log: this.log,
-            config: this.config,
-            on: event.on
-        },
-        
-        cfg = frame.config;
-        
-        cfg.addRule = config.addRule;
-        cfg.addItem = config.addItem;
-    };
     
 } );

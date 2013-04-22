@@ -1,7 +1,7 @@
 /**
  * @fileoverview unit testing for lofty/kernel/alicn
  * @author Edgar
- * @build 130419
+ * @build 130422
  * */
 
 describe( 'lofty/kernel/alicn', function(){
@@ -9,7 +9,7 @@ describe( 'lofty/kernel/alicn', function(){
     var configCache = lofty.cache.config,
         id2url = lofty.cache.parts.id2url;
     
-    id2url && describe( 'config配置', function(){
+    describe( 'config配置', function(){
         
         it( '时间戳hasStamp为true', function(){
             var a = { id: 'jioje/wwfdfe' };
@@ -61,13 +61,4 @@ describe( 'lofty/kernel/alicn', function(){
         } );
     } );
     
-    describe( '生成应用框架名', function(){
-        it( 'lofty.appframe', function(){
-            lofty.appframe('alpha');
-            
-            expect(alpha.log).toEqual(lofty.log);
-            expect(alpha.define).toEqual(lofty.define);
-            expect(alpha.on).toEqual(lofty.cache.parts.event.on);
-        } );
-    } );
 } );

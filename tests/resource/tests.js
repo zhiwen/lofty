@@ -13,7 +13,7 @@ define(function(){
         meta.id === 'lofty/kernel/console' && ( meta.id = meta.id.replace( /lofty/, 'src' ) );
     } );
     
-    if ( location.pathname.indexOf('aio') > 0 ){
+    if ( location.pathname.indexOf('aio') > 0 || location.pathname.indexOf('tests/runner') > 0 ){
         lofty.config({
             amd: true
         });

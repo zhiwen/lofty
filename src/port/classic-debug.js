@@ -132,7 +132,7 @@ lofty( 'lang', function(){
  * @module lofty/kernel/event
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130322
+ * @date 130422
  * */
 
 
@@ -162,6 +162,9 @@ lofty( 'event', function(){
                     fn.apply( null, args );
                 }
             }
+        },
+        off: function( name ){
+            eventsCache[name] && delete eventsCache[name];
         }
     };
     
@@ -357,7 +360,6 @@ lofty( 'module', ['global','lang','event','alias'],
         this.deps = deps || [];
         this.factory = factory;
         this.exports = {};
-        this.visits = 0;
         
         if ( id === EMPTY_ID ){
             id = ANONYMOUS_PREFIX + anonymousIndex;
@@ -470,8 +472,8 @@ lofty( 'module', ['global','lang','event','alias'],
             return null;
         }
         
-        if ( !mod.visits ){
-            mod.visits++;
+        if ( !mod.compiled ){
+            mod.compiled = true;
             module.compile( mod );
         }
         
@@ -784,6 +786,8 @@ lofty( 'request', ['global','event','loader','id2url'],
         
         global.clearTimeout( asset.timer );
         
+        event.emit( 'requested', asset );
+        
         var call, queue;
         
         if ( isCallback ){
@@ -820,8 +824,8 @@ lofty( 'request', ['global','event','loader','id2url'],
         
         asset.timer = setTimeout( function(){
             asset.timeout = true;
-            completeLoad( asset, false );
             event.emit( 'requestTimeout', asset );
+            completeLoad( asset, false );
         }, configCache.loadTimeout );
 
         loader( asset.url, function(){
@@ -928,7 +932,7 @@ lofty( 'deferred', function(){
  * @module lofty/kernel/use
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130422
  * */
 
 
@@ -937,19 +941,6 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     'use strict';
 
     var use = {
-        load: function( ids, callback, errorback ){
-            
-            lang.isArray( ids ) || ( ids = [ids] );
-            
-            use.fetch( ids, function(){
-                var args = lang.map( ids, function( id ){
-                    return module.require( id );
-                } );
-                
-                callback && callback.apply( null, args );
-            } /* call errorback */ );
-        },
-        
         fetch: function( idsFetch, callback ){
             
             use.get( idsFetch, function(){
@@ -987,8 +978,15 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     
     event.on( 'makeRequire', function( require ){
         
-        require.use = function( ids, callback, errorback ){
-            use.load( ids, callback, errorback );
+        require.use = function( ids, callback ){
+            
+            lang.isArray( ids ) || ( ids = [ids] );
+
+            use.fetch( ids, function(){
+                callback && callback.apply( null, lang.map( ids, function( id ){
+                    return module.require( id );
+                } ) );
+            } );
         };
     } );
     
@@ -1000,7 +998,7 @@ lofty( 'use', ['lang','event','module','request','deferred'],
  * @module lofty/kernel/amd
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130325
+ * @date 130422
  * */
 
 
@@ -1016,7 +1014,7 @@ lofty( 'amd', ['module','use'],
         
         if ( module.isAnon( mod ) ){
             if ( configCache.amd ){
-                use.load( mod.deps, function(){
+                use.fetch( mod.deps, function(){
                     module.compile( mod );
                 } );
             } else {
@@ -1027,43 +1025,136 @@ lofty( 'amd', ['module','use'],
     
 } );
 /**
- * @module lofty/kernel/debug
+ * @module lofty/kernel/appframe
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130403
+ * @date 130421
  * */
 
 
-lofty( 'debug', ['global','config','console','request','require'],
-    function( global, config, console, request, require ){
+lofty( 'appframe', ['global','event','config'],
+    function( global, event, config ){
+    'use strict';
+    
+    this.appframe = function( name ){
+        
+        var frame = global[name] = {
+            define: this.define,
+            log: this.log,
+            config: this.config,
+            on: event.on,
+            off: event.off
+        },
+        
+        cfg = frame.config;
+        
+        cfg.addRule = config.addRule;
+        cfg.addItem = config.addItem;
+    };
+    
+} );
+/**
+ * @module lofty/kernel/log
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130422
+ * */
+
+
+lofty( 'log', ['global','console','request','require'],
+    function( global, console, request, require ){
     'use strict';
     
     var _this = this;
     
-    var noop = this.log = function(){};
+    var noop = _this.log = function(){};
     
-    var createLog = function( isDebug ){
-        _this.log = isDebug ? ( global.console ? function( message, level ){
-            level = level || 'log';
-            global.console[level]( message );
-        } : function( message, level ){
-            if ( console ){
-                console( message, level );
-            } else if ( request ) {
-                request( 'lofty/kernel/console', function(){
-                    console || ( console = require('console') );
+    var log = {
+        create: function( isDebug ){
+            _this.log = isDebug ? ( global.console ? function( message, level ){
+                level = level || 'log';
+                global.console[level]( message );
+            } : function( message, level ){
+                if ( console ){
                     console( message, level );
-                } );
-            }
-        } ) : noop;
+                } else if ( request ) {
+                    request( 'lofty/kernel/console', function(){
+                        console || ( console = require('console') );
+                        console( message, level );
+                    } );
+                }
+            } ) : noop;
+        },
+        log: function( message ){
+            _this.log( message, 'log' );
+        },
+        warn: function( message ){
+            _this.log( message, 'warn' );
+        }
     };
     
+    return log;
+    
+} );
+/**
+ * @module lofty/kernel/debug
+ * @author Edgar <mail@edgarhoo.net>
+ * @version v0.1
+ * @date 130422
+ * */
+
+
+lofty( 'debug', ['config','log','event'],
+    function( config, log, event ){
+    'use strict';
+    
     config.addRule( 'debug', function( target, key, val ){
-        createLog( val );
+        log.create( val );
         this[key] = val;
         return true;
     } )
     .addItem( 'debug', 'debug' );
+    
+    
+    var getId = function( mod ){
+        return mod._id ? mod._id : mod.id;
+    };
+    
+    event.on( 'existed', function( meta ){
+        
+        log.warn( meta.id + ': already exists.' );
+    } );
+    
+    event.on( 'compiled', function( mod ){
+        
+        log.log( getId( mod ) + ': compiled.' );
+    } );
+    
+    event.on( 'compileFail', function( ex, mod ){
+        
+        log.warn( getId( mod ) + ': ' + ex.message );
+    } );
+    
+    event.on( 'required', function( mod ){
+        
+        !mod.visits ? mod.visits = 1 : mod.visits++;
+        log.log( mod.id + ': required ' + mod.visits + '.' );
+    } );
+    
+    event.on( 'requireFail', function( meta ){
+        
+        log.warn( meta.id + ': failed to require.' );
+    } );
+    
+    event.on( 'requested', function( asset ){
+        
+        log.log( asset.url + ' requested' );
+    } );
+    
+    event.on( 'requestTimeout', function( asset ){
+        
+        log.warn( 'request ' + asset.url + ' timeout.' );
+    } );
     
 } );
 /**
@@ -1074,8 +1165,8 @@ lofty( 'debug', ['global','config','console','request','require'],
  * */
 
 
-lofty( 'alicn', ['global','event','config'],
-    function( global, event, config ){
+lofty( 'alicn', ['global','event'],
+    function( global, event ){
     'use strict';
     
     var rStyle = /\.css(?:\?|$)/,
@@ -1120,21 +1211,5 @@ lofty( 'alicn', ['global','event','config'],
             return isDebug;
         }()
     });
-    
-    
-    this.appframe = function( name ){
-        
-        var frame = global[name] = {
-            define: this.define,
-            log: this.log,
-            config: this.config,
-            on: event.on
-        },
-        
-        cfg = frame.config;
-        
-        cfg.addRule = config.addRule;
-        cfg.addItem = config.addItem;
-    };
     
 } );
