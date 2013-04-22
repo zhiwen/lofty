@@ -24,6 +24,7 @@ layout: api
 1. `lofty/kernel/request`
 1. `lofty/kernel/deferred`
 1. `lofty/kernel/use`
+1. `lofty/kernel/amd`
 1. `lofty/kernel/debug`
 1. `lofty/kernel/alicn`
 
@@ -33,8 +34,18 @@ layout: api
 
 # Unit Testing
 
-[Unit Testing](/tests/specs/port/classic/runner.html)
+[Unit Testing](/tests/specs/port/classic/runner.html)、
+[线上Unit Testing](/tests/specs/port/classic/runner-online.html)、
+[开启amd的Unit Testing](/tests/specs/port/classic/runner-aio.html)、
+[开启amd的线上Unit Testing](/tests/specs/port/classic/runner-aio-online.html)
 
 # API
 
 详情请见[Lofty基本语法](/docs/grammar.html)
+
+若要dependencies也如同`require.use`一样支持异步依赖模块，可在应用框架中加入如下配置开启
+
+    alpha.config({
+        amd: true
+    });
+    

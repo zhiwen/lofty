@@ -5,6 +5,7 @@
 lofty.appframe('fd');
 
 fd.config({
+    amd: true,
     resolve: function( id ){
         if ( id === 'fangdeng/lofty/apiData' ){
             id = 'http://lofty.dev.la/static/api-data';
