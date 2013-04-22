@@ -2,7 +2,7 @@
  * @module lofty/kernel/use
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130422
  * */
 
 
@@ -11,19 +11,6 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     'use strict';
 
     var use = {
-        load: function( ids, callback, errorback ){
-            
-            lang.isArray( ids ) || ( ids = [ids] );
-            
-            use.fetch( ids, function(){
-                var args = lang.map( ids, function( id ){
-                    return module.require( id );
-                } );
-                
-                callback && callback.apply( null, args );
-            } /* call errorback */ );
-        },
-        
         fetch: function( idsFetch, callback ){
             
             use.get( idsFetch, function(){
@@ -61,8 +48,15 @@ lofty( 'use', ['lang','event','module','request','deferred'],
     
     event.on( 'makeRequire', function( require ){
         
-        require.use = function( ids, callback, errorback ){
-            use.load( ids, callback, errorback );
+        require.use = function( ids, callback ){
+            
+            lang.isArray( ids ) || ( ids = [ids] );
+
+            use.fetch( ids, function(){
+                callback && callback.apply( null, lang.map( ids, function( id ){
+                    return module.require( id );
+                } ) );
+            } );
         };
     } );
     

@@ -70,7 +70,6 @@ lofty( 'module', ['global','lang','event','alias'],
         this.deps = deps || [];
         this.factory = factory;
         this.exports = {};
-        this.visits = 0;
         
         if ( id === EMPTY_ID ){
             id = ANONYMOUS_PREFIX + anonymousIndex;
@@ -183,8 +182,8 @@ lofty( 'module', ['global','lang','event','alias'],
             return null;
         }
         
-        if ( !mod.visits ){
-            mod.visits++;
+        if ( !mod.compiled ){
+            mod.compiled = true;
             module.compile( mod );
         }
         
