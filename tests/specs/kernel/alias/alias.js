@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/alias', function(){
     
-    var alias = lofty.cache.kernel.alias;
+    var alias = lofty.cache.parts.alias;
     
     it( 'alias', function(){
         lofty.config({

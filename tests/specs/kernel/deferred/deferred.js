@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/deferred', function(){
     
-    var deferred = lofty.cache.kernel.deferred;
+    var deferred = lofty.cache.parts.deferred;
     
     it( 'deferred resolve', function(){
         var a = [];

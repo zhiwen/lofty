@@ -2,7 +2,7 @@
  * @module lofty/kernel/alicn
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130419
+ * @date 130422
  * */
 
 
@@ -40,6 +40,7 @@ lofty( 'alicn', ['global','event','config'],
     } );
     
     this.config({
+        amd: false,
         hasStamp: true,
         resolve: resolve,
         debug: function(){

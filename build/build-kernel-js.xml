@@ -16,29 +16,11 @@
 
     <property name="classic.debug.file" value="${dist.dir}/classic-debug.js"/>
     <property name="classic.file" value="${dist.dir}/classic.js"/>
-    <property name="aio.debug.file" value="${dist.dir}/aio-debug.js"/>
-    <property name="aio.file" value="${dist.dir}/aio.js"/>
 
     <target name="concat">
         <mkdir dir="${dist.dir}"/>
         
         <concat destfile="${classic.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
-            <path path="${kernel.dir}/boot.js"/>
-            <path path="${kernel.dir}/lang.js"/>
-            <path path="${kernel.dir}/event.js"/>
-            <path path="${kernel.dir}/config.js"/>
-            <path path="${kernel.dir}/alias.js"/>
-            <path path="${kernel.dir}/module.js"/>
-            <path path="${kernel.dir}/loader.js"/>
-            <path path="${kernel.dir}/id2url.js"/>
-            <path path="${kernel.dir}/request.js"/>
-            <path path="${kernel.dir}/deferred.js"/>
-            <path path="${kernel.dir}/use.js"/>
-            <path path="${kernel.dir}/debug.js"/>
-            <path path="${kernel.dir}/alicn.js"/>
-        </concat>
-        
-        <concat destfile="${aio.debug.file}.tmp" encoding="${charset}" outputencoding="${charset}">
             <path path="${kernel.dir}/boot.js"/>
             <path path="${kernel.dir}/lang.js"/>
             <path path="${kernel.dir}/event.js"/>
@@ -95,17 +77,6 @@
         <concat destfile="${classic.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
             <path path="${license.file}.js"/>
             <path path="${classic.debug.file}.tmp"/>
-        </concat>
-        
-        <copy file="${license.file}.tmp" tofile="${license.file}.js" overwrite="true"/>
-        <replaceregexp file="${license.file}.js" match="@EDITION" replace="AIO" flags="g" encoding="${charset}"/>
-        <concat destfile="${aio.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <path path="${license.file}.js"/>
-            <path path="${aio.file}.tmp"/>
-        </concat>
-        <concat destfile="${aio.debug.file}"  encoding="${charset}" outputencoding="${charset}" fixlastline="yes">
-            <path path="${license.file}.js"/>
-            <path path="${aio.debug.file}.tmp"/>
         </concat>
     </target>
     

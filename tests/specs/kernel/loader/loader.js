@@ -21,7 +21,7 @@ describe( 'lofty/kernel/loader', function(){
 
     define('specs/kernel/loader/b',function(){ return 'specs-kernel-loader-b'; });
     
-    var loader = lofty.cache.kernel.loader;
+    var loader = lofty.cache.parts.loader;
     
     it( 'load js', function(){
         var a;

@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/id2url', function(){
     
-    var id2url = lofty.cache.kernel.id2url;
+    var id2url = lofty.cache.parts.id2url;
     
     var baseUrl = lofty.cache.config.baseUrl;
     

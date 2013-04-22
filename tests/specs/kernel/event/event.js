@@ -6,7 +6,7 @@
 
 describe( 'lofty/kernel/event', function(){
     
-    var event = lofty.cache.kernel.event,
+    var event = lofty.cache.parts.event,
         eventsCache = lofty.cache.events;
     
     it( 'event.on', function(){
