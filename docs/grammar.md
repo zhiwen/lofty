@@ -420,6 +420,16 @@ Lofty在模块定义、文件加载等各地添加了事件发送，应用框架
 
 此事件在id解析成url后，`callback`的入参`asset`有两个子对象，一为id，二为url（完整url）
 
+### 'requested'事件
+
+    alpha.on( 'requested', function( asset ){
+        //todo sth
+    } );
+
+此事件在请求资源完成，`callback`的入参`asset`为资源对象
+
+**在资源404时，此事件也会触发**
+
 ### 'requestTimeout'事件
 
     alpha.on( 'requestTimeout', function( asset ){

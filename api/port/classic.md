@@ -25,6 +25,8 @@ layout: api
 1. `lofty/kernel/deferred`
 1. `lofty/kernel/use`
 1. `lofty/kernel/amd`
+1. `lofty/kernel/appframe`
+1. `lofty/kernel/log`
 1. `lofty/kernel/debug`
 1. `lofty/kernel/alicn`
 
