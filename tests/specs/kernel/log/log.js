@@ -1,7 +1,7 @@
 /**
  * @fileoverview unit testing for lofty/kernel/log
  * @author Edgar
- * @build 130325
+ * @build 130423
  * */
 
 describe( 'lofty/kernel/log', function(){
@@ -26,15 +26,13 @@ describe( 'lofty/kernel/log', function(){
     } );
     
     it( 'lofty.log', function(){
-        lofty.log('这是打印日志','info');
-        lofty.log('这是出错日志','warn');
+        lofty.log('log中的lofty.log打印的info日志','info');
+        lofty.log('log中的lofty.log打印的warn日志','warn');
         
         log.create(false);
         
-        lofty.log('这行打印不出来','info');
-        lofty.log('这行也打印不出来','warn');
-        
-        expect(lofty.log.toString()==noop.toString()).toEqual(true);
+        lofty.log('这行log中的lofty.log打印不出来','info');
+        lofty.log('这行log中的lofty.log也打印不出来','warn');
     } );
     
     lofty.log = originLog;

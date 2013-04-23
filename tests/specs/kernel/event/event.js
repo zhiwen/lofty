@@ -1,7 +1,7 @@
 /**
  * @fileoverview unit testing for lofty/kernel/event
  * @author Edgar
- * @build 130322
+ * @build 130423
  * */
 
 describe( 'lofty/kernel/event', function(){
@@ -65,6 +65,21 @@ describe( 'lofty/kernel/event', function(){
         expect(h).toEqual(8);
         expect(i).toEqual(5);
         expect(j).toEqual(6);
+    } );
+    
+    it( 'event.off', function(){
+        var meta = {};
+        event.emit( 'a', meta, 5 );
+        var a = meta.a;
+        var b = meta.b;
+        var c = meta.c;
+        event.off('a');
+        event.emit( 'a', meta, 5 );
+        
+        expect(eventsCache.a).toEqual(undefined);
+        expect(a).toEqual(3);
+        expect(b).toEqual(2);
+        expect(c).toEqual(5);
     } );
     
 } );
