@@ -932,7 +932,7 @@ lofty( 'deferred', function(){
  * @module lofty/kernel/use
  * @author Edgar <mail@edgarhoo.net>
  * @version v0.1
- * @date 130422
+ * @date 130423
  * */
 
 
@@ -983,9 +983,11 @@ lofty( 'use', ['lang','event','module','request','deferred'],
             lang.isArray( ids ) || ( ids = [ids] );
 
             use.fetch( ids, function(){
-                callback && callback.apply( null, lang.map( ids, function( id ){
+                var args = lang.map( ids, function( id ){
                     return module.require( id );
-                } ) );
+                } );
+                
+                callback && callback.apply( null, args );
             } );
         };
     } );
